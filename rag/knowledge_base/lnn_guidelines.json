@@ -1,0 +1,58 @@
+{
+  "authority": "Lucknow Nagar Nigam (Lucknow Municipal Corporation / LNN)",
+  "framework": "LNN Food Sanitation, Solid Waste Management & Surplus Food Redistribution Bye-Laws (2021/Updated)",
+  "jurisdiction": "Urban Agglomeration of Lucknow, Uttar Pradesh",
+  "guidelines": [
+    {
+      "id": "LNN-BYLAW-SEC-10",
+      "clause": "LNN SWM Bye-Law Section 10 - Ban on Edible Food Waste Dumping",
+      "title": "Prohibition of Landfill Disposal for Edible Surplus Food",
+      "text": "Institutional bulk food generators (universities, colleges, private mess operators, commercial caterers producing >100 kg of food waste per day) within Lucknow Nagar Nigam limits are strictly prohibited from dumping unconsumed, edible surplus food into municipal garbage vats, community dustbins, road dumps (dhalavs), or nullahs. Violations incur spot penalties ranging from INR 5,000 to INR 25,000.",
+      "category": "waste_prohibition",
+      "keywords": ["dumping", "penalty", "bulk generator", "dhalav", "dustbin", "waste", "ban", "fine"]
+    },
+    {
+      "id": "LNN-BYLAW-SEC-12",
+      "clause": "LNN Sanitation Directive Section 12 - Empanelled Shelter Network (Rain Basera)",
+      "title": "Redistribution Priority to LNN Night Shelters & Verified NGOs",
+      "text": "Surplus cooked food generated in institutional dining halls shall prioritize dispatch to Lucknow Nagar Nigam's official network of verified Night Shelters (Rain Basera) and registered hunger-relief NGO partners (e.g., Lucknow Roti Bank, Robin Hood Army Lucknow, Asha Jyoti Kendra). Priority facilities include: Rain Basera Charbagh (Zone 1/5), Rain Basera KGMU Chowk (Zone 1), Rain Basera Qaiserbagh (Zone 1), Rain Basera Gomti Nagar Manoj Pandey Chauraha (Zone 4), and Rain Basera Alambagh (Zone 5).",
+      "category": "shelter_network",
+      "keywords": ["Rain Basera", "night shelter", "Charbagh", "KGMU", "Gomti Nagar", "Alambagh", "Roti Bank", "NGO"]
+    },
+    {
+      "id": "LNN-BYLAW-SEC-14",
+      "clause": "LNN Traffic & Transit Protocol Section 14 - Intra-City Corridor Transit Windows",
+      "title": "Municipal Transit Buffer Ceiling and Hot Season Precautions",
+      "text": "Due to Lucknow's urban congestion across arterial corridors (Hazratganj, Polytechic Chauraha, Charbagh, Awadh Chauraha) and elevated ambient temperatures exceeding 38°C during peak summer months (April to July), surplus cooked meals in ambient transit must not spend more than 45 minutes in transit between campus dining halls and receiving shelters. Any transit projected to exceed 45 minutes must utilize insulated food carrier boxes or thermal insulated blankets.",
+      "category": "transit_protocol",
+      "keywords": ["transit", "traffic", "45 minutes", "corridor", "summer", "temperature", "insulated boxes", "zones"]
+    },
+    {
+      "id": "LNN-BYLAW-SEC-18",
+      "clause": "LNN SWM Bye-Law Section 18 - Non-Compliant & Expired Food Diversion Mandate",
+      "title": "Mandatory Diversion to Decentralized Biomethanation and Composting",
+      "text": "Surplus food that fails FSSAI microbial safety windows (>4 hours ambient holding, broken cold chain, or showing spoilage) must NEVER be discarded as mixed garbage. It must be segregated as 100% Green Wet Organic Waste and directed to: 1) Campus decentralized on-site aerobic composting pits; or 2) Lucknow Nagar Nigam's municipal wet waste processing facilities at Kanha Upvan biomethanation facility or the Mohanlalganj Bio-CNG / Waste-to-Energy processing plant.",
+      "category": "waste_diversion",
+      "keywords": ["expired food", "biomethanation", "composting", "Kanha Upvan", "Mohanlalganj", "wet waste", "green bin"]
+    },
+    {
+      "id": "LNN-BYLAW-SEC-21",
+      "clause": "LNN Health Section 21 - Gate Security Handoff & Dispatch Verification",
+      "title": "Campus Gate Security and Chain of Custody Clearance",
+      "text": "Every surplus food transport vehicle departing an educational institution must carry an Anna-Setu Digital Gate Pass / Dispatch Manifest verifying: dispatch time, destination shelter, quantity, FSSAI compliance confirmation, vehicle registration number, and driver/volunteer identity. Campus security gates must stamp or digitally register the exit timestamp to maintain complete auditability.",
+      "category": "chain_of_custody",
+      "keywords": ["gate pass", "security", "dispatch manifest", "chain of custody", "vehicle", "verification"]
+    }
+  ],
+  "zones": [
+    {"zone_id": 1, "name": "Zone 1 - Chowk, Aminabad, Hazratganj, Qaiserbagh", "avg_transit_minutes": 35},
+    {"zone_id": 2, "name": "Zone 2 - Aishbagh, Rajajipuram", "avg_transit_minutes": 30},
+    {"zone_id": 3, "name": "Zone 3 - Aliganj, Jankipuram, Vikas Nagar", "avg_transit_minutes": 30},
+    {"zone_id": 4, "name": "Zone 4 - Gomti Nagar, Gomti Nagar Extension, Indira Nagar", "avg_transit_minutes": 25},
+    {"zone_id": 5, "name": "Zone 5 - Alambagh, Singar Nagar, Krishna Nagar", "avg_transit_minutes": 35},
+    {"zone_id": 6, "name": "Zone 6 - Hardoi Road, Dubagga, Kakori", "avg_transit_minutes": 45},
+    {"zone_id": 7, "name": "Zone 7 - Chinhat, Faizabad Road, BBD Corridor", "avg_transit_minutes": 30},
+    {"zone_id": 8, "name": "Zone 8 - Sarojini Nagar, Transport Nagar, Airport Corridor", "avg_transit_minutes": 40}
+  ]
+}
+

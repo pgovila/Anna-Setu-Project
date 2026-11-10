@@ -1,0 +1,80 @@
+{
+  "authority": "Food Safety and Standards Authority of India (FSSAI)",
+  "framework": "Food Safety and Standards (Recovery and Distribution of Surplus Food) Regulations, 2019",
+  "statutory_act": "Food Safety and Standards Act, 2006 (Section 31 & Section 16)",
+  "guidelines": [
+    {
+      "id": "FSSAI-REG-3",
+      "clause": "Regulation 3 - Responsibilities of Food Business Operators (FBOs)",
+      "title": "Registration and Standard Operating Procedures for Donors",
+      "text": "Any Food Business Operator (FBO) including institutional cafeterias, university dining halls, caterers, and food service establishments donating surplus food must be registered or licensed under FSSAI. Donors must implement a Food Safety Management System (FSMS) and ensure surplus food is collected before the end of its safe microbial shelf-life.",
+      "category": "governance",
+      "keywords": ["license", "registration", "FBO", "cafeteria", "mess", "FSMS", "responsibilities"]
+    },
+    {
+      "id": "FSSAI-REG-4-1",
+      "clause": "Regulation 4(1) - Quality and Hygiene Assessment",
+      "title": "Wholesomeness and Organoleptic Suitability",
+      "text": "Surplus food must be wholesome, hygienic, free from adulteration, unexposed to contaminants, pests, or chemical hazards, and must pass organoleptic checks (sensory inspection of smell, visual appearance, and texture) prior to packaging and dispatch.",
+      "category": "safety_check",
+      "keywords": ["hygiene", "sensory", "smell", "appearance", "inspection", "wholesome", "adulteration"]
+    },
+    {
+      "id": "FSSAI-REG-4-2",
+      "clause": "Regulation 4(2) - Ambient Cooked Food Holding Limits (The 2-Hour / 4-Hour Rule)",
+      "title": "Ambient Storage Danger Zone & Holding Timeline Ceiling",
+      "text": "Cooked food held at ambient room temperature (Danger Zone: 5°C to 65°C / 41°F to 149°F) experiences exponential bacterial growth. For high-moisture cooked food (rice, lentils, dal, vegetable curries), the maximum safe ambient window from the time cooking is completed until final consumption is strictly 3 to 4 hours. Food within 0-2 hours can be safely transported or reheated; food between 2-3 hours must be dispatched immediately for rapid consumption; food exceeding 4 hours at ambient temperature is deemed UNSAFE FOR HUMAN CONSUMPTION and must be condemned.",
+      "category": "temperature_timeline",
+      "keywords": ["holding time", "ambient", "danger zone", "2-hour 4-hour rule", "3-hour window", "cooked food", "spoilage", "dal", "rice"]
+    },
+    {
+      "id": "FSSAI-REG-4-3",
+      "clause": "Regulation 4(3) - Active Temperature Control Standards",
+      "title": "Hot-Holding and Cold-Holding Temperature Thresholds",
+      "text": "When active temperature management is maintained: Hot-holding food must be maintained continuously at or above 65°C (149°F) until distribution. Cold-holding food must be maintained continuously at or below 5°C (41°F). If cooked food is intended for delayed distribution, it must undergo rapid chilling from 65°C to 21°C within 2 hours, and down to 5°C or lower within an additional 4 hours.",
+      "category": "temperature_timeline",
+      "keywords": ["hot holding", "cold holding", "65C", "5C", "chilling", "refrigeration", "temperature control"]
+    },
+    {
+      "id": "FSSAI-REG-4-4",
+      "clause": "Regulation 4(4) - Prohibited Foods & Plate Scraping Exclusions",
+      "title": "Absolute Exclusions from Surplus Redistribution",
+      "text": "The following items are strictly prohibited from donation: 1) Plate waste or customer leftovers (partially consumed food from dining tables); 2) High-risk raw perishable foods such as cut salads, unpackaged chutneys, or sliced fruit held at ambient temperatures exceeding 2 hours; 3) Unpasteurized dairy products; 4) Food exhibiting souring, surface slime, discoloration, or off-odor; 5) Food in bloated, leaking, or damaged hermetic packaging.",
+      "category": "suitability",
+      "keywords": ["prohibited", "plate waste", "cut salad", "leftovers", "souring", "unpasteurized", "spoilage"]
+    },
+    {
+      "id": "FSSAI-REG-4-5",
+      "clause": "Regulation 4(5) & Section 7 - Good Samaritan Protection",
+      "title": "Legal Immunity for Good-Faith Food Donors",
+      "text": "A Food Business Operator or donor who donates surplus food in good faith and without gross negligence, complying with prescribed hygienic, handling, and temperature standards at the point of handover, is indemnified and protected against civil or criminal liability resulting from subsequent deterioration during downstream third-party transit or handling.",
+      "category": "legal_liability",
+      "keywords": ["Good Samaritan", "liability", "protection", "immunity", "good faith", "legal", "claims"]
+    },
+    {
+      "id": "FSSAI-REG-5",
+      "clause": "Regulation 5 - Food Packaging, Labeling & Integrity",
+      "title": "Mandatory Packaging and Dispatch Label Requirements",
+      "text": "Surplus food must be packed in food-grade, clean, non-toxic containers or securely covered vessels. Each consignment must carry an Anna-Setu Dispatch Label stating: 1) Food Description; 2) Dietary Symbol (Green dot for Vegetarian, Brown circle for Non-Vegetarian); 3) Exact Preparation Time (HH:MM) & Date; 4) Safe-Pickup and Consume-Before Time; 5) Storage Instructions (e.g. Keep Warm >=65C, Consume within 1 Hour); 6) Donor Campus Mess Facility Name.",
+      "category": "packaging_labeling",
+      "keywords": ["packaging", "label", "consume before", "preparation time", "veg", "non-veg", "food grade"]
+    },
+    {
+      "id": "FSSAI-REG-6",
+      "clause": "Regulation 6 - Hygienic Transportation Standards",
+      "title": "Transit Sanitation and Cross-Contamination Prevention",
+      "text": "Vehicles utilized for transporting surplus meals must be clean, dedicated, covered, and shielded from dust, direct sunlight, rain, and vehicular emissions. High-moisture hot foods must be transported in insulated thermos containers or cambros to prevent temperature dropping into the microbial danger zone (below 65°C). Transit duration must be minimized.",
+      "category": "transportation",
+      "keywords": ["transport", "vehicle", "cleanliness", "insulation", "cambro", "cross-contamination", "transit"]
+    },
+    {
+      "id": "FSSAI-REG-7",
+      "clause": "Regulation 7 - Traceability and Surplus Handover Register (Form B)",
+      "title": "Mandatory Audit Trail and Inspection Logbook",
+      "text": "FBOs and Surplus Food Distribution Organizations must maintain a permanent Surplus Food Handover Register (Form B). The register must capture: Date, Food Item, Quantity (kg/servings), Temperature at Dispatch, Preparation Time, Dispatch Time, Receiving Organization Name, Receiving Representative Signature, and Target Consumption Window. Records must be retained for at least one year for Food Safety Officer audits.",
+      "category": "traceability",
+      "keywords": ["audit", "Form B", "logbook", "register", "traceability", "inspection", "Food Safety Officer"]
+    }
+  ]
+}
+

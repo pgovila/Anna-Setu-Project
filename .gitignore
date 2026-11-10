@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Large Media Files (Video demo is stored on Google Drive; exceeds GitHub 100MB limit)
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Microsoft Office Temporary Lock Files
+~$*
+
+# Environments
+.env
+venv/
+.venv/
+env/
+
+# IDE & OS Files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

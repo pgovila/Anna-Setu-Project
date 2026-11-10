@@ -1,0 +1,75 @@
+[
+  {
+    "id": "SHELTER-LNN-01",
+    "name": "Rain Basera Charbagh Railway Hub",
+    "zone_id": 1,
+    "zone_name": "Zone 1 (Charbagh / Station Road)",
+    "address": "Near Platform 1 Exit, Charbagh Railway Station, Lucknow",
+    "capacity_servings": 150,
+    "target_beneficiaries": "Unhoused daily wage earners, stranded rail passengers",
+    "cold_storage_available": false,
+    "contact_channel": "WhatsApp Business (+91 94150 XXXXX)",
+    "coordinator": "Shri Rajesh Verma (LNN Shelter In-Charge)"
+  },
+  {
+    "id": "SHELTER-LNN-02",
+    "name": "Rain Basera KGMU Medical Centre",
+    "zone_id": 1,
+    "zone_name": "Zone 1 (Chowk)",
+    "address": "Opposite King George's Medical University Trauma Centre, Chowk, Lucknow",
+    "capacity_servings": 200,
+    "target_beneficiaries": "Economically disadvantaged patient attendants & rural families",
+    "cold_storage_available": true,
+    "contact_channel": "WhatsApp Business (+91 94520 XXXXX)",
+    "coordinator": "Dr. S. K. Tripathi (KGMU Welfare Liaison)"
+  },
+  {
+    "id": "SHELTER-LNN-03",
+    "name": "Rain Basera Gomti Nagar",
+    "zone_id": 4,
+    "zone_name": "Zone 4 (Gomti Nagar)",
+    "address": "Near Manoj Pandey Chauraha, Vibhuti Khand, Gomti Nagar, Lucknow",
+    "capacity_servings": 100,
+    "target_beneficiaries": "Urban night shelters & migratory construction labour camps",
+    "cold_storage_available": false,
+    "contact_channel": "WhatsApp Business (+91 98390 XXXXX)",
+    "coordinator": "Smt. Sunita Devi (Supervisor)"
+  },
+  {
+    "id": "SHELTER-LNN-04",
+    "name": "Rain Basera Alambagh Bus Terminal",
+    "zone_id": 5,
+    "zone_name": "Zone 5 (Alambagh)",
+    "address": "Gate 3, Alambagh Inter-State Bus Terminus (ISBT), Lucknow",
+    "capacity_servings": 120,
+    "target_beneficiaries": "Migrant day labourers and transit travelers",
+    "cold_storage_available": false,
+    "contact_channel": "WhatsApp Business (+91 91400 XXXXX)",
+    "coordinator": "Mohd. Arif (Terminal Welfare Liaison)"
+  },
+  {
+    "id": "SHELTER-NGO-05",
+    "name": "Lucknow Roti Bank (Central Chapter)",
+    "zone_id": 1,
+    "zone_name": "Zone 1 (Hazratganj / Central)",
+    "address": "12, Park Road, Near Civil Hospital, Hazratganj, Lucknow",
+    "capacity_servings": 350,
+    "target_beneficiaries": "Slum clusters, destitute elders, night distributions",
+    "cold_storage_available": true,
+    "contact_channel": "WhatsApp (+91 97930 XXXXX)",
+    "coordinator": "Vikas Agarwal (Volunteer Lead)"
+  },
+  {
+    "id": "SHELTER-NGO-06",
+    "name": "Asha Jyoti Kendra (Women & Child Shelter)",
+    "zone_id": 4,
+    "zone_name": "Zone 4 (Gomti Nagar Extension)",
+    "address": "Sector 6, Gomti Nagar Extension, Lucknow",
+    "capacity_servings": 80,
+    "target_beneficiaries": "Vulnerable women and children in institutional care",
+    "cold_storage_available": true,
+    "contact_channel": "WhatsApp (+91 96210 XXXXX)",
+    "coordinator": "Meera Saxena (Center Administrator)"
+  }
+]
+

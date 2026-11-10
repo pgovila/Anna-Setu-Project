@@ -1,0 +1,265 @@
+
+
+=== PAGE 1 ===
+
+1M1B AI FOR SUSTAINABILITY VIRTUAL INTERNSHIP  
+In Collaboration with IBM SkillsBuild & AICTE 
+Anna-Setu 
+AI-Powered Campus Food Rescue & Redistribution Network 
+Primary SDG: SDG 12 - Responsible Consumption and Production 
+Secondary SDG: SDG 2 - Zero Hunger 
+Submitted by: Pankhuri Govila   |   Institution: University of Petroleum and Energy Sources UPES  
+  
+
+=== PAGE 2 ===
+
+1. Project Overview 
+Project Title: Anna-Setu - "Anna" (food/sustenance) + "Setu" (bridge) - the AI-powered bridge between campus 
+surplus and community need. 
+Primary SDG Alignment: SDG 12 - Responsible Consumption and Production. The project directly targets Target 
+12.3, which calls for halving per-capita global food waste at the retail and consumer level by 2030. 
+Secondary SDG Alignment: SDG 2 - Zero Hunger. Rescued surplus is redirected to food-insecure individuals and 
+community shelters, converting an institutional inefficiency into a source of local nutrition security. 
+Anna-Setu is a conceptual AI system for higher -education and school campuses that pairs predictive demand 
+forecasting with an automated, policy-compliant surplus-matching pipeline turning cafeteria over-production from 
+an environmental liability into a measurable social good. 
+2. Problem Statement 
+“How might we use AI to accurately forecast daily meal demand and intelligently match unavoidable 
+surplus food with verified local shelters, so that campus dining ecosystems and food-insecure communities 
+can become more sustainable?” 
+Contextualising the Problem 
+Most university and school mess halls and cafeterias operate on fixed, historical menu-planning cycles rather than 
+on real, day-specific demand signals. This creates a structural mismatch between food prepared and food consumed: 
+• Overproduction as a default safety margin: Kitchen staff routinely over -cook by 10 –30% to avoid the 
+reputational and logistical cost of running out, with no data-driven basis for the margin chosen. 
+• No demand forecasting: Menus are planned weeks in advance on a rotating cycle, blind to variables that swing 
+actual footfall, mid-semester and end-semester exam weeks, festival and holiday clusters, weather (heavy rain 
+or extreme heat reduces walk-in attendance), and one-off campus events. 
+• Fragmented, manual surplus handling: When surplus does exist, there is typically no standing relationship, 
+verified contact list, or safety -checked handoff process with a local shelter or food bank , so left-over food is 
+either held unsafely, distributed ad hoc, or simply discarded. 
+• Waste ends in landfill, not redistribution: Without a forecasting-plus-matching system, the default outcome for 
+surplus is disposal, which generates methane during anaerobic decomposition and wastes the water, energy, 
+and labour embedded in producing that food in the first place. 
+• No feedback loop: Cafeteria managers rarely have visibility into how their over/under -production decisions 
+compare to actual consumption over time, so the same inefficiencies repeat semester after semester. 
+These four gaps - no forecasting, no formal matching mechanism, no compliance layer, and no feedback loop - are 
+precisely what an AI-driven system is positioned to close. 
+3. Detailed Solution Description (Design Thinking Approach) 
+Target Users 
+
+=== PAGE 3 ===
+
+• Campus students and diners - as both demand -signal generators (via meal swipes, app RSVPs) and, where 
+relevant, beneficiaries of reduced mess fees from cost savings. 
+• Cafeteria/mess management and kitchen staff - the primary decision-makers who plan procurement, cooking 
+quantities, and staffing. 
+• Local food shelter coordinators and NGO partners - the receiving end of the redistribution pipeline, who need 
+reliable, safe, and timely surplus notifications. 
+• Campus sustainability/administration office - who track SDG-linked impact metrics for institutional ESG and 
+accreditation reporting. 
+Empathize & Define - Current Operational Gaps 
+• Kitchen staff have no simple, low -effort way to log daily consumption versus preparation quantities, so 
+historical data (if it exists at all) is inconsistent or paper-based. 
+• Mess managers lack visibility into upcoming campus events, exam calendars, or weather forecasts at the point 
+of menu and quantity planning. 
+• There is no trusted, pre -vetted directory of shelters willing and able to receive surplus at short notice, nor a 
+standard protocol for what is safe to donate. 
+• Students and diners have no channel to signal attendance intent in advance (e.g., “skipping dinner tonight”), 
+so demand remains a guess rather than a forecast. 
+• Sustainability data - waste weight, cost of over-production, meals redirected - is not centrally tracked, so the 
+institution cannot demonstrate or improve its SDG 12 performance. 
+Ideation - The Solution: Smart Campus Dining Advisor & Predictive Redistribution Pipeline 
+Anna-Setu is built around two connected AI-driven modules: 
+Module 1 - Smart Campus Dining Advisor: A predictive analytics layer that forecasts next-day (and next-meal) 
+attendance and consumption per menu item, using historical mess logs, the academic calendar (exams, holidays, 
+events), and weather data. It issues a recommended cooking quantity to kitche n staff each morning, with a stated 
+confidence range, replacing the current “cook for a fixed number, hope for the best” approach. 
+Module 2 - Predictive Redistribution Pipeline: An automated matching and compliance layer that activates when 
+the Advisor detects (or kitchen staff report) a surplus above a safe-to-donate threshold. It checks the surplus against 
+food-safety and holding-time rules, identifies the nearest available and verified shelter partner from a maintained 
+directory, and drafts and sends a structured surplus alert, by text or WhatsApp-style message, so a pickup or drop-
+off can be arranged within a safe time window. 
+Together, the two modules shift the campus dining operation from reactive waste disposal to proactive waste 
+prevention plus responsible redistribution of whatever surplus remains unavoidable. 
+Expected Impact 
+Dimension Expected Impact 
+Economic Reduced cafeteria food-procurement costs through demand-matched cooking (targeted 15–25% 
+reduction in over-production); lower institutional waste-disposal fees; potential CSR/ESG 
+recognition for the campus. 
+
+=== PAGE 4 ===
+
+Environmental Diverted food waste no longer decomposes anaerobically in landfills, cutting methane emissions; 
+lower water, energy, and land footprint associated with wasted food production; supports the 
+institution's sustainability reporting. 
+Social Consistent, dignified access to surplus meals for local shelters, day -labourers, and food-insecure 
+families; strengthened campus-community partnerships; measurable contribution to zero-hunger 
+goals in the surrounding area. 
+4. AI Elements, Tools, & Logical Workflow 
+Core AI Components 
+Predictive Analytics / Machine Learning: A time-series and regression-based forecasting model (e.g., gradient-
+boosted trees or a simple LSTM) trained on historical meal-log data, day-of-week and academic-calendar features 
+(exam periods, holidays, orientation weeks), and external weather data. Output: a per-meal, per-menu-item demand 
+forecast with a confidence interval, refreshed daily. 
+IBM Granite Models & Prompt Engineering: An IBM Granite foundation model, driven by structured prompt 
+templates, powers the natural-language layer of the system - turning structured surplus data (quantity, item, safe -
+until time, pickup location) into a clear, actionable WhatsApp/SMS -style broadcast message for shelter 
+coordinators, and answering kitchen-staff questions about the day's forecast in plain language. 
+Retrieval-Augmented Generation (RAG): A RAG pipeline indexes local municipal food -safety guidelines, 
+FSSAI (or equivalent regional) food -handling and donation -compliance documents, and the institution's own 
+donation policy. Before any surplus alert is generated, the system retrieves the releva nt compliance clauses so the 
+drafted message and the underlying recommendation stay grounded in actual, current regulation rather than the 
+model's unguided assumptions. 
+Step-by-Step Logical Workflow 
+Step Stage Description 
+1 Data Collection Daily meal-swipe counts, kitchen preparation quantities, and plate-waste logs are 
+recorded (manually via a simple form, or automatically via POS/turnstile data). 
+Academic-calendar events and next-day weather are pulled in automatically. 
+2 Demand Forecasting The ML model processes the combined dataset each evening and produces the next 
+day's recommended cooking quantity per menu item, with a confidence range and a 
+plain-language explanation of the key drivers. 
+3 Kitchen Decision 
+Support 
+Mess managers view the forecast on a simple dashboard, can accept or manually 
+adjust it, and place their procurement/cooking order for the next day — reducing 
+the default over-production margin. 
+4 Real-Time Surplus 
+Detection 
+During and after service, the system compares actual consumption against quantity 
+prepared. If leftover food exceeds a configurable safe-to-donate threshold, it flags a 
+surplus event. 
+5 Compliance Check 
+(RAG) 
+The RAG pipeline retrieves the applicable food-safety and holding-time rules for 
+the flagged food category and confirms the surplus is within a safe donation 
+window before proceeding. 
+
+=== PAGE 5 ===
+
+6 Shelter Matching The system checks a maintained directory of verified local shelters/NGOs for 
+availability, proximity, and capacity, and selects the best-matched recipient(s) for 
+the quantity and type of surplus. 
+7 AI-Drafted Alert 
+(Granite + Prompting) 
+The IBM Granite model, using the prompt template in Section 5, converts the 
+structured surplus and compliance data into a clear, human-readable 
+WhatsApp/SMS broadcast to the matched shelter coordinator(s). 
+8 Human-in-the-Loop 
+Confirmation 
+A designated kitchen/administration staff member reviews and approves the drafted 
+alert before it is sent, keeping a human decision-maker in control of the final 
+action. 
+9 Pickup / Redistribution The shelter coordinator confirms and arranges pickup or drop-off within the 
+specified safe window; the handoff is logged for traceability. 
+10 Feedback & Reporting Actual outcomes (quantity redistributed, forecast accuracy, cost saved, estimated 
+methane avoided) are logged and fed back into the model for continuous 
+improvement, and rolled up into a sustainability dashboard for the campus. 
+5. Prototype Logic & Prompt Samples 
+The example below shows a system prompt and structured input that would drive an LLM (e.g., an IBM Granite 
+model) to automatically draft a compliant, ready -to-send “Surplus Food Alert” broadcast once Module 2 has 
+confirmed a safe, matched surplus event. 
+System Prompt 
+SYSTEM PROMPT: 
+You are the messaging assistant for Anna-Setu, a campus food-redistribution 
+system. Your only task is to convert structured surplus-food data into a 
+short, clear, and warm broadcast message for a verified shelter coordinator.  
+ 
+Rules you must always follow: 
+1. Use only the facts provided in the input data. Never invent quantities,  
+   times, food items, or locations. 
+2. Always state the safe-pickup-by time exactly as given. 
+3. Reference the retrieved compliance note in one short line so the  
+   coordinator knows the food has been checked against safety guidelines.  
+4. Keep the message under 60 words, in plain, respectful language suitable  
+   for WhatsApp/SMS. 
+5. End with a clear call to action (how to confirm pickup). 
+6. Do not include any student-identifying or personal data. 
+Structured Input (Retrieved + Detected Data) 
+{ 
+  "surplus_item": "Vegetable pulao and dal", 
+  "quantity_servings": 45, 
+
+=== PAGE 6 ===
+
+  "prepared_time": "13:05", 
+  "safe_pickup_by": "15:30", 
+  "pickup_location": "Main Campus Mess, Gate 2", 
+  "compliance_note": "Within 3-hour ambient holding limit per municipal", 
+  "matched_shelter": "Asha Community Shelter (2.1 km away, confirmed capacity)",  
+  "contact_channel": "WhatsApp Business number" 
+} 
+Expected Model Output (Draft Broadcast) 
+🍽 Surplus Food Alert — Anna-Setu 
+ 
+Hi Asha Community Shelter team, we have 45 servings of vegetable pulao  
+and dal ready for pickup, prepared at 1:05 PM and safe until 3:30 PM  
+(within the municipal 3-hour holding guideline). 
+ 
+Pickup point: Main Campus Mess, Gate 2. 
+ 
+Please reply YES to confirm pickup, or call us if you need a later  
+window. Thank you for partnering with us! 
+This same prompt-chain pattern can be extended with a follow-up prompt that logs the coordinator's confirmation 
+and updates the redistribution record automatically. 
+6. Responsible AI Considerations (Mandatory) 
+Anna-Setu is designed with responsible AI as a first-class requirement, not an afterthought. The table below maps 
+each mandated pillar to a concrete design decision. 
+Pillar Focus How Anna-Setu Addresses It 
+Fairness Avoid biased 
+assumptions across 
+demographics, hostel 
+blocks, or meal 
+preferences 
+Forecasting models are trained on pooled, de-identified consumption logs 
+rather than individually profiled students; demand predictions are validated 
+across dietary categories (vegetarian, non-vegetarian, Jain, vegan) and 
+residential blocks to ensure no group is systematically under- or over-
+served. Model outputs are periodically audited against actual consumption 
+to catch drift or skew. 
+Transparency Explainable predictions 
+for cafeteria managers 
+and administrators 
+Every demand forecast is accompanied by a plain-language rationale (e.g., 
+'Predicted 12% lower footfall - mid-semester exams begin tomorrow and 
+historical logs show a similar dip'). Dashboards expose the top three factors 
+driving each prediction so non-technical mess staff can question or override 
+recommendations. 
+Ethics Strict food safety and 
+compliance adherence 
+The system will never recommend redistribution of food that has exceeded 
+safe holding-temperature windows or hygiene thresholds. All redistribution 
+suggestions are gated by a rules layer that checks preparation time, storage 
+conditions, and locally applicable food-safety guidelines before any alert is 
+generated. 
+
+=== PAGE 7 ===
+
+Privacy Protecting student data 
+anonymity 
+Meal-swipe and consumption data are aggregated at the cohort level (e.g., 
+'Block C dinner turnout') and stripped of individual identifiers before being 
+used for forecasting. No student-level eating pattern, health condition, or 
+dietary restriction is ever shared with external shelter partners or stored 
+beyond the academic term. 
+7. Submission Placeholders 
+Asset Placeholder 
+GitHub Repository Link https://github.com/pgovila/Anna-Setu-Project 
+Live Demo / Prototype Link https://huggingface.co/spaces/pgovila/Anna-Setu-Demo 
+Architecture / Workflow 
+Diagram (Image) 
+https://drive.google.com/drive/folders/1089iQX6AttZPXIuL8e6_bv6nGzkhyZW3?usp
+=sharing  
+Dashboard / UI Screenshot(s) https://drive.google.com/drive/folders/1089iQX6AttZPXIuL8e6_bv6nGzkhyZW3?usp
+=sharing  
+Prompt / RAG Output 
+Screenshot(s) 
+https://drive.google.com/drive/folders/1089iQX6AttZPXIuL8e6_bv6nGzkhyZW3?usp
+=sharing  
+Demo Video Link https://drive.google.com/drive/folders/1089iQX6AttZPXIuL8e6_bv6nGzkhyZW3?usp
+=sharing  
+Team / Presenter Details Pankhuri Govila | University of Petroleum and Energy Sources UPES 
+Closing Note 
+This report follows the 1M1B AI for Sustainability internship structure: Project Description, Prototype/Demo, and 
+Impact Statement. Populate the placeholders above, export the relevant sections to your submission PPT/PDF, and 
+retain this document as your detailed working reference. 
