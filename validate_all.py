@@ -13,7 +13,7 @@ from datetime import datetime
 def validate_ecosystem():
     print("=" * 80)
     print("      ANNA-SETU: MASTER SYSTEM VALIDATION & VERIFICATION SUITE")
-    print("      1M1B AI for Sustainability Virtual Internship • UPES Dehradun")
+    print("      1M1B AI for Sustainability Virtual Internship • IBM SkillsBuild & AICTE")
     print("=" * 80)
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} IST\n")
     
@@ -103,3 +103,4 @@ def validate_ecosystem():
 
 if __name__ == "__main__":
     validate_ecosystem()
+

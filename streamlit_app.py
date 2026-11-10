@@ -54,7 +54,7 @@ ZONE_DICT = {label: zone_id for label, zone_id in ZONE_OPTIONS}
 SHELTER_LIST = pipeline.get_shelter_names()
 
 st.title("🍽️ Anna-Setu: AI Campus Food Rescue & Plate-Waste Bio-Recycling Network")
-st.caption("1M1B AI for Sustainability Virtual Internship • In Collaboration with IBM SkillsBuild & AICTE • Pankhuri Govila (UPES)")
+st.caption("1M1B AI for Sustainability Virtual Internship • In Collaboration with IBM SkillsBuild & AICTE • Pankhuri Govila")
 
 # Five Executive Tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -161,7 +161,7 @@ with tab2:
         st.markdown("### 🍽️ Dish-Clearing Tray Return Simulator")
         st.write("Simulate a diner returning their tray with uneaten food scraps at the cafeteria dish-clearing counter:")
         
-        sim_diner_name = st.text_input("Diner / Student ID (Optional)", value="STUDENT-UPES-2026-88")
+        sim_diner_name = st.text_input("Diner / Student ID (Optional)", value="STUDENT-2026-88")
         sim_hostel_block = st.selectbox("Hostel Block", ["Block A (Boys)", "Block B (Girls)", "Block C (International)", "Day Scholar Dining"])
         sim_waste_grams = st.slider("Plate Waste Leftover (Grams)", min_value=0, max_value=450, value=175, step=5)
         sim_daily_diners = st.number_input("Total Cafeteria Diners per Day", min_value=100, max_value=5000, value=850, step=50)
@@ -200,10 +200,10 @@ with tab2:
         st.write("---")
         st.markdown("#### 🔄 How the Recyclable Product is Created (The Closed Loop):")
         st.markdown(r"""
-        1. **Pre-Processing Shredder:** Scraped plate waste is shredded to 3–5 mm particles, maximizing microbial surface contact.
+        1. **Pre-Processing Shredder:** Scraped plate waste is shredded to 3-5 mm particles, maximizing microbial surface contact.
         2. **Thermophilic Stage ($55^\circ\text{C} - 65^\circ\text{C}$):** PTC ceramic heating element accelerates decomposition and sterilizes pathogens (*Salmonella*, *E. coli*).
         3. **Aerobic Aeration:** Brushless fan + activated carbon filter continuously supplies oxygen, eliminating foul odors.
-        4. **Recyclable Output:** In 12–24 hours, the scraps become a **dark, nutrient-rich, pathogen-free organic bio-fertilizer**.
+        4. **Recyclable Output:** In 12-24 hours, the scraps become a **dark, nutrient-rich, pathogen-free organic bio-fertilizer**.
         5. **Zero Municipal Burden:** Lucknow Nagar Nigam trucks carry **0 kg** of rotting wet waste from this mess, saving city transport fuel and avoiding dump fines!
         """)
 
@@ -240,7 +240,7 @@ with tab4:
     t_m1, t_m2, t_m3 = st.columns(3)
     t_m1.info("**Milestone 1 Gate:** End-Nov 2026\n\nPrototypes (Track A & B) + Campus Approvals")
     t_m2.info("**Milestone 2 Gate:** End-Dec 2026\n\nLive 2-Wk Campus Pilot + Final Impact Handover")
-    t_m3.info("**Intern Details:** Pankhuri Govila\n\nUniversity of Petroleum & Energy Studies (UPES)")
+    t_m3.info("**Intern Details:** Pankhuri Govila\n\n1M1B AI for Sustainability Virtual Internship")
 
     st.write("---")
     st.markdown("#### 📋 Activity Tracker Logbook (WBS Tasks & 1M1B Support Column)")

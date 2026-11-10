@@ -16,7 +16,7 @@ This document serves as the authoritative operational manual, regulatory referen
 
 ---
 
-## 🏛️ Section 1: Statutory Framework 1 — FSSAI National Regulations
+## 🏛️ Section 1: Statutory Framework 1 - FSSAI National Regulations
 
 The regulatory governance of surplus food donation in India is established under the **Food Safety and Standards Act, 2006 (Sections 16 & 31)** and formally enacted in the **Food Safety and Standards (Recovery and Distribution of Surplus Food) Regulations, 2019** (Notification No. 1-100/FSSAI/SP(SP-Surplus Food)/2018).
 
@@ -38,9 +38,9 @@ For cooked perishable foods maintained without active heating ($\ge 65^\circ\tex
 
 | Cumulative Time in Danger Zone | Compliance Status | Operational & Redistribution Directive |
 | :--- | :--- | :--- |
-| **0 to 2 Hours (0 – 120 mins)** | 🟢 **COMPLIANT (SAFE)** | Optimal window. Food may be redistributed, chilled down to $\le 5^\circ\text{C}$, or reheated to an internal core temperature of $\ge 74^\circ\text{C}$. |
-| **2 to 3 Hours (121 – 180 mins)** | 🟢 **COMPLIANT (OPTIMAL HANDOFF)** | Prime redistribution dispatch window. Must be handed over to shelter volunteers with transit scheduled immediately. |
-| **3 to 4 Hours (181 – 240 mins)** | 🟡 **COMPLIANT (URGENT DISPATCH)** | Upper critical safety threshold. Must be dispatched immediately for **instant consumption**. No secondary storage, refrigeration, or re-chilling is legally permitted. |
+| **0 to 2 Hours (0 - 120 mins)** | 🟢 **COMPLIANT (SAFE)** | Optimal window. Food may be redistributed, chilled down to $\le 5^\circ\text{C}$, or reheated to an internal core temperature of $\ge 74^\circ\text{C}$. |
+| **2 to 3 Hours (121 - 180 mins)** | 🟢 **COMPLIANT (OPTIMAL HANDOFF)** | Prime redistribution dispatch window. Must be handed over to shelter volunteers with transit scheduled immediately. |
+| **3 to 4 Hours (181 - 240 mins)** | 🟡 **COMPLIANT (URGENT DISPATCH)** | Upper critical safety threshold. Must be dispatched immediately for **instant consumption**. No secondary storage, refrigeration, or re-chilling is legally permitted. |
 | **> 4 Hours (> 240 mins)** | 🔴 **NON-COMPLIANT (REJECTED)** | **UNFIT FOR HUMAN CONSUMPTION.** Food enters the exponential bacterial enterotoxin phase. Distribution is strictly prohibited. Food must be diverted to organic bio-composting. |
 
 ### 1.4 Active Temperature Holding Standards (Regulation 4(3))
@@ -73,12 +73,12 @@ Surplus food must be placed in clean, food-grade non-toxic containers (FSSAI Pac
 Section 7 of the 2019 Regulations affords full **legal immunity** to food donors:
 > *"No food business operator shall be liable for any civil or criminal proceedings for any death or injury caused to any person resulting from consumption of surplus food donated in good faith, provided that the food business operator complied with all food safety and hygiene requirements at the time of donation."*
 
-### 1.8 Mandatory Handover Register — Form B (Regulation 7)
+### 1.8 Mandatory Handover Register - Form B (Regulation 7)
 Institutions must record all surplus donations in a permanent **Surplus Food Handover Register (Form B)**, retained on campus for a minimum of **1 year** for audit by State Food Safety Officers (FSOs).
 
 ---
 
-## 🏛️ Section 2: Statutory Framework 2 — Lucknow Nagar Nigam (LNN) Guidelines
+## 🏛️ Section 2: Statutory Framework 2 - Lucknow Nagar Nigam (LNN) Guidelines
 
 In addition to national FSSAI mandates, all campus operations within the urban agglomeration of Lucknow are subject to the **Lucknow Nagar Nigam (Lucknow Municipal Corporation / LMC)** Sanitation By-Laws, the **UP Food Safety and Drug Administration (FSDA - Lucknow Division)**, and the **Swachh Lucknow Zero-Food-Waste Initiative**.
 
@@ -236,7 +236,7 @@ Before submitting a batch to Anna-Setu, the mess supervisor must complete a 3-po
    │ Dietary: [🟢 VEG]                     Batch ID: AS-245 │
    │ Prepared: 12:30 IST                  Safe Until: 16:30 │
    │ Condition: Ambient - Consume within 45 mins of arrival │
-   │ Campus: UPES / Lucknow Central Mess, Gate 2            │
+   │ Campus: Central Campus Dining Hall, Gate 2            │
    └────────────────────────────────────────────────────────┘
    ```
 3. Secure lids with tamper-evident paper seals.

@@ -8,7 +8,7 @@ Anna-Setu
 AI-Powered Campus Food Rescue & Redistribution Network 
 Primary SDG: SDG 12 - Responsible Consumption and Production 
 Secondary SDG: SDG 2 - Zero Hunger 
-Submitted by: Pankhuri Govila   |   Institution: University of Petroleum and Energy Sources UPES  
+Submitted by: Pankhuri Govila   |   Institution: 1M1B AI for Sustainability Virtual Internship  
   
 
 === PAGE 2 ===
@@ -30,7 +30,7 @@ can become more sustainable?”
 Contextualising the Problem 
 Most university and school mess halls and cafeterias operate on fixed, historical menu-planning cycles rather than 
 on real, day-specific demand signals. This creates a structural mismatch between food prepared and food consumed: 
-• Overproduction as a default safety margin: Kitchen staff routinely over -cook by 10 –30% to avoid the 
+• Overproduction as a default safety margin: Kitchen staff routinely over -cook by 10 -30% to avoid the 
 reputational and logistical cost of running out, with no data-driven basis for the margin chosen. 
 • No demand forecasting: Menus are planned weeks in advance on a rotating cycle, blind to variables that swing 
 actual footfall, mid-semester and end-semester exam weeks, festival and holiday clusters, weather (heavy rain 
@@ -84,7 +84,7 @@ Together, the two modules shift the campus dining operation from reactive waste 
 prevention plus responsible redistribution of whatever surplus remains unavoidable. 
 Expected Impact 
 Dimension Expected Impact 
-Economic Reduced cafeteria food-procurement costs through demand-matched cooking (targeted 15–25% 
+Economic Reduced cafeteria food-procurement costs through demand-matched cooking (targeted 15-25% 
 reduction in over-production); lower institutional waste-disposal fees; potential CSR/ESG 
 recognition for the campus. 
 
@@ -122,7 +122,7 @@ plain-language explanation of the key drivers.
 3 Kitchen Decision 
 Support 
 Mess managers view the forecast on a simple dashboard, can accept or manually 
-adjust it, and place their procurement/cooking order for the next day — reducing 
+adjust it, and place their procurement/cooking order for the next day - reducing 
 the default over-production margin. 
 4 Real-Time Surplus 
 Detection 
@@ -190,7 +190,7 @@ Structured Input (Retrieved + Detected Data)
   "contact_channel": "WhatsApp Business number" 
 } 
 Expected Model Output (Draft Broadcast) 
-🍽 Surplus Food Alert — Anna-Setu 
+🍽 Surplus Food Alert - Anna-Setu 
  
 Hi Asha Community Shelter team, we have 45 servings of vegetable pulao  
 and dal ready for pickup, prepared at 1:05 PM and safe until 3:30 PM  
@@ -258,7 +258,7 @@ https://drive.google.com/drive/folders/1089iQX6AttZPXIuL8e6_bv6nGzkhyZW3?usp
 =sharing  
 Demo Video Link https://drive.google.com/drive/folders/1089iQX6AttZPXIuL8e6_bv6nGzkhyZW3?usp
 =sharing  
-Team / Presenter Details Pankhuri Govila | University of Petroleum and Energy Sources UPES 
+Team / Presenter Details Pankhuri Govila | 1M1B AI for Sustainability Virtual Internship 
 Closing Note 
 This report follows the 1M1B AI for Sustainability internship structure: Project Description, Prototype/Demo, and 
 Impact Statement. Populate the placeholders above, export the relevant sections to your submission PPT/PDF, and 

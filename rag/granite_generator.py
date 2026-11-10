@@ -37,7 +37,7 @@ class GraniteAlertCompiler:
 
         if status == "NON_COMPLIANT_REJECTED":
             return (
-                "⚠️ *Surplus Redistribution Cancelled — Anna-Setu Safety Block*\n\n"
+                "⚠️ *Surplus Redistribution Cancelled - Anna-Setu Safety Block*\n\n"
                 f"Notice: The proposed surplus batch of {params['item']} ({int(params['servings'])} servings) "
                 f"did NOT clear safety compliance checks.\n\n"
                 f"Reason: {eval_result['reason']}\n\n"
@@ -48,7 +48,7 @@ class GraniteAlertCompiler:
         urgency_flag = " [URGENT DISPATCH]" if status == "COMPLIANT_URGENT" else ""
 
         message = (
-            f"🍽️ *Surplus Food Alert{urgency_flag} — Anna-Setu*\n\n"
+            f"🍽️ *Surplus Food Alert{urgency_flag} - Anna-Setu*\n\n"
             f"Hi {params['shelter']} team, we have {int(params['servings'])} servings of {params['item']} "
             f"ready for pickup, prepared at {timeline['time_prepared']} and safe until {timeline['safe_pickup_by']} "
             f"({compliance_note}).\n\n"

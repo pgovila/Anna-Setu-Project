@@ -25,7 +25,7 @@ TELEMETRY_LOGS = []
 
 
 class KioskTelemetryPayload(BaseModel):
-    station_id: str = Field(..., example="ANNA-SETU-KIOSK-UPES-01")
+    station_id: str = Field(..., example="ANNA-SETU-KIOSK-01")
     supervisor_id: str = Field(..., example="CHEF-RAJESH-44")
     surplus_weight_kg: float = Field(..., example=18.5)
     surface_temp_c: float = Field(..., example=68.2)
@@ -47,7 +47,7 @@ def health_check():
         "system": "Anna-Setu Dual-Track IoT Gateway",
         "status": "ONLINE",
         "timestamp": datetime.now().isoformat(),
-        "registered_kiosks": ["ANNA-SETU-KIOSK-UPES-01"]
+        "registered_kiosks": ["ANNA-SETU-KIOSK-01"]
     }
 
 

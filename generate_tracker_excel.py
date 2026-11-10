@@ -44,7 +44,7 @@ def create_project_tracker():
     meta_info = [
         ("Project Title:", "Anna-Setu: AI Campus Food Rescue & Plate-Waste Bio-Recycling Network"),
         ("Student / Intern Name:", "Pankhuri Govila"),
-        ("Institution:", "University of Petroleum and Energy Studies (UPES)"),
+        ("Program:", "1M1B AI for Sustainability Virtual Internship"),
         ("Internship Program:", "1M1B AI for Sustainability Virtual Internship (In Collab with IBM SkillsBuild & AICTE)"),
         ("1M1B Mentor / Lead:", "Paramjeet Sir (paramjeet@onemoneb.org)"),
         ("Target Completion:", "Prototype & Approvals: End Nov 2026 | Full Campus Deployment: End Dec 2026"),
@@ -137,7 +137,7 @@ def create_project_tracker():
          
         # Approvals & Milestone 1 (End November 2026)
         ("TSK-09", "Approvals & Gov", "Phase 3: Approvals", "Draft Institutional MoU & Campus Mess Permission Letter",
-         "Draft formal pilot request letter to University Mess Committee, Chief Warden, and Dean of Student Welfare (UPES) for permission to install the interceptor in the dining hall and pilot composting.",
+         "Draft formal pilot request letter to University Mess Committee, Chief Warden, and Dean of Student Welfare / Campus Administration for permission to install the interceptor in the dining hall and pilot composting.",
          "2026-11-18", "2026-11-27", "", "Planned", 0.20,
          "Draft Permission Letter to Campus Administration",
          "Official 1M1B / IBM SkillsBuild Internship Endorsement Letter to College Principal/Dean."),

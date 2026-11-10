@@ -17,7 +17,7 @@ def run_simulation():
     print("   ANNA-SETU TRACK B: SMART KIOSK & TELEMETRY SIMULATION ENGINE")
     print("=" * 80)
     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} IST")
-    print("Connecting to Virtual Kiosk: ANNA-SETU-KIOSK-UPES-01\n")
+    print("Connecting to Virtual Kiosk: ANNA-SETU-KIOSK-01\n")
 
     # -------------------------------------------------------------------------
     # SCENARIO 1: Fresh Kitchen Surplus Batch (Hot Holding >= 65C)

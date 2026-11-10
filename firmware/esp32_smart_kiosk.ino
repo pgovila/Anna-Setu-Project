@@ -44,7 +44,7 @@ const char* WIFI_PASSWORD = "CampusSecurePassword";
 
 // --- Anna-Setu Cloud / Local Edge API Endpoint ---
 const char* API_ENDPOINT  = "http://192.168.1.100:8000/api/iot/telemetry";
-const char* STATION_ID    = "ANNA-SETU-KIOSK-UPES-01";
+const char* STATION_ID    = "ANNA-SETU-KIOSK-01";
 
 // --- Pin Definitions ---
 const int PIN_HX711_DT   = 18;
@@ -210,7 +210,7 @@ void loop() {
   // If a significant weight is placed on the deck (> 2.0 kg), trigger handoff evaluation
   if (weight > 2.0) {
     Serial.printf("[Sensor Event] Weight: %.1f kg | Temp: %.1f C | Plate Waste Fill: %.1f%%\n", weight, temp, plate_fill);
-    sendTelemetryPayload(weight, temp, plate_fill, "CHEF-UPES-01");
+    sendTelemetryPayload(weight, temp, plate_fill, "CHEF-KIOSK-01");
     delay(10000); // Debounce to prevent multiple sends
   }
 

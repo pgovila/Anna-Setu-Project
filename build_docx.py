@@ -122,7 +122,7 @@ def generate_document_xml():
     meta_rows = [
         [
             p_multi_run([("Intern / Author: ", True), ("Pankhuri Govila", False)]),
-            p_multi_run([("Institution: ", True), ("University of Petroleum and Energy Studies (UPES)", False)]),
+            p_multi_run([("Program: ", True), ("1M1B AI for Sustainability Virtual Internship", False)]),
             p_multi_run([("1M1B Mentor: ", True), ("Paramjeet Sir (paramjeet@onemoneb.org)", False)])
         ],
         [
@@ -142,7 +142,7 @@ def generate_document_xml():
         ("Anna-Setu ", True, False, "1B4D3E"),
         ("(from Sanskrit: 'Anna' meaning sustenance and 'Setu' meaning bridge) is a closed-loop socio-technical framework designed for institutional campus dining ecosystems. It attacks food waste at two interconnected points: ", False),
         ("1) At the kitchen level", True),
-        (", where unforecasted safety margins create 10%–30% surplus buffers, and ", False),
+        (", where unforecasted safety margins create 10%-30% surplus buffers, and ", False),
         ("2) At the diner plate level", True),
         (", where students routinely take excessive portions onto their plates and dump uneaten leftovers into garbage bins.", False)
     ], space_after_pt=4))
@@ -162,7 +162,7 @@ def generate_document_xml():
         [
             p_multi_run([("SDG 12: Responsible Consumption\n", True), ("(Primary)", True, True, "1B4D3E")]),
             p_multi_run([("Target 12.3: ", True), ("Halve food waste by 2030.\n", False), ("Target 12.5: ", True), ("Substantially reduce waste via recycling.", False)]),
-            p_multi_run([("Track A ", True), ("reduces kitchen overcooking by 15–25% via predictive ML; ", False), ("Track B ", True), ("deters over-serving with behavioral plate nudges and upcycles plate waste into organic fertilizer.", False)])
+            p_multi_run([("Track A ", True), ("reduces kitchen overcooking by 15-25% via predictive ML; ", False), ("Track B ", True), ("deters over-serving with behavioral plate nudges and upcycles plate waste into organic fertilizer.", False)])
         ],
         [
             p_multi_run([("SDG 2: Zero Hunger\n", True), ("(Secondary)", True, True, "1B4D3E")]),
@@ -172,7 +172,7 @@ def generate_document_xml():
         [
             p_multi_run([("SDG 11: Sustainable Cities", True)]),
             p_multi_run([("Target 11.6: ", True), ("Reduce urban municipal per-capita environmental impact.", False)]),
-            p_multi_run([("Eliminates organic wet-waste burden on municipal collection trucks and avoids ₹5,000–₹25,000 penalties under Lucknow Nagar Nigam Solid Waste By-Laws.", False)])
+            p_multi_run([("Eliminates organic wet-waste burden on municipal collection trucks and avoids ₹5,000-₹25,000 penalties under Lucknow Nagar Nigam Solid Waste By-Laws.", False)])
         ],
         [
             p_multi_run([("SDG 13: Climate Action", True)]),
@@ -187,7 +187,7 @@ def generate_document_xml():
     body.append(p_multi_run([
         ("Target Beneficiaries: ", True, False, "1B4D3E"),
         ("1) Students: ", True), ("Dynamic nudges build mindful eating habits; ", False),
-        ("2) Mess Management: ", True), ("Cuts procurement bills by 15–25%; ", False),
+        ("2) Mess Management: ", True), ("Cuts procurement bills by 15-25%; ", False),
         ("3) Lucknow Nagar Nigam: ", True), ("Zero waste burden hauled to landfills; ", False),
         ("4) Local Shelters: ", True), ("Reliable access to verified nutritious meals; ", False),
         ("5) Campus Grounds: ", True), ("Free high-grade bio-fertilizer.", False)
@@ -211,14 +211,14 @@ def generate_document_xml():
         [
             [
                 p_multi_run([("• Module 1 (Dining Demand Advisor): ", True), ("Time-series forecasting model predicting next-day cooking volumes based on turnstiles, exams, and weather.", False)]),
-                p_multi_run([("• Module 2 (RAG Compliance Engine): ", True), ("Grounded in ", False), ("FSSAI Surplus Regulations (2019) ", True), ("(danger zone 5°C–65°C, 2h/4h ambient rule) and ", False), ("Lucknow Nagar Nigam By-Laws ", True), ("(45m transit buffer across 8 zones).", False)]),
+                p_multi_run([("• Module 2 (RAG Compliance Engine): ", True), ("Grounded in ", False), ("FSSAI Surplus Regulations (2019) ", True), ("(danger zone 5°C-65°C, 2h/4h ambient rule) and ", False), ("Lucknow Nagar Nigam By-Laws ", True), ("(45m transit buffer across 8 zones).", False)]),
                 p_multi_run([("• IBM Granite Model Compiler: ", True), ("Generates WhatsApp/SMS alerts (<60w) and official ", False), ("FSSAI Form B & LNN Gate Pass manifests", True), (".", False)]),
                 p_multi_run([("• Live Assets: ", True), ("Deployed on Hugging Face Spaces (Gradio) and local Streamlit app with 5 automated test cases.", False)])
             ],
             [
-                p_multi_run([("• Behavioral Nudge Front-End: ", True), ("Precision plate scale (0–20kg) at tray return counter + 7-inch display showing wasted grams, water footprint, and hostel leaderboards to stop diners from taking extra food.", False)]),
-                p_multi_run([("• Pre-Processing Shredder: ", True), ("Reduces uneaten food scrap size to 3–5mm.", False)]),
-                p_multi_run([("• Accelerated Bio-Composting Chamber: ", True), ("Thermophilic heating (55°C–65°C) + active aerobic aeration + microbial enzymes achieve ", False), ("85%–90% volume reduction in 12–24h", True), (".", False)]),
+                p_multi_run([("• Behavioral Nudge Front-End: ", True), ("Precision plate scale (0-20kg) at tray return counter + 7-inch display showing wasted grams, water footprint, and hostel leaderboards to stop diners from taking extra food.", False)]),
+                p_multi_run([("• Pre-Processing Shredder: ", True), ("Reduces uneaten food scrap size to 3-5mm.", False)]),
+                p_multi_run([("• Accelerated Bio-Composting Chamber: ", True), ("Thermophilic heating (55°C-65°C) + active aerobic aeration + microbial enzymes achieve ", False), ("85%-90% volume reduction in 12-24h", True), (".", False)]),
                 p_multi_run([("• Recyclable Resource Output: ", True), ("High-grade ", False), ("Organic Bio-Fertilizer / Soil Conditioner ", True), ("for campus greenery and local farmers.", False)]),
                 p_multi_run([("• IoT Cloud Bridge: ", True), ("ESP32 streams daily plate waste logs back to Track A AI.", False)])
             ]
@@ -232,11 +232,11 @@ def generate_document_xml():
     bom_rows = [
         ["Subsystem", "Component", "Technical Role in Station", "Est. Cost (INR)"],
         ["Compute / IoT", "ESP32 WROOM-32 MCU", "Wi-Fi telemetry, sensor polling, cloud API bridge", "₹450"],
-        ["Plate Waste Scale", "0–20 kg Load Cell + HX711", "Measures individual student plate waste left on tray", "₹550"],
+        ["Plate Waste Scale", "0-20 kg Load Cell + HX711", "Measures individual student plate waste left on tray", "₹550"],
         ["Nudge Display", "7-inch IPS / OLED Screen", "Displays wasted grams, water footprint & leaderboard", "₹850"],
         ["Thermal Sensing", "MLX90614 Contactless IR", "Verifies kitchen surplus food is held safe >=65°C", "₹750"],
         ["Aerobic Aeration", "12V Brushless Fan + Carbon", "Supplies oxygen to composting chamber; stops odors", "₹250"],
-        ["Thermophilic Heat", "100W PTC Ceramic Strip", "Maintains 55°C–65°C to accelerate microbial breakdown", "₹450"],
+        ["Thermophilic Heat", "100W PTC Ceramic Strip", "Maintains 55°C-65°C to accelerate microbial breakdown", "₹450"],
         ["Power & Housing", "12V SMPS + SS Kiosk", "Regulated power and IP65 sanitary stainless housing", "₹1,370"],
         [
             p_xml("TOTAL BOM", bold=True, color="1B4D3E", size_pt=9.5),
@@ -267,31 +267,31 @@ def generate_document_xml():
         ["Phase / Sprint", "Date Range", "Key Work Deliverables & Activities", "Gate Status"],
         [
             p_multi_run([("Phase 1 & 2:\n", True), ("RAG Engine & UI", False)]),
-            p_xml("Nov 1 – Nov 10, 2026", align="center"),
+            p_xml("Nov 1 - Nov 10, 2026", align="center"),
             p_xml("Codified FSSAI 2019 and LNN by-laws into JSON KB; built TF-IDF vector retriever, compliance calculator, and IBM Granite notification compiler. Deployed Gradio demo on Hugging Face and local Streamlit app. Verified 5 automated test cases."),
             p_xml("COMPLETED", bold=True, color="155724", align="center")
         ],
         [
             p_multi_run([("Sprint 3A:\n", True), ("HW Breadboard & IoT", False)]),
-            p_xml("Nov 11 – Nov 20, 2026", align="center"),
+            p_xml("Nov 11 - Nov 20, 2026", align="center"),
             p_xml("Procure ESP32, load cell, MLX90614 IR sensor, and display; assemble bench breadboard; flash C++/MicroPython firmware (esp32_smart_kiosk.ino); bridge telemetry to api_server.py."),
             p_xml("IN PROGRESS", bold=True, color="856404", align="center")
         ],
         [
             p_multi_run([("Sprint 3B:\n", True), ("Approvals & Gate 1", False)]),
-            p_xml("Nov 21 – Nov 30, 2026", align="center"),
-            p_xml("Draft permission letter to Dean of Student Welfare / Mess Committee (UPES); establish coordination agreement with Rain Basera Charbagh; Milestone 1 Gate Review with 1M1B mentor."),
+            p_xml("Nov 21 - Nov 30, 2026", align="center"),
+            p_xml("Draft permission letter to Dean of Student Welfare / Campus Mess Committee; establish coordination agreement with Rain Basera Charbagh; Milestone 1 Gate Review with 1M1B mentor."),
             p_xml("MILESTONE 1 GATE\n(End-Nov 2026)", bold=True, color="0F62FE", align="center")
         ],
         [
             p_multi_run([("Phase 4:\n", True), ("Enclosure & Pilot", False)]),
-            p_xml("Dec 1 – Dec 21, 2026", align="center"),
+            p_xml("Dec 1 - Dec 21, 2026", align="center"),
             p_xml("Assemble IP65 stainless enclosure at tray return; conduct 14-day live campus pilot in student mess; log plate-waste reduction via nudge screen; dispatch compliant kitchen surplus; produce first batch of bio-fertilizer."),
             p_xml("PLANNED PILOT\n(Central Mess)", align="center")
         ],
         [
             p_multi_run([("Phase 5:\n", True), ("Impact & Closeout", False)]),
-            p_xml("Dec 22 – Dec 31, 2026", align="center"),
+            p_xml("Dec 22 - Dec 31, 2026", align="center"),
             p_xml("Retrain Module 1 demand model on real pilot plate-waste logs; compute total kg rescued, kg bio-fertilizer harvested, methane avoided, and procurement ₹ saved. Submit final PDF report, PPT, and demo video."),
             p_xml("MILESTONE 2 GATE\n(End-Dec 2026)", bold=True, color="1B4D3E", align="center")
         ]

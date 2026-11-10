@@ -1,7 +1,7 @@
 # 🏛️ Anna-Setu: Institutional Approvals, MoU & Operational Dossier
 ### Ready-to-Print Documentation for Campus Administration, Mess Committees & Shelter Partners
 **Program:** 1M1B AI for Sustainability Virtual Internship (IBM SkillsBuild & AICTE)  
-**Author:** Pankhuri Govila | **Institution:** University of Petroleum and Energy Studies (UPES)  
+**Author:** Pankhuri Govila | **Program:** 1M1B AI for Sustainability Virtual Internship  
 **Associated Project Tracker:** `PankhuriGovila_YIRP`
 
 ---
@@ -24,7 +24,7 @@ This dossier provides four formal, legally vetted document templates:
 ```text
 To,
 The Dean of Student Welfare (DSW) / Chief Warden / Mess Committee Chairperson,
-University of Petroleum and Energy Studies (UPES),
+1M1B AI for Sustainability Virtual Internship,
 Knowledge Acres / Energy Acres Campus.
 
 Subject: Request for Permission to Conduct a 2-Week Live Pilot of "Anna-Setu" (AI Campus Food Rescue & Plate-Waste Bio-Recycling Station) in Central Dining Hall.
@@ -44,7 +44,7 @@ Anna-Setu introduces a closed-loop socio-technical framework operating across tw
 - Track A (Software & AI): Uses predictive machine learning to forecast meal attendance, reducing overproduction margins, and evaluates surplus safety against statutory FSSAI (2019) regulations and municipal by-laws using a Retrieval-Augmented Generation (RAG) compliance pipeline.
 - Track B (Hardware Bio-Recycling Station): A benchtop smart kiosk installed at the tray-return counter that uses a precision plate scale and a behavioral nudge screen to deter over-serving, while channeling plate scraps into an accelerated thermo-mechanical bio-composter that yields nutrient-rich organic bio-fertilizer within 24 hours.
 
-INSTITUTIONAL VALUE FOR UPES:
+INSTITUTIONAL VALUE FOR THE CAMPUS:
 - NAAC & NIRF Sustainability Accreditation: Direct, quantifiable data for SDG 12 (Responsible Consumption) and SDG 13 (Climate Action) institutional reporting.
 - Economic Savings: Projected 15% to 25% reduction in kitchen buffer procurement waste.
 - Zero Municipal Landfill Burden: Treats 100% of plate scraps on-site into free organic fertilizer for campus landscaping and forestry.
@@ -56,8 +56,8 @@ SAFETY, LEGAL COMPLIANCE & ZERO LIABILITY:
 3. No Disruption to Kitchen Operations: The Track B station is modular, splash-proof (IP65), compact, and operates seamlessly at the dish-clearing counter without slowing dining operations.
 
 PILOT TIMELINE & REQUIREMENTS:
-- Setup & Sensor Calibration: December 01 – December 07, 2026.
-- 14-Day Live Pilot: December 08 – December 21, 2026.
+- Setup & Sensor Calibration: December 01 - December 07, 2026.
+- 14-Day Live Pilot: December 08 - December 21, 2026.
 - Physical Footprint: 2.5 ft x 2 ft counter space at tray clearing point + standard 220V power socket.
 
 We kindly request your formal approval to proceed with setup and calibration. We would welcome the opportunity to demonstrate the working prototype at your convenience.
@@ -68,7 +68,7 @@ Yours sincerely,
 
 Pankhuri Govila
 B.Tech / Student Lead, Project Anna-Setu
-University of Petroleum and Energy Studies (UPES)
+1M1B AI for Sustainability Virtual Internship
 Email: [Student Institutional Email] | Phone: +91 [Contact Number]
 1M1B Project Tracker ID: PankhuriGovila_YIRP
 
@@ -90,7 +90,7 @@ This Memorandum of Understanding (MoU) is entered into on this _____ day of Nove
 
 PARTY A (THE DONOR ESTABLISHMENT):
 Anna-Setu Campus Hub, University Dining Services,
-University of Petroleum and Energy Studies (UPES),
+1M1B AI for Sustainability Virtual Internship,
 Hereinafter referred to as "THE DONOR" (which expression shall include its mess administrators and student leads).
 
 AND
@@ -124,7 +124,7 @@ Either party may terminate this agreement with 7 days written notice.
 
 IN WITNESS WHEREOF, the parties hereto have set their hands on the date first above written:
 
-For THE DONOR (UPES Campus Hub):        For THE RECIPIENT (Shelter Partner):
+For THE DONOR (Campus Dining Hub):        For THE RECIPIENT (Shelter Partner):
 
 Signature: ___________________________    Signature: ___________________________
 Name:      ___________________________    Name:      ___________________________
@@ -142,7 +142,7 @@ Seal:                                     Seal:
 +---------------------------------------------------------------------------------------------------------------------------------------------------+
 |                                                 ANNA-SETU SURPLUS FOOD HANDOVER REGISTER (FSSAI FORM B)                                          |
 |                                         Maintained under Regulation 7 of FSSAI Surplus Food Regulations (2019)                                    |
-| Campus Dining Unit: UPES Central Dining Hall, Gate 2                              FSSAI License / Registration No: _____________________________  |
+| Campus Dining Unit: Central Campus Dining Hall, Gate 2                              FSSAI License / Registration No: _____________________________  |
 +----+------------+-----------------------+----------+-----------+------------+------------+--------------------+----------------+--------------+
 | S# | Date       | Food Item Description | Servings | Storage   | Time       | Dispatch   | Safe Consume-By    | Receiving Org  | Receiver's   |
 |    | (DD/MM/YY) | & Category            | / Net kg | Condition | Cooked     | Time (IST) | Deadline (IST)     | & Rep Name     | Signature    |
@@ -176,7 +176,7 @@ Kitchen Supervisor On-Duty Sign-Off: _________________________                  
 ========================================================================================
 
 Gate Pass ID:      AS-GP-202612-0042                  Issue Date:   10-Dec-2026
-Dispatch Location: UPES Central Mess, Gate 2          Exit Gate:    Campus Gate No. 2
+Dispatch Location: Central Campus Mess, Gate 2          Exit Gate:    Campus Gate No. 2
 
 CONSIGNMENT DETAILS:
 - Food Item:       Vegetable Biryani and Dal Makhani

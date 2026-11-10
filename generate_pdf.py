@@ -51,7 +51,7 @@ class NumberedCanvas(canvas.Canvas):
         # Running Header (pages > 1)
         if self._pageNumber > 1:
             self.drawString(36, 812, "Anna-Setu: Project Brief & Phased Timeline • 1M1B / IBM SkillsBuild")
-            self.drawRightString(559, 812, "Student: Pankhuri Govila (UPES)")
+            self.drawRightString(559, 812, "Student: Pankhuri Govila")
             self.setStrokeColor(BORDER_LIGHT)
             self.setLineWidth(0.6)
             self.line(36, 806, 559, 806)
@@ -176,7 +176,7 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
     meta_table_data = [
         [
             Paragraph("<b>Intern / Author:</b> Pankhuri Govila", body_style),
-            Paragraph("<b>Institution:</b> University of Petroleum and Energy Studies (UPES)", body_style),
+            Paragraph("<b>Program:</b> 1M1B AI for Sustainability Virtual Internship", body_style),
             Paragraph("<b>1M1B Mentor:</b> Paramjeet Sir (paramjeet@onemoneb.org)", body_style)
         ],
         [
@@ -204,7 +204,7 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
     story.append(Paragraph("1. Executive Project Brief, Problem & SDG Alignment", h1_style))
     story.append(Paragraph(
         "<b>Anna-Setu</b> (from Sanskrit: <i>'Anna'</i> meaning sustenance and <i>'Setu'</i> meaning bridge) is a closed-loop socio-technical framework designed for institutional campus dining ecosystems. It attacks food waste at two interconnected points: "
-        "<b>1) At the kitchen level</b>, where unforecasted safety margins create 10%–30% surplus buffers, and "
+        "<b>1) At the kitchen level</b>, where unforecasted safety margins create 10%-30% surplus buffers, and "
         "<b>2) At the diner plate level</b>, where students routinely take excessive portions onto their plates and dump uneaten leftovers into garbage bins.",
         body_style
     ))
@@ -221,7 +221,7 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
         [
             Paragraph("<b>SDG 12: Responsible Consumption</b><br/><i>(Primary)</i>", table_cell),
             Paragraph("<b>Target 12.3:</b> Halve food waste by 2030.<br/><b>Target 12.5:</b> Substantially reduce waste via recycling.", table_cell),
-            Paragraph("<b>Track A</b> reduces kitchen overcooking by 15–25% via predictive ML; <b>Track B</b> deters over-serving with behavioral plate nudges and upcycles plate waste into organic fertilizer.", table_cell)
+            Paragraph("<b>Track A</b> reduces kitchen overcooking by 15-25% via predictive ML; <b>Track B</b> deters over-serving with behavioral plate nudges and upcycles plate waste into organic fertilizer.", table_cell)
         ],
         [
             Paragraph("<b>SDG 2: Zero Hunger</b><br/><i>(Secondary)</i>", table_cell),
@@ -231,7 +231,7 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
         [
             Paragraph("<b>SDG 11: Sustainable Cities</b>", table_cell),
             Paragraph("<b>Target 11.6:</b> Reduce urban municipal per-capita environmental impact.", table_cell),
-            Paragraph("Eliminates organic wet-waste burden on municipal collection trucks and avoids ₹5,000–₹25,000 penalties under Lucknow Nagar Nigam Solid Waste By-Laws.", table_cell)
+            Paragraph("Eliminates organic wet-waste burden on municipal collection trucks and avoids ₹5,000-₹25,000 penalties under Lucknow Nagar Nigam Solid Waste By-Laws.", table_cell)
         ],
         [
             Paragraph("<b>SDG 13: Climate Action</b>", table_cell),
@@ -253,7 +253,7 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
 
     # Beneficiaries Card
     story.append(Spacer(1, 5))
-    story.append(Paragraph("<b>Target Beneficiaries:</b> <b>1) Students:</b> Dynamic nudges build mindful eating habits; <b>2) Mess Management:</b> Cuts procurement bills by 15–25%; <b>3) Lucknow Nagar Nigam:</b> Zero waste burden hauled to landfills; <b>4) Local Shelters:</b> Reliable access to verified nutritious meals; <b>5) Campus Grounds:</b> Free high-grade bio-fertilizer.", body_style))
+    story.append(Paragraph("<b>Target Beneficiaries:</b> <b>1) Students:</b> Dynamic nudges build mindful eating habits; <b>2) Mess Management:</b> Cuts procurement bills by 15-25%; <b>3) Lucknow Nagar Nigam:</b> Zero waste burden hauled to landfills; <b>4) Local Shelters:</b> Reliable access to verified nutritious meals; <b>5) Campus Grounds:</b> Free high-grade bio-fertilizer.", body_style))
 
     story.append(PageBreak())
 
@@ -275,15 +275,15 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
         [
             Paragraph(
                 "• <b>Module 1 (Dining Demand Advisor):</b> Time-series forecasting model predicting next-day cooking volumes based on turnstiles, exams, and weather.<br/>"
-                "• <b>Module 2 (RAG Compliance Engine):</b> Grounded in <b>FSSAI Surplus Regulations (2019)</b> (danger zone 5°C–65°C, 2h/4h ambient rule) and <b>Lucknow Nagar Nigam By-Laws</b> (45m transit buffer across 8 zones).<br/>"
+                "• <b>Module 2 (RAG Compliance Engine):</b> Grounded in <b>FSSAI Surplus Regulations (2019)</b> (danger zone 5°C-65°C, 2h/4h ambient rule) and <b>Lucknow Nagar Nigam By-Laws</b> (45m transit buffer across 8 zones).<br/>"
                 "• <b>IBM Granite Model Compiler:</b> Generates WhatsApp/SMS alerts (<60w) and official <b>FSSAI Form B & LNN Gate Pass manifests</b>.<br/>"
                 "• <b>Live Assets:</b> Deployed on Hugging Face Spaces (Gradio) and local Streamlit app with 5 automated test cases.",
                 table_cell
             ),
             Paragraph(
-                "• <b>Behavioral Nudge Front-End:</b> Precision plate scale (0–20kg) at tray return counter + 7-inch display showing wasted grams, water footprint, and hostel leaderboards to stop diners from taking extra food.<br/>"
-                "• <b>Pre-Processing Shredder:</b> Reduces uneaten food scrap size to 3–5mm.<br/>"
-                "• <b>Accelerated Bio-Composting Chamber:</b> Thermophilic heating (55°C–65°C) + active aerobic aeration + microbial enzymes achieve <b>85%–90% volume reduction in 12–24h</b>.<br/>"
+                "• <b>Behavioral Nudge Front-End:</b> Precision plate scale (0-20kg) at tray return counter + 7-inch display showing wasted grams, water footprint, and hostel leaderboards to stop diners from taking extra food.<br/>"
+                "• <b>Pre-Processing Shredder:</b> Reduces uneaten food scrap size to 3-5mm.<br/>"
+                "• <b>Accelerated Bio-Composting Chamber:</b> Thermophilic heating (55°C-65°C) + active aerobic aeration + microbial enzymes achieve <b>85%-90% volume reduction in 12-24h</b>.<br/>"
                 "• <b>Recyclable Resource Output:</b> High-grade <b>Organic Bio-Fertilizer / Soil Conditioner</b> for campus greenery and local farmers.<br/>"
                 "• <b>IoT Cloud Bridge:</b> ESP32 streams daily plate waste logs back to Track A AI.",
                 table_cell
@@ -311,11 +311,11 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
     bom_data = [
         [Paragraph("Subsystem", table_header), Paragraph("Component", table_header), Paragraph("Technical Role in Station", table_header), Paragraph("Est. Cost (INR)", table_header)],
         [Paragraph("Compute / IoT", table_cell_bold), Paragraph("ESP32 WROOM-32 MCU", table_cell), Paragraph("Wi-Fi telemetry, sensor polling, cloud API bridge", table_cell), Paragraph("₹450", table_cell_center)],
-        [Paragraph("Plate Waste Scale", table_cell_bold), Paragraph("0–20 kg Load Cell + HX711", table_cell), Paragraph("Measures individual student plate waste left on tray", table_cell), Paragraph("₹550", table_cell_center)],
+        [Paragraph("Plate Waste Scale", table_cell_bold), Paragraph("0-20 kg Load Cell + HX711", table_cell), Paragraph("Measures individual student plate waste left on tray", table_cell), Paragraph("₹550", table_cell_center)],
         [Paragraph("Nudge Display", table_cell_bold), Paragraph("7-inch IPS / OLED Screen", table_cell), Paragraph("Displays wasted grams, water footprint & leaderboard", table_cell), Paragraph("₹850", table_cell_center)],
         [Paragraph("Thermal Sensing", table_cell_bold), Paragraph("MLX90614 Contactless IR", table_cell), Paragraph("Verifies kitchen surplus food is held safe >=65°C", table_cell), Paragraph("₹750", table_cell_center)],
         [Paragraph("Aerobic Aeration", table_cell_bold), Paragraph("12V Brushless Fan + Carbon", table_cell), Paragraph("Supplies oxygen to composting chamber; stops odors", table_cell), Paragraph("₹250", table_cell_center)],
-        [Paragraph("Thermophilic Heat", table_cell_bold), Paragraph("100W PTC Ceramic Strip", table_cell), Paragraph("Maintains 55°C–65°C to accelerate microbial breakdown", table_cell), Paragraph("₹450", table_cell_center)],
+        [Paragraph("Thermophilic Heat", table_cell_bold), Paragraph("100W PTC Ceramic Strip", table_cell), Paragraph("Maintains 55°C-65°C to accelerate microbial breakdown", table_cell), Paragraph("₹450", table_cell_center)],
         [Paragraph("Power & Housing", table_cell_bold), Paragraph("12V SMPS + SS Kiosk", table_cell), Paragraph("Regulated power and IP65 sanitary stainless housing", table_cell), Paragraph("₹1,370", table_cell_center)],
         [Paragraph("TOTAL BOM", table_cell_bold), Paragraph("<b>Complete Integrated Kiosk</b>", table_cell_bold), Paragraph("<b>Affordable, student-built IoT bio-recycler prototype</b>", table_cell_bold), Paragraph("<b>₹4,670 (~$55)</b>", table_cell_center)]
     ]
@@ -350,31 +350,31 @@ def build_pdf(filename="Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"):
         [Paragraph("Phase / Sprint", table_header), Paragraph("Date Range", table_header), Paragraph("Key Work Deliverables & Activities", table_header), Paragraph("Gate Status", table_header)],
         [
             Paragraph("<b>Phase 1 & 2:</b><br/>RAG Engine & UI", table_cell),
-            Paragraph("Nov 1 – Nov 10, 2026", table_cell_center),
+            Paragraph("Nov 1 - Nov 10, 2026", table_cell_center),
             Paragraph("Codified FSSAI 2019 and LNN by-laws into JSON KB; built TF-IDF vector retriever, compliance calculator, and IBM Granite notification compiler. Deployed Gradio demo on Hugging Face and local Streamlit app. Verified 5 automated test cases.", table_cell),
             Paragraph("<font color='#155724'><b>COMPLETED</b></font>", table_cell_center)
         ],
         [
             Paragraph("<b>Sprint 3A:</b><br/>HW Breadboard & IoT", table_cell),
-            Paragraph("Nov 11 – Nov 20, 2026", table_cell_center),
+            Paragraph("Nov 11 - Nov 20, 2026", table_cell_center),
             Paragraph("Procure ESP32, load cell, MLX90614 IR sensor, and display; assemble bench breadboard; flash C++/MicroPython firmware (esp32_smart_kiosk.ino); bridge telemetry to api_server.py.", table_cell),
             Paragraph("<font color='#856404'><b>IN PROGRESS</b></font>", table_cell_center)
         ],
         [
             Paragraph("<b>Sprint 3B:</b><br/>Approvals & Gate 1", table_cell),
-            Paragraph("Nov 21 – Nov 30, 2026", table_cell_center),
-            Paragraph("Draft permission letter to Dean of Student Welfare / Mess Committee (UPES); establish coordination agreement with Rain Basera Charbagh; <b>Milestone 1 Gate Review with 1M1B mentor</b>.", table_cell),
+            Paragraph("Nov 21 - Nov 30, 2026", table_cell_center),
+            Paragraph("Draft permission letter to Dean of Student Welfare / Campus Mess Committee; establish coordination agreement with Rain Basera Charbagh; <b>Milestone 1 Gate Review with 1M1B mentor</b>.", table_cell),
             Paragraph("<b>MILESTONE 1 GATE</b><br/>(End-Nov 2026)", table_cell_center)
         ],
         [
             Paragraph("<b>Phase 4:</b><br/>Enclosure & Pilot", table_cell),
-            Paragraph("Dec 1 – Dec 21, 2026", table_cell_center),
+            Paragraph("Dec 1 - Dec 21, 2026", table_cell_center),
             Paragraph("Assemble IP65 stainless enclosure at tray return; conduct 14-day live campus pilot in student mess; log plate-waste reduction via nudge screen; dispatch compliant kitchen surplus; produce first batch of bio-fertilizer.", table_cell),
             Paragraph("PLANNED PILOT<br/>(Central Mess)", table_cell_center)
         ],
         [
             Paragraph("<b>Phase 5:</b><br/>Impact & Closeout", table_cell),
-            Paragraph("Dec 22 – Dec 31, 2026", table_cell_center),
+            Paragraph("Dec 22 - Dec 31, 2026", table_cell_center),
             Paragraph("Retrain Module 1 demand model on real pilot plate-waste logs; compute total kg rescued, kg bio-fertilizer harvested, methane avoided, and procurement ₹ saved. Submit final PDF report, PPT, and demo video.", table_cell),
             Paragraph("<b>MILESTONE 2 GATE</b><br/>(End-Dec 2026)", table_cell_center)
         ]
