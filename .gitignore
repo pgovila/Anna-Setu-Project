@@ -24,3 +24,7 @@ env/
 Thumbs.db
 .DS_Store
 
+# Planet Prompt AI Documents
+Planet Prompt AI*
+PLANET_PROMPT_AI*
+
