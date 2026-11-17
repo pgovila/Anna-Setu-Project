@@ -152,8 +152,24 @@ def run_tests():
     assert demand["predicted_turnout"] > 800
     assert demand["portions_saved"] > 100
 
+    # Test 9: Place & Meal-based AI Pipeline Configuration Sync
+    print("\n--- TEST 9: Place & Meal-based AI Pipeline Configuration Sync ---")
+    sync_res = pipeline.sync_ai_pipeline_configurations(
+        origin_zone=4,
+        item="Vegetable Poha & Boiled Eggs",
+        servings=35,
+        category_key="cooked_grains_curry",
+        time_prepared="08:00",
+        assessment_time="09:30",
+        storage_condition="ambient"
+    )
+    print("Retrieved Safety Rule:", sync_res["retrieved_safety_rule"])
+    print("AI Matched Shelter:", sync_res["ai_matched_shelter"])
+    assert "FSSAI" in sync_res["retrieved_safety_rule"]
+    assert "Zone 4" in sync_res["ai_matched_shelter"]
+
     print("\n" + "=" * 70)
-    print("ALL 8 TESTS PASSED SUCCESSFULLY! RAG PIPELINE & PREDICTIVE SUITE FULLY VERIFIED.")
+    print("ALL 9 TESTS PASSED SUCCESSFULLY! RAG PIPELINE & PREDICTIVE SUITE FULLY VERIFIED.")
     print("=" * 70)
 
 

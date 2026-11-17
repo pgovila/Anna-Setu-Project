@@ -56,6 +56,131 @@ class AnnaSetuRAGPipeline:
             ("plate_waste", "Plate Waste / Post-Consumer Leftovers (Prohibited)")
         ]
 
+    def match_optimal_shelter(
+        self,
+        origin_zone: int = 4,
+        servings: int = 40,
+        requires_cold_storage: bool = False
+    ) -> Dict[str, Any]:
+        """
+        AI heuristics matching the closest shelter based on zone proximity,
+        corridor transit times, capacity sufficiency, and cold-chain support.
+        """
+        best_shelter = None
+        best_score = -999.0
+        best_transit = 35
+        best_distance_km = 8.0
+
+        for s in self.shelters:
+            s_zone = s.get("zone_id", 1)
+            capacity = s.get("capacity_servings", 100)
+            has_cold = s.get("cold_storage_available", False)
+
+            # Zone proximity calculation
+            if s_zone == origin_zone:
+                zone_score = 50.0
+                transit = 15
+                distance_km = 2.1
+            elif abs(s_zone - origin_zone) in (1, 3):
+                zone_score = 30.0
+                transit = 25
+                distance_km = 5.2
+            else:
+                zone_score = 10.0
+                transit = 35
+                distance_km = 8.5
+
+            # Capacity matching score
+            cap_score = 20.0 if capacity >= servings else (capacity / max(1, servings)) * 10.0
+
+            # Cold storage matching
+            cold_score = 15.0 if (requires_cold_storage and has_cold) else (5.0 if not requires_cold_storage else -10.0)
+
+            total_score = zone_score + cap_score + cold_score
+
+            if total_score > best_score:
+                best_score = total_score
+                best_shelter = s
+                best_transit = transit
+                best_distance_km = distance_km
+
+        if not best_shelter and self.shelters:
+            best_shelter = self.shelters[0]
+
+        zone_label = best_shelter.get('zone_name', f"Zone {best_shelter.get('zone_id')}")
+        display_str = (
+            f"{best_shelter['name']} ({zone_label} - "
+            f"{best_distance_km:.1f} km away | Route Transit: {best_transit} mins | Bed Capacity: {best_shelter.get('capacity_servings', 100)})"
+        )
+
+        return {
+            "shelter": best_shelter,
+            "display_str": display_str,
+            "estimated_transit_mins": best_transit,
+            "distance_km": best_distance_km
+        }
+
+    def sync_ai_pipeline_configurations(
+        self,
+        origin_zone: int = 4,
+        item: str = "Vegetable pulao and dal",
+        servings: int = 45,
+        category_key: str = "cooked_grains_curry",
+        time_prepared: str = "12:30",
+        assessment_time: Optional[str] = None,
+        storage_condition: str = "ambient",
+        measured_temp_celsius: Optional[float] = None
+    ) -> Dict[str, Any]:
+        """
+        Dynamically computes and populates the fields in 'Simulated AI Pipeline Configurations':
+        1. Retrieved Safety Compliance Rule (RAG)
+        2. AI Matched Shelter Destination
+        """
+        matched = self.match_optimal_shelter(
+            origin_zone=origin_zone,
+            servings=servings,
+            requires_cold_storage=(storage_condition == "refrigerated")
+        )
+
+        # Quick evaluation of safety parameters
+        eval_res = self.engine.evaluate(
+            item=item,
+            servings=servings,
+            category_key=category_key,
+            time_prepared=time_prepared,
+            assessment_time=assessment_time,
+            storage_condition=storage_condition,
+            measured_temp_celsius=measured_temp_celsius,
+            origin_zone=origin_zone,
+            dest_zone=matched["shelter"].get("zone_id", 1),
+            shelter_name=matched["shelter"].get("name", "Rain Basera")
+        )
+
+        timeline = eval_res["timeline"]
+        top_rules = eval_res.get("retrieved_rules", [])
+        rule_tag = f"[{top_rules[0].get('id', 'FSSAI-REG-4-2')}]" if top_rules else "[FSSAI-REG-4-2]"
+
+        if eval_res["status"] == "NON_COMPLIANT_REJECTED":
+            if "prohibited" in eval_res["reason"].lower():
+                compliance_rule_str = f"{rule_tag} PROHIBITED ITEM: Raw salads/cut perishables strictly banned under FSSAI Reg 4(4). Landfill dump banned (LNN Sec 10)."
+            else:
+                compliance_rule_str = f"{rule_tag} HOLDING LIMIT EXCEEDED: Elapsed ({timeline['elapsed_minutes']}m) > limit ({timeline['max_allowed_minutes']}m). Divert to bio-compost (LNN Sec 18)."
+        elif eval_res["status"] == "COMPLIANT_URGENT":
+            compliance_rule_str = f"{rule_tag} URGENT DISPATCH: Within 4-hour limit ({timeline['elapsed_minutes']}m elapsed). Must consume before {timeline['safe_pickup_by']} IST per FSSAI Reg 4(2) & LNN Sec 14."
+        else:
+            if storage_condition == "hot_holding":
+                compliance_rule_str = f"{rule_tag} Active Hot-Holding (>=65°C) verified per FSSAI Reg 4(3). Safe window active until {timeline['safe_pickup_by']} IST."
+            elif storage_condition == "refrigerated":
+                compliance_rule_str = f"{rule_tag} Active Cold-Chain (<=5°C) verified per FSSAI Reg 4(3). Safe window active until {timeline['safe_pickup_by']} IST (24h)."
+            else:
+                compliance_rule_str = f"{rule_tag} Within 4-hour ambient holding limit per FSSAI Reg 4(2) & LNN Sec 14. Safe redistribution active until {timeline['safe_pickup_by']} IST."
+
+        return {
+            "retrieved_safety_rule": compliance_rule_str,
+            "ai_matched_shelter": matched["display_str"],
+            "matched_shelter_obj": matched["shelter"]
+        }
+
     def evaluate_surplus(
         self,
         item: str,
@@ -68,7 +193,9 @@ class AnnaSetuRAGPipeline:
         origin_zone: int = 4,
         dest_zone: int = 1,
         shelter_display_name: str = "Rain Basera Charbagh Railway Hub (Zone 1 (Charbagh / Station Road))",
-        pickup_location: str = "Main Campus Mess, Gate 2"
+        pickup_location: str = "Main Campus Mess, Gate 2",
+        facility_place: Optional[str] = None,
+        meal_type: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Executes full pipeline:
@@ -76,13 +203,24 @@ class AnnaSetuRAGPipeline:
         2. Retrieves relevant statutory clauses via RAG.
         3. Compiles IBM Granite shelter notification & formal audit manifest.
         """
-        # Resolve shelter metadata
-        shelter_obj = self.get_shelter_by_name(shelter_display_name)
-        if shelter_obj:
-            dest_zone = shelter_obj.get("zone_id", dest_zone)
-            shelter_clean_name = shelter_obj.get("name", shelter_display_name)
+        # Resolve shelter metadata or auto match
+        if not shelter_display_name or shelter_display_name == "AUTO_MATCH" or "Auto-Match" in shelter_display_name:
+            matched_obj = self.match_optimal_shelter(
+                origin_zone=origin_zone,
+                servings=servings,
+                requires_cold_storage=(storage_condition == "refrigerated")
+            )
+            shelter_obj = matched_obj["shelter"]
+            dest_zone = shelter_obj.get("zone_id", 1)
+            shelter_clean_name = shelter_obj.get("name", "Rain Basera")
+            shelter_display_name = matched_obj["display_str"]
         else:
-            shelter_clean_name = shelter_display_name
+            shelter_obj = self.get_shelter_by_name(shelter_display_name)
+            if shelter_obj:
+                dest_zone = shelter_obj.get("zone_id", dest_zone)
+                shelter_clean_name = shelter_obj.get("name", shelter_display_name)
+            else:
+                shelter_clean_name = shelter_display_name
 
         # Run compliance check + RAG retrieval
         eval_result = self.engine.evaluate(
@@ -99,14 +237,38 @@ class AnnaSetuRAGPipeline:
         )
 
         # Generate outputs via IBM Granite prompt templates
-        alert_msg = self.compiler.compile_shelter_alert(eval_result, pickup_location)
-        audit_manifest = self.compiler.compile_fssai_audit_manifest(eval_result, pickup_location)
+        alert_msg = self.compiler.compile_shelter_alert(
+            eval_result,
+            pickup_location=pickup_location,
+            facility_place=facility_place,
+            meal_type=meal_type
+        )
+        audit_manifest = self.compiler.compile_fssai_audit_manifest(
+            eval_result,
+            pickup_location=pickup_location,
+            facility_place=facility_place,
+            meal_type=meal_type
+        )
+
+        # Sync AI configurations for direct display
+        sync_data = self.sync_ai_pipeline_configurations(
+            origin_zone=origin_zone,
+            item=item,
+            servings=servings,
+            category_key=category_key,
+            time_prepared=time_prepared,
+            assessment_time=assessment_time,
+            storage_condition=storage_condition,
+            measured_temp_celsius=measured_temp_celsius
+        )
 
         return {
             "evaluation": eval_result,
             "broadcast_message": alert_msg,
             "audit_manifest": audit_manifest,
-            "shelter_details": shelter_obj
+            "shelter_details": shelter_obj,
+            "retrieved_safety_rule": sync_data["retrieved_safety_rule"],
+            "ai_matched_shelter": sync_data["ai_matched_shelter"]
         }
 
     def query_regulations(self, query: str, top_k: int = 4, filter_source: Optional[str] = None) -> List[Dict[str, Any]]:

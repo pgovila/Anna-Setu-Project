@@ -97,6 +97,15 @@ def validate_ecosystem():
               demand_res["recommended_cooking_target"] > 0 and demand_res["portions_prevented_from_waste"] > 0,
               f"Recommended: {demand_res['recommended_cooking_target']} portions | Savings: ₹{demand_res['cost_savings_inr']:,.2f}")
 
+        # Test Place & Meal-based AI Pipeline Configuration Sync
+        sync_cfg = pipeline.sync_ai_pipeline_configurations(
+            origin_zone=4, item="Vegetable Poha", servings=35,
+            category_key="cooked_grains_curry", time_prepared="08:00", assessment_time="09:30"
+        )
+        check("RAG Simulated AI Pipeline Configuration Sync",
+              "FSSAI" in sync_cfg["retrieved_safety_rule"] and "Zone 4" in sync_cfg["ai_matched_shelter"],
+              f"Matched Shelter: {sync_cfg['ai_matched_shelter'][:50]}...")
+
     except Exception as e:
         check("Track A RAG Execution", False, str(e))
 
@@ -172,6 +181,7 @@ def validate_ecosystem():
 
     # --- SUMMARY ---
     print("\n" + "=" * 80)
+    # pyrefly: ignore[division-by-zero]
     print(f"VERIFICATION SUMMARY: {passed_checks} / {total_checks} CHECKS PASSED ({int(passed_checks/total_checks*100)}%)")
     if passed_checks == total_checks:
         print("STATUS: ALL SYSTEMS FULLY OPERATIONAL, COMPLIANT & READY FOR 1M1B SUBMISSION! 🚀")

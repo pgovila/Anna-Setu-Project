@@ -3,6 +3,7 @@ Anna-Setu IoT Ingestion & Compliance API Server.
 Connects Track B Hardware Kiosk telemetry to Track A RAG Compliance Pipeline.
 """
 
+# pyrefly: ignore[missing-import]
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional

@@ -42,7 +42,120 @@ ZONE_CHOICES = [
 ]
 ZONE_MAP = {label: zone_id for label, zone_id in ZONE_CHOICES}
 
-SHELTER_NAMES = pipeline.get_shelter_names()
+DINING_PLACES = [
+    "Central Campus Dining Complex (Main Mess)",
+    "North Campus Cafeteria (Block A Dining)",
+    "Girls Hostel Dining Hall (Block B)",
+    "International Scholars Mess (Block C)",
+    "Faculty & Executive Dining Hall",
+    "Student Activity Centre Food Court",
+    "Auditorium & Banquet Catering Hub",
+    "Other / Custom Facility"
+]
+
+MEAL_PRESETS = {
+    "Breakfast": {
+        "time_prep": "08:00",
+        "time_assess": "09:30",
+        "item": "Vegetable Poha, Idli Sambhar & Boiled Eggs",
+        "servings": 35,
+        "category": "Cooked Grains, Rice, Dal & Gravies (High Moisture)",
+        "storage": "Ambient Room Temperature (~25°C - 35°C)"
+    },
+    "Lunch": {
+        "time_prep": "12:30",
+        "time_assess": "14:00",
+        "item": "Vegetable Pulao, Dal Tadka & Chapati",
+        "servings": 45,
+        "category": "Cooked Grains, Rice, Dal & Gravies (High Moisture)",
+        "storage": "Ambient Room Temperature (~25°C - 35°C)"
+    },
+    "Snacks / High Tea": {
+        "time_prep": "16:30",
+        "time_assess": "17:30",
+        "item": "Vegetable Cutlets, Samosas & Tea Cake",
+        "servings": 30,
+        "category": "Dry Fried Snacks (Samosas, Cutlets, Pakoras)",
+        "storage": "Ambient Room Temperature (~25°C - 35°C)"
+    },
+    "Dinner": {
+        "time_prep": "20:00",
+        "time_assess": "21:30",
+        "item": "Paneer Butter Masala, Dal Makhani & Rotis",
+        "servings": 50,
+        "category": "Dairy, Paneer Curries, Milk Sweets & Kheer",
+        "storage": "Ambient Room Temperature (~25°C - 35°C)"
+    },
+    "Other": {
+        "time_prep": "11:00",
+        "time_assess": "12:30",
+        "item": "Mixed Institutional Buffet Catering Spread",
+        "servings": 60,
+        "category": "Cooked Grains, Rice, Dal & Gravies (High Moisture)",
+        "storage": "Ambient Room Temperature (~25°C - 35°C)"
+    }
+}
+
+SHELTER_NAMES = ["Auto-Match Closest Verified Shelter (Recommended)"] + pipeline.get_shelter_names()
+
+
+def on_meal_change(selected_meal):
+    """Dynamically updates preparation time, evaluation time, items, and servings when meal type changes."""
+    preset = MEAL_PRESETS.get(selected_meal, MEAL_PRESETS["Lunch"])
+    return (
+        preset["time_prep"],
+        preset["time_assess"],
+        preset["item"],
+        preset["servings"],
+        preset["category"],
+        preset["storage"]
+    )
+
+
+def sync_pipeline_fields(
+    place_facility,
+    pickup_loc,
+    origin_zone_label,
+    meal_type,
+    item_name,
+    servings_count,
+    category_label,
+    time_prep,
+    time_assess,
+    storage_label,
+    measured_temp
+):
+    """
+    Syncs with RAG Pipeline to populate:
+    1. Retrieved Safety Compliance Rule (RAG)
+    2. AI Matched Shelter Destination
+    """
+    category_key = CATEGORY_MAP.get(category_label, "cooked_grains_curry")
+    storage_key = STORAGE_MAP.get(storage_label, "ambient")
+    origin_zone = ZONE_MAP.get(origin_zone_label, 4)
+
+    temp_val = None
+    if measured_temp is not None and str(measured_temp).strip():
+        try:
+            temp_val = float(measured_temp)
+        except (ValueError, TypeError):
+            temp_val = None
+
+    sync_res = pipeline.sync_ai_pipeline_configurations(
+        origin_zone=origin_zone,
+        item=item_name,
+        servings=int(servings_count) if servings_count else 40,
+        category_key=category_key,
+        time_prepared=time_prep,
+        assessment_time=time_assess,
+        storage_condition=storage_key,
+        measured_temp_celsius=temp_val
+    )
+
+    return (
+        sync_res["retrieved_safety_rule"],
+        sync_res["ai_matched_shelter"]
+    )
 
 
 def demand_advisor_flow(
@@ -110,6 +223,10 @@ def demand_advisor_flow(
 
 
 def evaluate_surplus_flow(
+    place_facility,
+    pickup_loc,
+    origin_zone_label,
+    meal_type,
     item_name,
     servings_count,
     category_label,
@@ -117,11 +234,10 @@ def evaluate_surplus_flow(
     time_assess,
     storage_label,
     measured_temp,
-    pickup_loc,
-    origin_zone_label,
-    shelter_label
+    compliance_rule_in,
+    shelter_label_in
 ):
-    """Callback function for surplus compliance evaluation."""
+    """Callback function executing end-to-end RAG compliance and IBM Granite compiler."""
     category_key = CATEGORY_MAP.get(category_label, "cooked_grains_curry")
     storage_key = STORAGE_MAP.get(storage_label, "ambient")
     origin_zone = ZONE_MAP.get(origin_zone_label, 4)
@@ -129,7 +245,6 @@ def evaluate_surplus_flow(
     if not time_assess or not time_assess.strip():
         time_assess = datetime.now().strftime("%H:%M")
 
-    # Parse optional temperature
     temp_val = None
     if measured_temp is not None and str(measured_temp).strip():
         try:
@@ -145,8 +260,10 @@ def evaluate_surplus_flow(
         assessment_time=time_assess,
         storage_condition=storage_key,
         origin_zone=origin_zone,
-        shelter_display_name=shelter_label,
+        shelter_display_name=shelter_label_in,
         pickup_location=pickup_loc,
+        facility_place=place_facility,
+        meal_type=meal_type,
         measured_temp_celsius=temp_val
     )
 
@@ -164,6 +281,7 @@ def evaluate_surplus_flow(
             f"### {eval_data['badge']}\n\n"
             f"✅ **Safety Window:** Safe until **{timeline['safe_pickup_by']} IST** "
             f"({timeline['max_allowed_minutes'] - timeline['total_exposure_minutes']} mins buffer remaining).\n\n"
+            f"📍 **Origin Facility:** {place_facility} ({pickup_loc}) | **Meal Service:** {meal_type}\n\n"
             f"⏱️ **Elapsed:** {timeline['elapsed_minutes']} mins | "
             f"🚚 **Estimated Transit:** {timeline['transit_minutes']} mins\n\n"
             f"ℹ️ **Summary:** {eval_data['reason']}{temp_note}"
@@ -172,6 +290,7 @@ def evaluate_surplus_flow(
         status_md = (
             f"### {eval_data['badge']}\n\n"
             f"⚠️ **Attention Required:** Handover and consumption must occur before **{timeline['safe_pickup_by']} IST**.\n\n"
+            f"📍 **Origin Facility:** {place_facility} ({pickup_loc}) | **Meal Service:** {meal_type}\n\n"
             f"⏱️ **Elapsed:** {timeline['elapsed_minutes']} mins | "
             f"🚚 **Transit:** {timeline['transit_minutes']} mins | "
             f"⚠️ **Remaining Window:** {timeline['max_allowed_minutes'] - timeline['total_exposure_minutes']} mins\n\n"
@@ -181,6 +300,7 @@ def evaluate_surplus_flow(
         status_md = (
             f"### {eval_data['badge']}\n\n"
             f"🛑 **Redistribution Blocked:** Cannot be dispatched for human consumption.\n\n"
+            f"📍 **Origin Facility:** {place_facility} ({pickup_loc}) | **Meal Service:** {meal_type}\n\n"
             f"⚠️ **Reason:** {eval_data['reason']}\n\n"
             f"♻️ **Mandatory Municipal Action:** {eval_data['lnn_action']}{temp_note}"
         )
@@ -193,11 +313,17 @@ def evaluate_surplus_flow(
             f"  > *\"{r.get('text')}\"*\n\n"
         )
 
+    # Update synced fields
+    updated_rule = res.get("retrieved_safety_rule", compliance_rule_in)
+    updated_shelter = res.get("ai_matched_shelter", shelter_label_in)
+
     return (
         status_md,
         res["broadcast_message"],
         retrieved_md,
-        res["audit_manifest"]
+        res["audit_manifest"],
+        updated_rule,
+        updated_shelter
     )
 
 
@@ -292,7 +418,149 @@ try:
         )
 
         with gr.Tabs():
-            # TAB 1: AI DINING DEMAND ADVISOR (MODULE 1)
+            # TAB 1: SURPLUS RESCUE & RAG COMPLIANCE (WITH PLACE, MEAL, AND SIMULATED AI CONFIGS)
+            with gr.TabItem("📋 Surplus Handoff & RAG Compliance Evaluation"):
+                gr.Markdown("### 🍛 Cafeteria Service Handoff Logs & Statutory FSSAI Verification")
+                gr.Markdown(
+                    "Enter the dining facility location and meal details below. The RAG pipeline automatically retrieves the governing "
+                    "safety rules and matches the optimal destination shelter, populating the AI configurations in real time."
+                )
+
+                with gr.Row():
+                    # LEFT COLUMN: INPUTS & AI PIPELINE CONFIGURATIONS
+                    with gr.Column(scale=5):
+                        # SECTION 1: PLACE & LOCATION DETAILS (ENTERED FIRST!)
+                        gr.Markdown("#### 📍 Step 1: Campus Dining Facility & Location (Place Details)")
+                        with gr.Row():
+                            place_facility = gr.Dropdown(
+                                label="Dining Facility / Place Name",
+                                choices=DINING_PLACES,
+                                value=DINING_PLACES[0]
+                            )
+                            origin_zone = gr.Dropdown(
+                                label="Campus Origin Zone (Lucknow)",
+                                choices=[label for label, _ in ZONE_CHOICES],
+                                value=ZONE_CHOICES[0][0]
+                            )
+                        pickup_loc = gr.Textbox(
+                            label="Specific Pickup Bay / Dispatch Gate Location",
+                            value="Gate 2 Service Loading Bay (Rear Kitchen Entrance)"
+                        )
+
+                        # SECTION 2: MEAL SERVICE & FOOD DETAILS (ENTERED SECOND!)
+                        gr.Markdown("#### 🍽️ Step 2: Meal Service & Surplus Food Details")
+                        with gr.Row():
+                            meal_type = gr.Dropdown(
+                                label="Meal Service Type",
+                                choices=["Breakfast", "Lunch", "Snacks / High Tea", "Dinner", "Other"],
+                                value="Lunch"
+                            )
+                            servings = gr.Number(
+                                label="Estimated Servings Leftover",
+                                value=45,
+                                precision=0
+                            )
+
+                        item = gr.Textbox(
+                            label="Surplus Food Item(s)",
+                            value="Vegetable Pulao, Dal Tadka & Chapati"
+                        )
+                        category = gr.Dropdown(
+                            label="Food Category (FSSAI Microbial Profile)",
+                            choices=[label for label, _ in CATEGORY_CHOICES],
+                            value=CATEGORY_CHOICES[0][0]
+                        )
+
+                        with gr.Row():
+                            time_prep = gr.Textbox(
+                                label="Time Prepared (HH:MM 24h)",
+                                value="12:30"
+                            )
+                            time_assess = gr.Textbox(
+                                label="Current Assessment Time (HH:MM 24h)",
+                                value="14:00"
+                            )
+
+                        with gr.Row():
+                            storage = gr.Dropdown(
+                                label="Storage & Holding Condition",
+                                choices=[label for label, _ in STORAGE_CHOICES],
+                                value=STORAGE_CHOICES[0][0]
+                            )
+                            measured_temp = gr.Number(
+                                label="Measured Surface Temp (°C) [Optional Contactless IR Sensor]",
+                                value=None
+                            )
+
+                        # SECTION 3: SIMULATED AI PIPELINE CONFIGURATIONS (MATCHING SCREENSHOT!)
+                        gr.Markdown("### 🧠 Simulated AI Pipeline Configurations")
+                        gr.Markdown("*These fields are automatically synchronized and populated from the RAG Pipeline and Shelter Directory:*")
+
+                        compliance_rule_box = gr.Textbox(
+                            label="Retrieved Safety Compliance Rule (RAG)",
+                            value="[FSSAI-REG-4-2] Within 4-hour ambient holding limit per FSSAI Reg 4(2) & LNN Sec 14. Safe redistribution active until 16:30 IST.",
+                            lines=2,
+                            interactive=True
+                        )
+
+                        shelter_box = gr.Textbox(
+                            label="AI Matched Shelter Destination",
+                            value="Rain Basera Gomti Nagar (Zone 4 (Gomti Nagar) - 2.1 km away | Route Transit: 15 mins | Bed Capacity: 100)",
+                            lines=2,
+                            interactive=True
+                        )
+
+                        with gr.Row():
+                            btn_sync = gr.Button("🔄 Sync AI Pipeline Configurations (RAG)", variant="secondary")
+                            btn_eval = gr.Button("Execute IBM Granite Notification Compiler", variant="primary")
+
+                    # RIGHT COLUMN: GENERATED OUTPUTS
+                    with gr.Column(scale=5):
+                        gr.Markdown("### ✅ Generated Output (WhatsApp / SMS Ready Format)")
+                        status_box = gr.Markdown(value="*Click 'Execute IBM Granite Notification Compiler' to evaluate surplus food safety and generate alert.*")
+                        output_msg = gr.TextArea(
+                            label="AI-Drafted Broadcast Message (WhatsApp / SMS Ready)",
+                            lines=8,
+                            interactive=False
+                        )
+                        with gr.Accordion("📜 Retrieved FSSAI & LNN Regulatory Grounding (RAG)", open=True):
+                            rag_clauses_box = gr.Markdown(value="*Retrieved regulatory clauses will appear here.*")
+                        with gr.Accordion("📑 Official FSSAI Form B & LNN Gate Pass Manifest", open=False):
+                            manifest_box = gr.TextArea(
+                                label="Digital Compliance Audit Manifest",
+                                lines=12,
+                                interactive=False
+                            )
+
+                # Meal preset change event listener
+                meal_type.change(
+                    fn=on_meal_change,
+                    inputs=[meal_type],
+                    outputs=[time_prep, time_assess, item, servings, category, storage]
+                )
+
+                # Sync button click listener
+                btn_sync.click(
+                    fn=sync_pipeline_fields,
+                    inputs=[
+                        place_facility, pickup_loc, origin_zone, meal_type,
+                        item, servings, category, time_prep, time_assess, storage, measured_temp
+                    ],
+                    outputs=[compliance_rule_box, shelter_box]
+                )
+
+                # Primary evaluation click listener
+                btn_eval.click(
+                    fn=evaluate_surplus_flow,
+                    inputs=[
+                        place_facility, pickup_loc, origin_zone, meal_type,
+                        item, servings, category, time_prep, time_assess, storage, measured_temp,
+                        compliance_rule_box, shelter_box
+                    ],
+                    outputs=[status_box, output_msg, rag_clauses_box, manifest_box, compliance_rule_box, shelter_box]
+                )
+
+            # TAB 2: AI DINING DEMAND ADVISOR (MODULE 1)
             with gr.TabItem("🔮 Module 1: AI Dining Demand Advisor"):
                 gr.Markdown("### 📊 Predictive Kitchen Demand & Procurement Optimization")
                 gr.Markdown(
@@ -340,89 +608,6 @@ try:
                     fn=demand_advisor_flow,
                     inputs=[enrolled_input, meal_choice, day_choice, calendar_choice, weather_choice, base_turnout_input],
                     outputs=[demand_metrics_box, demand_ing_box, demand_guidance_box]
-                )
-
-            # TAB 2: SURPLUS RESCUE & RAG COMPLIANCE (MODULE 2)
-            with gr.TabItem("📋 Module 2: Surplus Rescue & RAG Compliance"):
-                gr.Markdown("### 🍛 Cafeteria Service Handoff Logs & Statutory FSSAI Verification")
-                gr.Markdown(
-                    "Evaluates cooked surplus batches against FSSAI Surplus Food Regulations (2019) and Lucknow Nagar Nigam By-Laws. "
-                    "Features automated Temperature Danger Zone (5°C - 65°C) enforcement and IBM Granite WhatsApp alert generation."
-                )
-                with gr.Row():
-                    with gr.Column(scale=5):
-                        item = gr.Textbox(
-                            label="Surplus Food Item(s)",
-                            value="Vegetable pulao and dal tadka"
-                        )
-                        servings = gr.Number(
-                            label="Estimated Servings Leftover",
-                            value=45,
-                            precision=0
-                        )
-                        category = gr.Dropdown(
-                            label="Food Category (FSSAI Microbial Profile)",
-                            choices=[label for label, _ in CATEGORY_CHOICES],
-                            value=CATEGORY_CHOICES[0][0]
-                        )
-                        with gr.Row():
-                            time_prep = gr.Textbox(
-                                label="Time Prepared (HH:MM 24h)",
-                                value="12:30"
-                            )
-                            time_assess = gr.Textbox(
-                                label="Current Assessment Time (HH:MM 24h)",
-                                value="14:00"
-                            )
-                        with gr.Row():
-                            storage = gr.Dropdown(
-                                label="Storage & Holding Condition",
-                                choices=[label for label, _ in STORAGE_CHOICES],
-                                value=STORAGE_CHOICES[0][0]
-                            )
-                            measured_temp = gr.Number(
-                                label="Measured Surface Temp (°C) [Optional IR Sensor]",
-                                value=None
-                            )
-                        pickup_loc = gr.Textbox(
-                            label="Campus Pickup Location",
-                            value="Main Campus Dining Hall, Gate 2"
-                        )
-                        with gr.Row():
-                            origin_zone = gr.Dropdown(
-                                label="Campus Origin Zone (Lucknow)",
-                                choices=[label for label, _ in ZONE_CHOICES],
-                                value=ZONE_CHOICES[0][0]
-                            )
-                            shelter = gr.Dropdown(
-                                label="Matched Shelter / Rain Basera Destination",
-                                choices=SHELTER_NAMES,
-                                value=SHELTER_NAMES[0]
-                            )
-
-                        btn_eval = gr.Button("🔍 Run RAG Verification & Generate Alert", variant="primary")
-
-                    with gr.Column(scale=5):
-                        gr.Markdown("### 🛡️ AI Compliance Assessment & RAG Output")
-                        status_box = gr.Markdown(value="*Click the button to evaluate surplus food safety.*")
-                        output_msg = gr.TextArea(
-                            label="AI-Drafted Broadcast Message (WhatsApp / SMS Ready)",
-                            lines=8,
-                            interactive=False
-                        )
-                        with gr.Accordion("📜 Retrieved FSSAI & LNN Regulatory Grounding (RAG)", open=True):
-                            rag_clauses_box = gr.Markdown(value="*Retrieved regulatory clauses will appear here.*")
-                        with gr.Accordion("📑 Official FSSAI Form B & LNN Gate Pass Manifest", open=False):
-                            manifest_box = gr.TextArea(
-                                label="Digital Compliance Audit Manifest",
-                                lines=12,
-                                interactive=False
-                            )
-
-                btn_eval.click(
-                    fn=evaluate_surplus_flow,
-                    inputs=[item, servings, category, time_prep, time_assess, storage, measured_temp, pickup_loc, origin_zone, shelter],
-                    outputs=[status_box, output_msg, rag_clauses_box, manifest_box]
                 )
 
             # TAB 3: CONVERSATIONAL RAG REGULATORY ASSISTANT
@@ -535,7 +720,6 @@ try:
         demo.launch()
 
 except ImportError:
-    # If gradio is not installed in the local environment, print instructions
     if __name__ == "__main__":
         print("Note: Gradio is not installed locally. Gradio is configured for Hugging Face Spaces.")
         print("To run locally with Streamlit, execute: streamlit run streamlit_app.py")
@@ -548,7 +732,9 @@ except ImportError:
             assessment_time="14:00",
             storage_condition="ambient",
             origin_zone=4,
-            shelter_display_name=SHELTER_NAMES[0],
-            pickup_location="Main Campus Mess, Gate 2"
+            shelter_display_name="AUTO_MATCH",
+            pickup_location="Gate 2 Service Loading Bay",
+            facility_place="Central Campus Dining Complex",
+            meal_type="Lunch"
         )
         print(res["broadcast_message"])

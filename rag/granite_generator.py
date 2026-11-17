@@ -26,7 +26,13 @@ class GraniteAlertCompiler:
         "6. Do not include any student-identifying or personal data."
     )
 
-    def compile_shelter_alert(self, eval_result: Dict[str, Any], pickup_location: str) -> str:
+    def compile_shelter_alert(
+        self,
+        eval_result: Dict[str, Any],
+        pickup_location: str,
+        facility_place: Optional[str] = None,
+        meal_type: Optional[str] = None
+    ) -> str:
         """
         Generates the standard shelter broadcast message following IBM Granite template.
         """
@@ -35,10 +41,13 @@ class GraniteAlertCompiler:
         timeline = eval_result["timeline"]
         compliance_note = eval_result["compliance_note"]
 
+        full_location = f"{facility_place} ({pickup_location})" if facility_place else pickup_location
+        meal_str = f" from {meal_type.title()} service" if meal_type else ""
+
         if status == "NON_COMPLIANT_REJECTED":
             return (
                 "⚠️ *Surplus Redistribution Cancelled - Anna-Setu Safety Block*\n\n"
-                f"Notice: The proposed surplus batch of {params['item']} ({int(params['servings'])} servings) "
+                f"Notice: The proposed surplus batch of {params['item']}{meal_str} ({int(params['servings'])} servings) "
                 f"did NOT clear safety compliance checks.\n\n"
                 f"Reason: {eval_result['reason']}\n\n"
                 f"Action Taken: {eval_result['lnn_action']}\n\n"
@@ -49,21 +58,31 @@ class GraniteAlertCompiler:
 
         message = (
             f"🍽️ *Surplus Food Alert{urgency_flag} - Anna-Setu*\n\n"
-            f"Hi {params['shelter']} team, we have {int(params['servings'])} servings of {params['item']} "
+            f"Hi {params['shelter']} team, we have {int(params['servings'])} servings of {params['item']}{meal_str} "
             f"ready for pickup, prepared at {timeline['time_prepared']} and safe until {timeline['safe_pickup_by']} "
             f"({compliance_note}).\n\n"
-            f"📍 *Pickup point:* {pickup_location}.\n\n"
+            f"📍 *Pickup point:* {full_location}.\n\n"
             f"Please reply *YES* to confirm pickup, or call the manager directly to adjust the arrival window. "
             f"Thank you for partnering with us!"
         )
         return message
 
-    def compile_fssai_audit_manifest(self, eval_result: Dict[str, Any], pickup_location: str) -> str:
+    def compile_fssai_audit_manifest(
+        self,
+        eval_result: Dict[str, Any],
+        pickup_location: str,
+        facility_place: Optional[str] = None,
+        meal_type: Optional[str] = None
+    ) -> str:
         """
         Generates the formal FSSAI Form B and LNN Campus Gate Pass Audit Record.
         """
         params = eval_result["parameters"]
         timeline = eval_result["timeline"]
+
+        full_location = f"{facility_place} ({pickup_location})" if facility_place else pickup_location
+        meal_line = f"MEAL SERVICE:        {meal_type.upper()}\n" if meal_type else ""
+        facility_line = f"DINING FACILITY:     {facility_place}\n" if facility_place else ""
 
         temp_str = ""
         if timeline.get("measured_temp_celsius") is not None:
@@ -79,6 +98,8 @@ class GraniteAlertCompiler:
             "   In Accordance with FSSAI Surplus Regulations 2019 & LNN SWM By-Laws\n"
             "======================================================================\n\n"
             f"BATCH STATUS:        {eval_result['badge']}\n"
+            f"{facility_line}"
+            f"{meal_line}"
             f"FOOD ITEM:           {params['item']} ({params['category']})\n"
             f"QUANTITY / SERVINGS: {int(params['servings'])} Portions\n"
             f"STORAGE CONDITION:   {params['storage_condition'].upper()}\n"
@@ -87,7 +108,7 @@ class GraniteAlertCompiler:
             f"VERIFICATION TIME:   {timeline['assessment_time']} IST (Elapsed: {timeline['elapsed_minutes']} mins)\n"
             f"TRANSIT ESTIMATE:    {timeline['transit_minutes']} mins (Corridor: Zone {params['origin_zone']} -> Zone {params['dest_zone']})\n"
             f"SAFE CONSUME-BY:     {timeline['safe_pickup_by']} IST\n"
-            f"DISPATCH LOCATION:   {pickup_location}\n"
+            f"DISPATCH LOCATION:   {full_location}\n"
             f"TARGET RECIPIENT:    {params['shelter']}\n\n"
             "STATUTORY COMPLIANCE CITATIONS (RAG RETRIEVED):\n"
             f"{clauses_str}\n"
@@ -103,6 +124,7 @@ class GraniteAlertCompiler:
             "Mess Manager, Anna-Setu Campus Hub         Verified Shelter / NGO Coordinator\n"
             "======================================================================"
         )
+        return manifest
         return manifest
 
     def compile_rag_qa_answer(self, query: str, retrieved_rules: list) -> Dict[str, Any]:

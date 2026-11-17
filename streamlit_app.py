@@ -51,7 +51,61 @@ ZONE_OPTIONS = [
 ]
 ZONE_DICT = {label: zone_id for label, zone_id in ZONE_OPTIONS}
 
-SHELTER_LIST = pipeline.get_shelter_names()
+DINING_FACILITIES = [
+    "Central Campus Dining Complex (Main Mess)",
+    "North Campus Cafeteria (Block A Dining)",
+    "Girls Hostel Dining Hall (Block B)",
+    "International Scholars Mess (Block C)",
+    "Faculty & Executive Dining Hall",
+    "Student Activity Centre Food Court",
+    "Auditorium & Banquet Catering Hub",
+    "Other / Custom Facility"
+]
+
+MEAL_PRESETS = {
+    "Breakfast": {
+        "time_prep": "08:00",
+        "time_assess": "09:30",
+        "item": "Vegetable Poha, Idli Sambhar & Boiled Eggs",
+        "servings": 35,
+        "category_idx": 0,
+        "storage_idx": 0
+    },
+    "Lunch": {
+        "time_prep": "12:30",
+        "time_assess": "14:00",
+        "item": "Vegetable Pulao, Dal Tadka & Chapati",
+        "servings": 45,
+        "category_idx": 0,
+        "storage_idx": 0
+    },
+    "Snacks / High Tea": {
+        "time_prep": "16:30",
+        "time_assess": "17:30",
+        "item": "Vegetable Cutlets, Samosas & Tea Cake",
+        "servings": 30,
+        "category_idx": 3,
+        "storage_idx": 0
+    },
+    "Dinner": {
+        "time_prep": "20:00",
+        "time_assess": "21:30",
+        "item": "Paneer Butter Masala, Dal Makhani & Rotis",
+        "servings": 50,
+        "category_idx": 2,
+        "storage_idx": 0
+    },
+    "Other": {
+        "time_prep": "11:00",
+        "time_assess": "12:30",
+        "item": "Mixed Institutional Buffet Catering Spread",
+        "servings": 60,
+        "category_idx": 0,
+        "storage_idx": 0
+    }
+}
+
+SHELTER_LIST = ["Auto-Match Closest Verified Shelter (Recommended)"] + pipeline.get_shelter_names()
 
 st.title("🍽️ Anna-Setu: AI Campus Food Rescue & Plate-Waste Bio-Recycling Network")
 st.caption("1M1B AI for Sustainability Virtual Internship • In Collaboration with IBM SkillsBuild & AICTE • Pankhuri Govila")
@@ -70,12 +124,178 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # -----------------------------------------------------------------------------
 with tab1:
     t1_sub1, t1_sub2 = st.tabs([
-        "🔮 Module 1: AI Dining Demand Advisor",
-        "📋 Module 2: Surplus Rescue & RAG Compliance"
+        "📋 Module 2: Surplus Rescue & RAG Compliance",
+        "🔮 Module 1: AI Dining Demand Advisor"
     ])
 
-    # SUBTAB 1: DEMAND ADVISOR
+    # SUBTAB 1: SURPLUS RESCUE COMPLIANCE EVALUATION
     with t1_sub1:
+        col_input, col_output = st.columns([1, 1], gap="large")
+
+        with col_input:
+            st.subheader("🍛 Cafeteria Service Handoff Logs")
+
+            # STEP 1: PLACE & LOCATION (ENTERED FIRST!)
+            st.markdown("#### 📍 Step 1: Campus Dining Facility & Location (Place Details)")
+            c_p1, c_p2 = st.columns(2)
+            with c_p1:
+                facility_input = st.selectbox("Dining Facility / Place Name", DINING_FACILITIES, index=0)
+            with c_p2:
+                origin_zone_choice = st.selectbox("Campus Origin Zone (Lucknow)", [o[0] for o in ZONE_OPTIONS], index=0)
+
+            pickup_loc_input = st.text_input(
+                "Specific Pickup Bay / Dispatch Gate Location",
+                value="Gate 2 Service Loading Bay (Rear Kitchen Entrance)"
+            )
+
+            # STEP 2: MEAL SERVICE & FOOD DETAILS (ENTERED SECOND!)
+            st.markdown("#### 🍽️ Step 2: Meal Service & Surplus Food Details")
+            c_m1, c_m2 = st.columns(2)
+            with c_m1:
+                meal_type_choice = st.selectbox(
+                    "Meal Service Type",
+                    ["Lunch", "Dinner", "Breakfast", "Snacks / High Tea", "Other"],
+                    index=0
+                )
+            preset = MEAL_PRESETS.get(meal_type_choice, MEAL_PRESETS["Lunch"])
+
+            with c_m2:
+                servings_input = st.number_input(
+                    "Estimated Servings Leftover",
+                    min_value=1,
+                    max_value=2000,
+                    value=preset["servings"],
+                    step=5
+                )
+
+            item_input = st.text_input("Surplus Food Item(s)", value=preset["item"])
+            category_choice = st.selectbox(
+                "Food Category (FSSAI Microbial Profile)",
+                [o[0] for o in CATEGORY_OPTIONS],
+                index=preset["category_idx"]
+            )
+
+            c_t1, c_t2 = st.columns(2)
+            with c_t1:
+                time_prep_input = st.text_input("Time Prepared (HH:MM 24h)", value=preset["time_prep"])
+            with c_t2:
+                time_assess_input = st.text_input("Current Evaluation Time (HH:MM)", value=preset["time_assess"])
+
+            c_s1, c_s2 = st.columns(2)
+            with c_s1:
+                storage_choice = st.selectbox(
+                    "Storage & Holding Condition",
+                    [o[0] for o in STORAGE_OPTIONS],
+                    index=preset["storage_idx"]
+                )
+            with c_s2:
+                temp_input = st.number_input(
+                    "Measured Surface Temp (°C) [Optional]",
+                    min_value=0.0,
+                    max_value=100.0,
+                    value=0.0,
+                    step=0.5,
+                    help="Leave 0 if unmeasured; entering temp enables FSSAI Danger Zone verification."
+                )
+
+            # STEP 3: SIMULATED AI PIPELINE CONFIGURATIONS (MATCHING SCREENSHOT)
+            st.write("---")
+            st.markdown("### 🧠 Simulated AI Pipeline Configurations")
+            st.caption("Fields automatically synchronized and populated from the RAG Pipeline and Shelter Directory:")
+
+            category_key = CATEGORY_DICT[category_choice]
+            storage_key = STORAGE_DICT[storage_choice]
+            origin_zone_id = ZONE_DICT[origin_zone_choice]
+            temp_c_val = float(temp_input) if temp_input > 0.0 else None
+
+            # Dynamically sync configurations
+            sync_data = pipeline.sync_ai_pipeline_configurations(
+                origin_zone=origin_zone_id,
+                item=item_input,
+                servings=int(servings_input),
+                category_key=category_key,
+                time_prepared=time_prep_input,
+                assessment_time=time_assess_input,
+                storage_condition=storage_key,
+                measured_temp_celsius=temp_c_val
+            )
+
+            # Pill 1: Retrieved Safety Compliance Rule (RAG)
+            st.text_area(
+                "Retrieved Safety Compliance Rule (RAG)",
+                value=sync_data["retrieved_safety_rule"],
+                height=70,
+                key="rag_rule_box"
+            )
+
+            # Pill 2: AI Matched Shelter Destination
+            st.text_area(
+                "AI Matched Shelter Destination",
+                value=sync_data["ai_matched_shelter"],
+                height=70,
+                key="shelter_dest_box"
+            )
+
+            run_button = st.button("Execute IBM Granite Notification Compiler", type="primary", use_container_width=True)
+
+        with col_output:
+            st.subheader("✅ Generated Output (WhatsApp / SMS Ready Format)")
+
+            if run_button:
+                res = pipeline.evaluate_surplus(
+                    item=item_input,
+                    servings=int(servings_input),
+                    category_key=category_key,
+                    time_prepared=time_prep_input,
+                    assessment_time=time_assess_input,
+                    storage_condition=storage_key,
+                    origin_zone=origin_zone_id,
+                    shelter_display_name=sync_data["ai_matched_shelter"],
+                    pickup_location=pickup_loc_input,
+                    facility_place=facility_input,
+                    meal_type=meal_type_choice,
+                    measured_temp_celsius=temp_c_val
+                )
+
+                eval_data = res["evaluation"]
+                timeline = eval_data["timeline"]
+                status = eval_data["status"]
+
+                # Visual Badge
+                if status == "COMPLIANT_SAFE":
+                    st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+                elif status == "COMPLIANT_URGENT":
+                    st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+                else:
+                    st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+
+                if eval_data.get("temp_summary"):
+                    st.warning(f"🌡️ **Thermal Sensor Ground Truth:** {eval_data['temp_summary']}")
+
+                # Metrics Row
+                m1, m2, m3, m4 = st.columns(4)
+                m1.metric("Elapsed", f"{timeline['elapsed_minutes']} m")
+                m2.metric("Transit Est.", f"{timeline['transit_minutes']} m")
+                m3.metric("Total Exposure", f"{timeline['total_exposure_minutes']} m")
+                m4.metric("Safe Until", f"{timeline['safe_pickup_by']}")
+
+                st.write("---")
+                st.markdown("#### 📱 AI-Drafted Broadcast Message (IBM Granite)")
+                st.code(res["broadcast_message"], language="markdown")
+
+                with st.expander("📜 Retrieved FSSAI & LNN Statutory Grounding (RAG)", expanded=True):
+                    for rule in eval_data.get("retrieved_rules", []):
+                        st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}** *(Relevance Score: {rule.get('relevance_score', 0):.2f})*")
+                        st.info(f"\"{rule.get('text')}\"")
+
+                with st.expander("📑 Official FSSAI Form B & LNN Gate Pass Manifest", expanded=False):
+                    st.code(res["audit_manifest"], language="text")
+
+            else:
+                st.info("Verify the place, meal, and surplus parameters on the left. The RAG pipeline automatically populates the compliance rule and matched shelter.")
+
+    # SUBTAB 2: DEMAND ADVISOR
+    with t1_sub2:
         st.subheader("📊 Predictive Kitchen Turnout & Procurement Optimizer")
         st.caption("Averts food waste at the source by cutting overproduction buffers from 25% to 5% using calendar and weather analytics.")
 
@@ -86,7 +306,7 @@ with tab1:
             enrolled_input = st.number_input("Enrolled Student Cohort", min_value=100, max_value=5000, value=1200, step=50)
             c_m1, c_m2 = st.columns(2)
             with c_m1:
-                meal_input = st.selectbox("Meal Service", ["Lunch", "Dinner", "Breakfast"])
+                meal_input = st.selectbox("Meal Service Forecast", ["Lunch", "Dinner", "Breakfast"])
             with c_m2:
                 day_input = st.selectbox("Day of the Week", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], index=2)
 
@@ -139,97 +359,6 @@ with tab1:
                 st.info(f"**Chef Directive Summary:** {d_res['recommendation_summary']}")
             else:
                 st.info("Adjust the parameters on the left and click **Calculate Optimized Cooking Quota** to view predictive demand analytics.")
-
-    # SUBTAB 2: SURPLUS RESCUE COMPLIANCE EVALUATION
-    with t1_sub2:
-        col_input, col_output = st.columns([1, 1], gap="large")
-
-        with col_input:
-            st.subheader("🍛 Cafeteria Kitchen Surplus Handoff Logs")
-            item_input = st.text_input("Surplus Food Item(s)", value="Vegetable pulao and dal tadka")
-            servings_input = st.number_input("Estimated Servings Leftover", min_value=1, max_value=2000, value=45, step=5)
-            category_choice = st.selectbox("Food Category (FSSAI Microbial Profile)", [o[0] for o in CATEGORY_OPTIONS])
-
-            c_t1, c_t2 = st.columns(2)
-            with c_t1:
-                time_prep_input = st.text_input("Time Prepared (HH:MM 24h)", value="12:30")
-            with c_t2:
-                time_assess_input = st.text_input("Current Evaluation Time (HH:MM)", value="14:00")
-
-            c_s1, c_s2 = st.columns(2)
-            with c_s1:
-                storage_choice = st.selectbox("Storage & Holding Condition", [o[0] for o in STORAGE_OPTIONS])
-            with c_s2:
-                temp_input = st.number_input("Measured Surface Temp (°C) [Optional]", min_value=0.0, max_value=100.0, value=0.0, step=0.5, help="Leave 0 if unmeasured; entering temp enables FSSAI Danger Zone verification.")
-
-            pickup_loc_input = st.text_input("Campus Pickup Location", value="Main Campus Dining Hall, Gate 2")
-
-            c_z1, c_z2 = st.columns(2)
-            with c_z1:
-                origin_zone_choice = st.selectbox("Campus Origin Zone", [o[0] for o in ZONE_OPTIONS])
-            with c_z2:
-                shelter_choice = st.selectbox("Matched Destination Shelter", SHELTER_LIST)
-
-            run_button = st.button("🔍 Run RAG Verification & Generate Alert", type="primary", use_container_width=True)
-
-        with col_output:
-            st.subheader("🛡️ AI Compliance Assessment & RAG Output")
-
-            if run_button:
-                category_key = CATEGORY_DICT[category_choice]
-                storage_key = STORAGE_DICT[storage_choice]
-                origin_zone = ZONE_DICT[origin_zone_choice]
-                temp_c_val = float(temp_input) if temp_input > 0.0 else None
-
-                res = pipeline.evaluate_surplus(
-                    item=item_input,
-                    servings=int(servings_input),
-                    category_key=category_key,
-                    time_prepared=time_prep_input,
-                    assessment_time=time_assess_input,
-                    storage_condition=storage_key,
-                    origin_zone=origin_zone,
-                    shelter_display_name=shelter_choice,
-                    pickup_location=pickup_loc_input,
-                    measured_temp_celsius=temp_c_val
-                )
-
-                eval_data = res["evaluation"]
-                timeline = eval_data["timeline"]
-                status = eval_data["status"]
-
-                # Visual Badge
-                if status == "COMPLIANT_SAFE":
-                    st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-                elif status == "COMPLIANT_URGENT":
-                    st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-                else:
-                    st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-
-                if eval_data.get("temp_summary"):
-                    st.warning(f"🌡️ **Thermal Sensor Ground Truth:** {eval_data['temp_summary']}")
-
-                # Metrics Row
-                m1, m2, m3, m4 = st.columns(4)
-                m1.metric("Elapsed", f"{timeline['elapsed_minutes']} m")
-                m2.metric("Transit Est.", f"{timeline['transit_minutes']} m")
-                m3.metric("Total Exposure", f"{timeline['total_exposure_minutes']} m")
-                m4.metric("Safe Until", f"{timeline['safe_pickup_by']}")
-
-                st.write("---")
-                st.markdown("#### 📱 AI-Drafted Broadcast Message (IBM Granite)")
-                st.code(res["broadcast_message"], language="markdown")
-
-                with st.expander("📜 Retrieved FSSAI & LNN Statutory Grounding (RAG)", expanded=True):
-                    for rule in eval_data.get("retrieved_rules", []):
-                        st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}** *(Relevance Score: {rule.get('relevance_score', 0):.2f})*")
-                        st.info(f"\"{rule.get('text')}\"")
-
-                with st.expander("📑 Official FSSAI Form B & LNN Gate Pass Manifest", expanded=False):
-                    st.code(res["audit_manifest"], language="text")
-
-            else:
-                st.info("Fill out the Cafeteria Kitchen Surplus Handoff Logs on the left and click **Run RAG Verification** to evaluate safety parameters.")
 
 # -----------------------------------------------------------------------------
 # TAB 2: TRACK B (PLATE-WASTE INTERCEPTOR & BIO-RECYCLER SIMULATOR)
