@@ -11,6 +11,19 @@ import re
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 
+# ZeroGPU compatibility for Hugging Face Spaces
+try:
+    import spaces
+    HAS_SPACES = True
+except Exception:
+    HAS_SPACES = False
+
+if HAS_SPACES:
+    @spaces.GPU
+    def _zero_gpu_startup_check():
+        """Satisfies Hugging Face ZeroGPU runtime detection during startup."""
+        return True
+
 # Attempt importing modular RAG pipeline; if not found, use embedded standalone pipeline
 try:
     from rag.pipeline import AnnaSetuRAGPipeline
@@ -760,6 +773,12 @@ def demand_advisor_flow(
 
     return metrics_md, ingredients_md, guidance_md
 
+if HAS_SPACES:
+    try:
+        demand_advisor_flow = spaces.GPU(demand_advisor_flow)
+    except Exception:
+        pass
+
 
 def evaluate_surplus_flow(
     place_facility,
@@ -865,6 +884,12 @@ def evaluate_surplus_flow(
         updated_shelter
     )
 
+if HAS_SPACES:
+    try:
+        evaluate_surplus_flow = spaces.GPU(evaluate_surplus_flow)
+    except Exception:
+        pass
+
 
 def regulatory_qa_flow(query_text, authority_filter):
     """Generative RAG QA synthesized by IBM Granite citing legal clauses."""
@@ -890,6 +915,12 @@ def regulatory_qa_flow(query_text, authority_filter):
         )
 
     return answer_md, citations_md
+
+if HAS_SPACES:
+    try:
+        regulatory_qa_flow = spaces.GPU(regulatory_qa_flow)
+    except Exception:
+        pass
 
 
 def plate_waste_sim_flow(student_id, hostel_block, waste_grams, daily_diners):
@@ -947,9 +978,10 @@ def plate_waste_sim_flow(student_id, hostel_block, waste_grams, daily_diners):
 
 # Launch Gradio interface if gradio is available; otherwise run fallback message
 try:
+    # pyrefly: ignore[missing-import]
     import gradio as gr
 
-    with gr.Blocks(title="Anna-Setu: AI Campus Food Rescue & Bio-Recycling Network", theme=gr.themes.Soft()) as demo:
+    with gr.Blocks(title="Anna-Setu: AI Campus Food Rescue & Bio-Recycling Network") as demo:
         gr.Markdown("# 🍽️ Anna-Setu: AI Campus Food Rescue & Bio-Recycling Network")
         gr.Markdown(
             "### 1M1B AI for Sustainability Virtual Internship • In Collaboration with IBM SkillsBuild & AICTE • Pankhuri Govila\n"
