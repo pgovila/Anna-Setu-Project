@@ -1,3 +1,16 @@
+---
+title: Anna Setu Demo
+emoji: 🍽️
+colorFrom: green
+colorTo: yellow
+sdk: gradio
+sdk_version: 4.44.0
+python_version: '3.12'
+app_file: app.py
+pinned: false
+short_description: 'Anna-Setu: AI Campus Food Rescue & Redistribution Network'
+---
+
 # Anna-Setu: AI Campus Food Rescue & Plate-Waste Bio-Recycling Network 🍽️♻️
 
 ### 1M1B AI for Sustainability Virtual Internship Project Submission
