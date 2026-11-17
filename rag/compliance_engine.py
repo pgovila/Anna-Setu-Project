@@ -109,6 +109,7 @@ class FoodComplianceEngine:
         time_prepared: str,
         assessment_time: Optional[str] = None,
         storage_condition: str = "ambient",
+        measured_temp_celsius: Optional[float] = None,
         origin_zone: int = 4,
         dest_zone: int = 1,
         shelter_name: str = "Rain Basera Charbagh"
@@ -123,6 +124,7 @@ class FoodComplianceEngine:
             time_prepared: HH:MM time when cooking completed
             assessment_time: HH:MM time of current evaluation (defaults to now)
             storage_condition: 'ambient', 'hot_holding' (>=65C), or 'refrigerated' (<=5C)
+            measured_temp_celsius: Optional physical thermal sensor reading (e.g. from Track B MLX90614)
             origin_zone: Lucknow zone ID of campus mess (1-8)
             dest_zone: Lucknow zone ID of receiving shelter (1-8)
             shelter_name: Destination shelter name
@@ -147,17 +149,58 @@ class FoodComplianceEngine:
         transit_minutes = self._estimate_transit_minutes(origin_zone, dest_zone)
         total_projected_exposure = elapsed_minutes + transit_minutes
 
+        # Temperature Sensor Verification & Danger Zone Assessment (FSSAI Reg 4(3))
+        temp_alert = None
+        temp_status_summary = "NOT MEASURED"
+        effective_storage = storage_condition
+
+        if measured_temp_celsius is not None:
+            if storage_condition == "hot_holding":
+                if measured_temp_celsius < 65.0:
+                    temp_alert = (
+                        f"⚠️ TEMPERATURE ABUSE: Stated hot-holding temperature is {measured_temp_celsius:.1f}°C, "
+                        f"which has fallen below the statutory 65°C threshold (FSSAI Reg 4(3)). "
+                        f"Food has entered the Microbial Danger Zone (5°C-65°C). Reverting to strict ambient holding rules."
+                    )
+                    temp_status_summary = f"DANGER ZONE BREACH ({measured_temp_celsius:.1f}°C < 65°C)"
+                    effective_storage = "ambient"
+                else:
+                    temp_status_summary = f"HOT-HOLDING VERIFIED ({measured_temp_celsius:.1f}°C >= 65°C)"
+                    temp_alert = f"✅ Active hot-holding verified at {measured_temp_celsius:.1f}°C (Compliant with FSSAI Reg 4(3))."
+
+            elif storage_condition == "refrigerated":
+                if measured_temp_celsius > 5.0:
+                    temp_alert = (
+                        f"⚠️ COLD-CHAIN BREACH: Chilled temperature is {measured_temp_celsius:.1f}°C "
+                        f"(exceeds statutory 5°C ceiling under FSSAI Reg 4(3)). Ambient holding rules applied."
+                    )
+                    temp_status_summary = f"COLD CHAIN BREACH ({measured_temp_celsius:.1f}°C > 5°C)"
+                    effective_storage = "ambient"
+                else:
+                    temp_status_summary = f"COLD-CHAIN VERIFIED ({measured_temp_celsius:.1f}°C <= 5°C)"
+                    temp_alert = f"✅ Active cold-chain verified at {measured_temp_celsius:.1f}°C (Compliant with FSSAI Reg 4(3))."
+
+            else:  # ambient
+                if 5.0 <= measured_temp_celsius <= 65.0:
+                    temp_status_summary = f"IN DANGER ZONE ({measured_temp_celsius:.1f}°C)"
+                    temp_alert = f"⚠️ Ambient batch is within the Bacterial Danger Zone ({measured_temp_celsius:.1f}°C). FSSAI 2h/4h rules strictly enforced."
+                else:
+                    temp_status_summary = f"AMBIENT ({measured_temp_celsius:.1f}°C)"
+
         # Formulate query for RAG retriever
         query_terms = (
-            f"{item} {profile['name']} {storage_condition} holding time "
+            f"{item} {profile['name']} {effective_storage} holding time "
             f"danger zone safe donation Lucknow transit"
         )
+        if measured_temp_celsius is not None:
+            query_terms += f" temperature danger zone {measured_temp_celsius}C"
+
         retrieved_rules = self.retriever.retrieve(query_terms, top_k=3)
 
         # Base calculations for safe pickup by
-        if storage_condition == "ambient":
+        if effective_storage == "ambient":
             max_allowed_minutes = profile["ambient_max_minutes"]
-        elif storage_condition == "hot_holding":
+        elif effective_storage == "hot_holding":
             max_allowed_minutes = profile["ambient_max_minutes"] + 90  # 1.5 hr extension under >=65C
         else:  # refrigerated
             max_allowed_minutes = 1440  # 24 hours under <=5C
@@ -231,12 +274,18 @@ class FoodComplianceEngine:
                 f"Safe consumption window active until {safe_until_str}."
             )
 
+        if temp_alert and ("TEMPERATURE ABUSE" in temp_alert or "COLD-CHAIN BREACH" in temp_alert):
+            reason = f"{temp_alert} {reason}"
+            compliance_note = f"{temp_alert} {compliance_note}"
+
         return {
             "status": status,
             "badge": verdict_badge,
             "reason": reason,
             "compliance_note": compliance_note,
             "lnn_action": lnn_action,
+            "temp_summary": temp_status_summary,
+            "temp_status": "DANGER_ZONE_BREACH" if "BREACH" in temp_status_summary else ("VERIFIED" if "VERIFIED" in temp_status_summary else "NORMAL"),
             "timeline": {
                 "time_prepared": time_prepared,
                 "assessment_time": dt_assess.strftime("%H:%M"),
@@ -244,13 +293,18 @@ class FoodComplianceEngine:
                 "transit_minutes": transit_minutes,
                 "total_exposure_minutes": total_projected_exposure,
                 "safe_pickup_by": safe_until_str,
-                "max_allowed_minutes": max_allowed_minutes
+                "max_allowed_minutes": max_allowed_minutes,
+                "measured_temp_celsius": measured_temp_celsius,
+                "temp_status_summary": temp_status_summary,
+                "temp_alert": temp_alert
             },
             "parameters": {
                 "item": item,
                 "servings": servings,
                 "category": profile["name"],
-                "storage_condition": storage_condition,
+                "storage_condition": effective_storage,
+                "stated_storage_condition": storage_condition,
+                "measured_temp_celsius": measured_temp_celsius,
                 "origin_zone": origin_zone,
                 "dest_zone": dest_zone,
                 "shelter": shelter_name

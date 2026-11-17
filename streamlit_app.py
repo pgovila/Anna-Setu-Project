@@ -1,7 +1,7 @@
 """
 Anna-Setu: Streamlit Interface for Campus Food Rescue & Plate-Waste Bio-Recycling Network
 Grounded in FSSAI Surplus Food Regulations (2019) & Lucknow Nagar Nigam Food Service By-Laws.
-Covers Dual Tracks: Track A (Software AI & RAG) + Track B (Smart Plate-Waste Interceptor & Bio-Recycler).
+Covers Dual Tracks: Track A (Software AI & RAG Engine) + Track B (Smart Plate-Waste Interceptor & Bio-Recycler).
 """
 
 import streamlit as st
@@ -58,109 +58,192 @@ st.caption("1M1B AI for Sustainability Virtual Internship • In Collaboration w
 
 # Five Executive Tabs
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "🍛 Track A: Surplus Rescue & RAG Compliance",
+    "🍛 Track A: Predictive Demand & Surplus RAG",
     "♻️ Track B: Plate-Waste Interceptor & Bio-Recycler",
-    "🏛️ Regulatory Vector Search (RAG QA)",
+    "💬 Conversational RAG Regulatory Assistant",
     "📊 Project Tracker & Milestones (PankhuriGovila_YIRP)",
     "📖 FSSAI & LNN Compliance Guide & SOPs"
 ])
 
 # -----------------------------------------------------------------------------
-# TAB 1: TRACK A (SURPLUS RESCUE & RAG COMPLIANCE)
+# TAB 1: TRACK A (MODULE 1 DEMAND ADVISOR + MODULE 2 SURPLUS RAG COMPLIANCE)
 # -----------------------------------------------------------------------------
 with tab1:
-    col_input, col_output = st.columns([1, 1], gap="large")
+    t1_sub1, t1_sub2 = st.tabs([
+        "🔮 Module 1: AI Dining Demand Advisor",
+        "📋 Module 2: Surplus Rescue & RAG Compliance"
+    ])
 
-    with col_input:
-        st.subheader("🍛 Cafeteria Kitchen Surplus Handoff Logs")
-        item_input = st.text_input("Surplus Food Item(s)", value="Vegetable pulao and dal tadka")
-        servings_input = st.number_input("Estimated Servings Leftover", min_value=1, max_value=2000, value=45, step=5)
-        category_choice = st.selectbox("Food Category (FSSAI Microbial Profile)", [o[0] for o in CATEGORY_OPTIONS])
-        
-        c_t1, c_t2 = st.columns(2)
-        with c_t1:
-            time_prep_input = st.text_input("Time Prepared (HH:MM 24h)", value="12:30")
-        with c_t2:
-            time_assess_input = st.text_input("Current Evaluation Time (HH:MM)", value="14:00")
-            
-        storage_choice = st.selectbox("Storage & Holding Condition", [o[0] for o in STORAGE_OPTIONS])
-        pickup_loc_input = st.text_input("Campus Pickup Location", value="Main Campus Dining Hall, Gate 2")
-        
-        c_z1, c_z2 = st.columns(2)
-        with c_z1:
-            origin_zone_choice = st.selectbox("Campus Origin Zone", [o[0] for o in ZONE_OPTIONS])
-        with c_z2:
-            shelter_choice = st.selectbox("Matched Destination Shelter", SHELTER_LIST)
+    # SUBTAB 1: DEMAND ADVISOR
+    with t1_sub1:
+        st.subheader("📊 Predictive Kitchen Turnout & Procurement Optimizer")
+        st.caption("Averts food waste at the source by cutting overproduction buffers from 25% to 5% using calendar and weather analytics.")
 
-        run_button = st.button("🔍 Run RAG Verification & Generate Alert", type="primary", use_container_width=True)
+        col_d1, col_d2 = st.columns([1, 1], gap="large")
 
-    with col_output:
-        st.subheader("🛡️ AI Compliance Assessment & RAG Output")
-        
-        if run_button:
-            category_key = CATEGORY_DICT[category_choice]
-            storage_key = STORAGE_DICT[storage_choice]
-            origin_zone = ZONE_DICT[origin_zone_choice]
+        with col_d1:
+            st.markdown("### 🍳 Meal Service Parameters")
+            enrolled_input = st.number_input("Enrolled Student Cohort", min_value=100, max_value=5000, value=1200, step=50)
+            c_m1, c_m2 = st.columns(2)
+            with c_m1:
+                meal_input = st.selectbox("Meal Service", ["Lunch", "Dinner", "Breakfast"])
+            with c_m2:
+                day_input = st.selectbox("Day of the Week", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], index=2)
 
-            res = pipeline.evaluate_surplus(
-                item=item_input,
-                servings=int(servings_input),
-                category_key=category_key,
-                time_prepared=time_prep_input,
-                assessment_time=time_assess_input,
-                storage_condition=storage_key,
-                origin_zone=origin_zone,
-                shelter_display_name=shelter_choice,
-                pickup_location=pickup_loc_input
-            )
+            c_c1, c_c2 = st.columns(2)
+            with c_c1:
+                cal_input = st.selectbox("Academic Calendar", ["Regular Academic Day", "Exam Week (High Attendance)", "Weekend / Pre-Holiday", "Post-Exam / Festival Eve"])
+            with c_c2:
+                weather_input = st.selectbox("Weather Forecast", ["Clear Mild (~24°C)", "Extreme Hot Summer (>38°C)", "Monsoon Heavy Rain", "Cold Winter (~12°C)"])
 
-            eval_data = res["evaluation"]
-            timeline = eval_data["timeline"]
-            status = eval_data["status"]
+            base_rate_input = st.slider("Historical Baseline Turnout Rate (%)", min_value=50, max_value=100, value=85, step=1)
 
-            # Visual Badge
-            if status == "COMPLIANT_SAFE":
-                st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-            elif status == "COMPLIANT_URGENT":
-                st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+            btn_demand = st.button("🔮 Calculate Optimized Cooking Quota", type="primary", use_container_width=True)
+
+        with col_d2:
+            st.markdown("### 🎯 Kitchen Production Directive")
+            if btn_demand:
+                d_res = pipeline.predict_meal_demand(
+                    enrolled_students=int(enrolled_input),
+                    meal_type=meal_input,
+                    day_of_week=day_input,
+                    academic_calendar=cal_input,
+                    weather=weather_input,
+                    base_turnout_rate=float(base_rate_input) / 100.0
+                )
+
+                st.success(
+                    f"**Predicted Turnout:** {d_res['predicted_turnout_students']} students ({d_res['turnout_rate_pct']:.1f}%)\n\n"
+                    f"**Recommended Cooking Target:** **{d_res['recommended_cooking_target']} portions** "
+                    f"(vs {d_res['traditional_unoptimized_target']} traditional)"
+                )
+
+                dm1, dm2, dm3 = st.columns(3)
+                dm1.metric("Wasted Meals Prevented", f"{d_res['portions_prevented_from_waste']} meals")
+                dm2.metric("Procurement Savings", f"₹{d_res['cost_savings_inr']:,.2f}")
+                dm3.metric("Freshwater Saved", f"{d_res['portions_prevented_from_waste'] * 266:,.0f} L")
+
+                st.write("---")
+                st.markdown("#### ⚖️ Raw Ingredient Procurement Plan (kg)")
+                ing = d_res["ingredient_breakdown_kg"]
+                df_ing = pd.DataFrame([
+                    {"Raw Ingredient": "Rice & Grains", "Traditional Prep (kg)": round(ing['rice_or_grains_kg'] * 1.25, 1), "Optimized Prep (kg)": ing['rice_or_grains_kg'], "Saved (kg)": round(ing['rice_or_grains_kg'] * 0.20, 1)},
+                    {"Raw Ingredient": "Lentils / Dal", "Traditional Prep (kg)": round(ing['dal_or_lentils_kg'] * 1.25, 1), "Optimized Prep (kg)": ing['dal_or_lentils_kg'], "Saved (kg)": round(ing['dal_or_lentils_kg'] * 0.20, 1)},
+                    {"Raw Ingredient": "Fresh Vegetables", "Traditional Prep (kg)": round(ing['vegetables_kg'] * 1.25, 1), "Optimized Prep (kg)": ing['vegetables_kg'], "Saved (kg)": round(ing['vegetables_kg'] * 0.20, 1)},
+                    {"Raw Ingredient": "Cooking Oil", "Traditional Prep (kg)": round(ing['cooking_oil_kg'] * 1.25, 1), "Optimized Prep (kg)": ing['cooking_oil_kg'], "Saved (kg)": round(ing['cooking_oil_kg'] * 0.20, 1)},
+                    {"Raw Ingredient": "Dairy / Paneer", "Traditional Prep (kg)": round(ing['dairy_or_paneer_kg'] * 1.25, 1), "Optimized Prep (kg)": ing['dairy_or_paneer_kg'], "Saved (kg)": round(ing['dairy_or_paneer_kg'] * 0.20, 1)},
+                    {"Raw Ingredient": "Spices & Salt", "Traditional Prep (kg)": round(ing['spices_kg'] * 1.25, 1), "Optimized Prep (kg)": ing['spices_kg'], "Saved (kg)": round(ing['spices_kg'] * 0.20, 1)}
+                ])
+                st.dataframe(df_ing, use_container_width=True, hide_index=True)
+
+                st.info(f"**Chef Directive Summary:** {d_res['recommendation_summary']}")
             else:
-                st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+                st.info("Adjust the parameters on the left and click **Calculate Optimized Cooking Quota** to view predictive demand analytics.")
 
-            # Metrics Row
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Elapsed", f"{timeline['elapsed_minutes']} m")
-            m2.metric("Transit Est.", f"{timeline['transit_minutes']} m")
-            m3.metric("Total Exposure", f"{timeline['total_exposure_minutes']} m")
-            m4.metric("Safe Until", f"{timeline['safe_pickup_by']}")
+    # SUBTAB 2: SURPLUS RESCUE COMPLIANCE EVALUATION
+    with t1_sub2:
+        col_input, col_output = st.columns([1, 1], gap="large")
 
-            st.write("---")
-            st.markdown("#### 📱 AI-Drafted Broadcast Message (IBM Granite)")
-            st.code(res["broadcast_message"], language="markdown")
+        with col_input:
+            st.subheader("🍛 Cafeteria Kitchen Surplus Handoff Logs")
+            item_input = st.text_input("Surplus Food Item(s)", value="Vegetable pulao and dal tadka")
+            servings_input = st.number_input("Estimated Servings Leftover", min_value=1, max_value=2000, value=45, step=5)
+            category_choice = st.selectbox("Food Category (FSSAI Microbial Profile)", [o[0] for o in CATEGORY_OPTIONS])
 
-            with st.expander("📜 Retrieved FSSAI & LNN Statutory Grounding (RAG)", expanded=True):
-                for rule in eval_data.get("retrieved_rules", []):
-                    st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}** *(Relevance Score: {rule.get('relevance_score', 0):.2f})*")
-                    st.info(f"\"{rule.get('text')}\"")
+            c_t1, c_t2 = st.columns(2)
+            with c_t1:
+                time_prep_input = st.text_input("Time Prepared (HH:MM 24h)", value="12:30")
+            with c_t2:
+                time_assess_input = st.text_input("Current Evaluation Time (HH:MM)", value="14:00")
 
-            with st.expander("📑 Official FSSAI Form B & LNN Gate Pass Manifest", expanded=False):
-                st.code(res["audit_manifest"], language="text")
+            c_s1, c_s2 = st.columns(2)
+            with c_s1:
+                storage_choice = st.selectbox("Storage & Holding Condition", [o[0] for o in STORAGE_OPTIONS])
+            with c_s2:
+                temp_input = st.number_input("Measured Surface Temp (°C) [Optional]", min_value=0.0, max_value=100.0, value=0.0, step=0.5, help="Leave 0 if unmeasured; entering temp enables FSSAI Danger Zone verification.")
 
-        else:
-            st.info("Fill out the Cafeteria Kitchen Surplus Handoff Logs on the left and click **Run RAG Verification** to evaluate safety parameters.")
+            pickup_loc_input = st.text_input("Campus Pickup Location", value="Main Campus Dining Hall, Gate 2")
+
+            c_z1, c_z2 = st.columns(2)
+            with c_z1:
+                origin_zone_choice = st.selectbox("Campus Origin Zone", [o[0] for o in ZONE_OPTIONS])
+            with c_z2:
+                shelter_choice = st.selectbox("Matched Destination Shelter", SHELTER_LIST)
+
+            run_button = st.button("🔍 Run RAG Verification & Generate Alert", type="primary", use_container_width=True)
+
+        with col_output:
+            st.subheader("🛡️ AI Compliance Assessment & RAG Output")
+
+            if run_button:
+                category_key = CATEGORY_DICT[category_choice]
+                storage_key = STORAGE_DICT[storage_choice]
+                origin_zone = ZONE_DICT[origin_zone_choice]
+                temp_c_val = float(temp_input) if temp_input > 0.0 else None
+
+                res = pipeline.evaluate_surplus(
+                    item=item_input,
+                    servings=int(servings_input),
+                    category_key=category_key,
+                    time_prepared=time_prep_input,
+                    assessment_time=time_assess_input,
+                    storage_condition=storage_key,
+                    origin_zone=origin_zone,
+                    shelter_display_name=shelter_choice,
+                    pickup_location=pickup_loc_input,
+                    measured_temp_celsius=temp_c_val
+                )
+
+                eval_data = res["evaluation"]
+                timeline = eval_data["timeline"]
+                status = eval_data["status"]
+
+                # Visual Badge
+                if status == "COMPLIANT_SAFE":
+                    st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+                elif status == "COMPLIANT_URGENT":
+                    st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+                else:
+                    st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+
+                if eval_data.get("temp_summary"):
+                    st.warning(f"🌡️ **Thermal Sensor Ground Truth:** {eval_data['temp_summary']}")
+
+                # Metrics Row
+                m1, m2, m3, m4 = st.columns(4)
+                m1.metric("Elapsed", f"{timeline['elapsed_minutes']} m")
+                m2.metric("Transit Est.", f"{timeline['transit_minutes']} m")
+                m3.metric("Total Exposure", f"{timeline['total_exposure_minutes']} m")
+                m4.metric("Safe Until", f"{timeline['safe_pickup_by']}")
+
+                st.write("---")
+                st.markdown("#### 📱 AI-Drafted Broadcast Message (IBM Granite)")
+                st.code(res["broadcast_message"], language="markdown")
+
+                with st.expander("📜 Retrieved FSSAI & LNN Statutory Grounding (RAG)", expanded=True):
+                    for rule in eval_data.get("retrieved_rules", []):
+                        st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}** *(Relevance Score: {rule.get('relevance_score', 0):.2f})*")
+                        st.info(f"\"{rule.get('text')}\"")
+
+                with st.expander("📑 Official FSSAI Form B & LNN Gate Pass Manifest", expanded=False):
+                    st.code(res["audit_manifest"], language="text")
+
+            else:
+                st.info("Fill out the Cafeteria Kitchen Surplus Handoff Logs on the left and click **Run RAG Verification** to evaluate safety parameters.")
 
 # -----------------------------------------------------------------------------
 # TAB 2: TRACK B (PLATE-WASTE INTERCEPTOR & BIO-RECYCLER SIMULATOR)
 # -----------------------------------------------------------------------------
 with tab2:
     st.subheader("♻️ Track B: Smart Plate-Waste Interceptor & Accelerated Bio-Recycling Station")
-    st.caption("Behavioral Plate Nudge Screen • Macerator Shredder • Accelerated Composter ($55°C - 65°C) • Bio-Fertilizer Output")
+    st.caption("Behavioral Plate Nudge Screen • Macerator Shredder • Accelerated Composter (55°C - 65°C) • Bio-Fertilizer Output")
 
     col_b1, col_b2 = st.columns([1, 1], gap="large")
 
     with col_b1:
         st.markdown("### 🍽️ Dish-Clearing Tray Return Simulator")
         st.write("Simulate a diner returning their tray with uneaten food scraps at the cafeteria dish-clearing counter:")
-        
+
         sim_diner_name = st.text_input("Diner / Student ID (Optional)", value="STUDENT-2026-88")
         sim_hostel_block = st.selectbox("Hostel Block", ["Block A (Boys)", "Block B (Girls)", "Block C (International)", "Day Scholar Dining"])
         sim_waste_grams = st.slider("Plate Waste Leftover (Grams)", min_value=0, max_value=450, value=175, step=5)
@@ -175,14 +258,14 @@ with tab2:
         st.info(
             f"**⚠️ ATTENTION DINER:** You left **{sim_waste_grams} grams** of uneaten food on your plate!\n\n"
             f"💧 **Embedded Water Wasted:** ~{sim_water_liters:.1f} Liters of freshwater\n\n"
-            f"🌍 **Carbon Equivalent:** {sim_co2e_grams:.0f}g $CO_2e$ fugitive emissions\n\n"
+            f"🌍 **Carbon Equivalent:** {sim_co2e_grams:.0f}g CO2e fugitive emissions\n\n"
             f"🏆 **Hostel Leaderboard:** {sim_hostel_block} is currently averaging 91% Clean Plates this week!\n\n"
             f"*💡 Mindful Eating Nudge: Take only what you finish. You can always take second helpings!*"
         )
 
     with col_b2:
         st.markdown("### 🧪 On-Site Bio-Recycling Yield & Impact")
-        
+
         # Campus aggregated metrics
         cum_daily_waste_kg = (sim_daily_diners * sim_waste_grams) / 1000.0
         compost_yield_kg = cum_daily_waste_kg * 0.15 # 85% volume/moisture reduction -> 15% dry bio-fertilizer
@@ -194,41 +277,56 @@ with tab2:
         k2.metric("Organic Bio-Fertilizer Harvested", f"{compost_yield_kg:.1f} kg / day", delta="15% Dry Yield")
 
         k3, k4 = st.columns(2)
-        k3.metric("Annual Bio-Fertilizer Yield", f"{annual_compost_kg:.0f} kg / year", delta="Campus Landscaping")
+        k3.metric("Annual Bio-Fertilizer Yield", f"{annual_compost_kg:,.0f} kg / year", delta="Campus Landscaping")
         k4.metric("Landfill Methane Avoided", f"{methane_avoided_kg:.1f} kg CO2e / day", delta="100% On-Site")
 
         st.write("---")
         st.markdown("#### 🔄 How the Recyclable Product is Created (The Closed Loop):")
-        st.markdown(r"""
+        st.markdown("""
         1. **Pre-Processing Shredder:** Scraped plate waste is shredded to 3-5 mm particles, maximizing microbial surface contact.
-        2. **Thermophilic Stage ($55^\circ\text{C} - 65^\circ\text{C}$):** PTC ceramic heating element accelerates decomposition and sterilizes pathogens (*Salmonella*, *E. coli*).
+        2. **Thermophilic Stage (55°C - 65°C):** PTC ceramic heating element accelerates decomposition and sterilizes pathogens (*Salmonella*, *E. coli*).
         3. **Aerobic Aeration:** Brushless fan + activated carbon filter continuously supplies oxygen, eliminating foul odors.
         4. **Recyclable Output:** In 12-24 hours, the scraps become a **dark, nutrient-rich, pathogen-free organic bio-fertilizer**.
         5. **Zero Municipal Burden:** Lucknow Nagar Nigam trucks carry **0 kg** of rotting wet waste from this mess, saving city transport fuel and avoiding dump fines!
         """)
 
 # -----------------------------------------------------------------------------
-# TAB 3: REGULATORY VECTOR SEARCH (RAG QA)
+# TAB 3: CONVERSATIONAL RAG REGULATORY ASSISTANT (GENERATIVE LEGAL QA)
 # -----------------------------------------------------------------------------
 with tab3:
-    st.subheader("🏛️ Interactive Regulatory Knowledge Base Explorer (RAG Search)")
-    st.write("Query statutory provisions from the Food Safety and Standards Authority of India (FSSAI) and Lucknow Nagar Nigam (LNN) Municipal By-Laws.")
-    
-    query = st.text_input(
-        "Enter statutory keyword or question:",
-        value="What is the ambient holding time limit for cooked dal and rice under FSSAI?"
-    )
-    if st.button("Search Knowledge Base"):
-        results = pipeline.query_regulations(query, top_k=4)
-        if not results:
-            st.warning("No direct matches found.")
-        else:
-            for r in results:
-                st.markdown(f"### [{r.get('id')}] {r.get('title')}")
-                st.caption(f"**Authority:** {r.get('source_authority')} | **Clause:** {r.get('clause')} | **Score:** {r.get('relevance_score', 0):.3f}")
-                st.write(r.get("text"))
-                st.write(f"*Keywords:* `{'`, `'.join(r.get('keywords', []))}`")
-                st.write("---")
+    st.subheader("💬 Conversational RAG Regulatory Assistant")
+    st.caption("Ask questions about FSSAI Surplus Regulations (2019) and Lucknow Nagar Nigam Municipal By-Laws. Generates structured legal guidance citing authoritative clauses.")
+
+    c_q1, c_q2 = st.columns([3, 1])
+    with c_q1:
+        qa_query = st.text_input(
+            "Enter legal or operational regulatory question:",
+            value="Can I donate cooked paneer curry after 3 hours at room temperature?"
+        )
+    with c_q2:
+        qa_filter = st.selectbox(
+            "Filter Legal Source",
+            ["All Authorities", "FSSAI Regulations Only", "Lucknow Nagar Nigam By-Laws Only"]
+        )
+
+    if st.button("⚖️ Synthesize Legal Guidance via RAG", type="primary"):
+        filter_source = None
+        if qa_filter == "FSSAI Regulations Only":
+            filter_source = "FSSAI"
+        elif qa_filter == "Lucknow Nagar Nigam By-Laws Only":
+            filter_source = "LUCKNOW_NAGAR_NIGAM"
+
+        qa_result = pipeline.ask_regulations(query=qa_query, top_k=3, filter_source=filter_source)
+
+        st.markdown(qa_result.get("synthesized_answer", ""))
+
+        st.write("---")
+        with st.expander("📚 Retrieved Source Law Chunks & Similarity Scores", expanded=True):
+            for idx, clause in enumerate(qa_result.get("retrieved_clauses", []), 1):
+                st.markdown(f"### {idx}. [{clause.get('id')}] {clause.get('title')}")
+                st.caption(f"**Authority:** {clause.get('source_authority')} | **Clause:** `{clause.get('clause')}` | **Similarity Score:** `{clause.get('relevance_score', 0):.3f}`")
+                st.info(clause.get("text"))
+                st.caption(f"Keywords: `{'`, `'.join(clause.get('keywords', []))}`")
 
 # -----------------------------------------------------------------------------
 # TAB 4: PROJECT TRACKER & MILESTONES (PankhuriGovila_YIRP)
@@ -244,7 +342,7 @@ with tab4:
 
     st.write("---")
     st.markdown("#### 📋 Activity Tracker Logbook (WBS Tasks & 1M1B Support Column)")
-    
+
     # Load and display tracker CSV
     try:
         df_tracker = pd.read_csv("PankhuriGovila_YIRP_Project_Tracker.csv")
@@ -260,7 +358,7 @@ with tab4:
             st.download_button("📥 Download Excel Tracker (.xlsx)", f, "PankhuriGovila_YIRP_Project_Tracker.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     with d_c2:
         with open("Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf", "rb") as f:
-            st.download_button("📥 Download Official 5-Page PDF", f, "Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf", "application/pdf")
+            st.download_button("📥 Download Official 3-Page PDF", f, "Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf", "application/pdf")
     with d_c3:
         with open("PankhuriGovila_YIRP_Project_Tracker.csv", "rb") as f:
             st.download_button("📥 Download CSV (.csv)", f, "PankhuriGovila_YIRP_Project_Tracker.csv", "text/csv")
@@ -270,19 +368,19 @@ with tab4:
 # -----------------------------------------------------------------------------
 with tab5:
     st.subheader("📚 Statutory Food Regulations & Municipal Sanitation By-Laws")
-    st.markdown(r"""
+    st.markdown("""
     ### 1. FSSAI Surplus Food Regulations (2019)
     - **Danger Zone:** 5°C to 65°C (41°F to 149°F). Bacteria multiply exponentially within this range.
     - **The 2-Hour / 4-Hour Rule (Reg 4(2)):**
-      - **0 - 2 Hours:** Safe to redistribute, chill down to $\le 5^\circ\text{C}$, or reheat to $\ge 74^\circ\text{C}$.
+      - **0 - 2 Hours:** Safe to redistribute, chill down to <= 5°C, or reheat to >= 74°C.
       - **2 - 4 Hours:** Safe to distribute for immediate consumption only.
       - **> 4 Hours:** **UNSAFE.** Condemned from human consumption due to heat-stable enterotoxins.
-    - **Active Temperature Controls (Reg 4(3)):** Hot holding maintained continuously at $\ge 65^\circ\text{C}$; cold holding $\le 5^\circ\text{C}$.
+    - **Active Temperature Controls (Reg 4(3)):** Hot holding maintained continuously at >= 65°C; cold holding <= 5°C.
     - **Good Samaritan Immunity (Reg 4(5) & Sec 7):** Donors acting in good faith who comply with hygienic and thermal standards are legally indemnified against civil or criminal liability.
     - **Audit Log (Reg 7):** Mandatory **Form B Surplus Handover Register** kept for 1 year for Food Safety Officer audits.
 
     ### 2. Lucknow Nagar Nigam (LNN) Municipal Guidelines
-    - **Corridor Transit Ceiling (Sec 14):** Maximum **45 minutes** transit across Lucknow traffic corridors (Hazratganj, Polytechnic, Charbagh) to prevent heat-spoilage in summer ($>38^\circ\text{C}$). Insulated thermal cambros required for $>45$ mins.
+    - **Corridor Transit Ceiling (Sec 14):** Maximum **45 minutes** transit across Lucknow traffic corridors (Hazratganj, Polytechnic, Charbagh) to prevent heat-spoilage in summer (>38°C). Insulated thermal cambros required for >45 mins.
     - **Dumping Ban & Penalties (Sec 10):** Illegal to discard commercial food waste into municipal dustbins (*dhalavs*); spot fines **₹5,000 to ₹25,000**.
     - **Zero-Landfill Mandate (Sec 18):** Non-compliant surplus food **must NEVER** be dumped in municipal garbage bins. It must be diverted to campus aerobic composting or LNN Kanha Upvan / Mohanlalganj biomethanation facilities.
     - **Gate Clearance (Sec 21):** Campus security must verify and timestamp all outgoing food rescue vehicles with an Anna-Setu Digital Gate Pass.

@@ -104,9 +104,56 @@ def run_tests():
     for m in matches:
         print(f"  * [{m['id']}] {m['clause']} | Score: {m['relevance_score']}")
         print(f"    Excerpt: {m['text'][:120]}...")
+    assert len(matches) > 0
+
+    # Test 6: Physical Temperature Danger Zone Breach
+    print("\n--- TEST 6: Physical Temperature Danger Zone Breach (Hot-Holding dropped to 52°C) ---")
+    res6 = pipeline.evaluate_surplus(
+        item="Dal Makhani and Jeera Rice",
+        servings=60,
+        category_key="cooked_grains_curry",
+        time_prepared="12:00",
+        assessment_time="13:30",
+        storage_condition="hot_holding",
+        measured_temp_celsius=52.0, # Breaches >= 65C threshold!
+        origin_zone=4,
+        shelter_display_name="Rain Basera Charbagh Railway Hub (Zone 1 (Charbagh / Station Road))"
+    )
+    eval6 = res6["evaluation"]
+    print("Status:", eval6["badge"])
+    print("Temp Summary:", eval6["timeline"]["temp_status_summary"])
+    assert "DANGER ZONE BREACH" in eval6["timeline"]["temp_status_summary"]
+
+    # Test 7: Generative RAG Q&A Synthesis
+    print("\n--- TEST 7: Generative RAG Q&A Synthesis (IBM Granite Compiler) ---")
+    qa_res = pipeline.ask_regulations("Can I donate cooked paneer curry after 3 hours at room temperature?")
+    print("Authority:", qa_res["authority"])
+    print("Confidence:", qa_res["confidence_score"])
+    print("Citations Count:", len(qa_res["citations"]))
+    print("\n[Synthesized RAG Answer Excerpt]:")
+    print(qa_res["answer_markdown"][:300] + "...")
+    assert qa_res["confidence_score"] > 0.1
+    assert len(qa_res["citations"]) > 0
+
+    # Test 8: Predictive Meal Demand Forecasting (Module 1)
+    print("\n--- TEST 8: Predictive Meal Demand Forecasting (Module 1) ---")
+    demand = pipeline.predict_meal_demand(
+        enrolled_students=1200,
+        meal_type="lunch",
+        day_of_week="Wednesday",
+        academic_period="Regular Academic Term",
+        weather_condition="Sunny / Normal (32C)"
+    )
+    print("Enrolled Students:", demand["enrolled_students"])
+    print("Predicted Turnout:", demand["predicted_turnout"], f"({demand['turnout_pct']}%)")
+    print("Recommended Cooking Target:", demand["recommended_prep"], "meals")
+    print("Portions Prevented from Waste:", demand["portions_saved"], "meals")
+    print(f"Cost Savings: ₹{demand['procurement_saved_inr']:,.2f}")
+    assert demand["predicted_turnout"] > 800
+    assert demand["portions_saved"] > 100
 
     print("\n" + "=" * 70)
-    print("ALL 5 TESTS PASSED SUCCESSFULLY! RAG PIPELINE FULLY VERIFIED.")
+    print("ALL 8 TESTS PASSED SUCCESSFULLY! RAG PIPELINE & PREDICTIVE SUITE FULLY VERIFIED.")
     print("=" * 70)
 
 

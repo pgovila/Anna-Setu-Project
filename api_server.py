@@ -89,7 +89,8 @@ def process_kiosk_telemetry(payload: KioskTelemetryPayload):
         storage_condition=storage_condition,
         origin_zone=payload.origin_zone,
         shelter_display_name=payload.shelter_display_name,
-        pickup_location=payload.pickup_location
+        pickup_location=payload.pickup_location,
+        measured_temp_celsius=payload.surface_temp_c
     )
 
     eval_data = res["evaluation"]

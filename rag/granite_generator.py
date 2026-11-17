@@ -65,6 +65,10 @@ class GraniteAlertCompiler:
         params = eval_result["parameters"]
         timeline = eval_result["timeline"]
 
+        temp_str = ""
+        if timeline.get("measured_temp_celsius") is not None:
+            temp_str = f"MEASURED TEMPERATURE: {timeline['measured_temp_celsius']:.1f}°C ({timeline.get('temp_status_summary', 'VERIFIED')})\n"
+
         clauses_str = ""
         for rule in eval_result.get("retrieved_rules", []):
             clauses_str += f"- [{rule.get('id', 'REF')}] {rule.get('clause', '')} (Match Score: {rule.get('relevance_score', 0):.2f})\n"
@@ -78,6 +82,7 @@ class GraniteAlertCompiler:
             f"FOOD ITEM:           {params['item']} ({params['category']})\n"
             f"QUANTITY / SERVINGS: {int(params['servings'])} Portions\n"
             f"STORAGE CONDITION:   {params['storage_condition'].upper()}\n"
+            f"{temp_str}"
             f"PREPARATION TIME:    {timeline['time_prepared']} IST\n"
             f"VERIFICATION TIME:   {timeline['assessment_time']} IST (Elapsed: {timeline['elapsed_minutes']} mins)\n"
             f"TRANSIT ESTIMATE:    {timeline['transit_minutes']} mins (Corridor: Zone {params['origin_zone']} -> Zone {params['dest_zone']})\n"
@@ -99,4 +104,87 @@ class GraniteAlertCompiler:
             "======================================================================"
         )
         return manifest
+
+    def compile_rag_qa_answer(self, query: str, retrieved_rules: list) -> Dict[str, Any]:
+        """
+        Synthesizes an authoritative, structured regulatory guidance response
+        grounded in the retrieved statutory clauses (FSSAI 2019 & LNN By-Laws).
+        """
+        if not retrieved_rules:
+            return {
+                "query": query,
+                "answer_markdown": (
+                    "### ⚠️ No Direct Regulatory Match Found\n\n"
+                    "The regulatory search index did not identify a direct statutory provision matching this exact scenario. "
+                    "Please consult standard FSSAI Surplus Food Regulations (2019) or contact the campus Food Safety Officer."
+                ),
+                "citations": [],
+                "confidence_score": 0.0
+            }
+
+        top_rule = retrieved_rules[0]
+        top_score = top_rule.get("relevance_score", 0.0)
+
+        citations = []
+        for r in retrieved_rules:
+            citations.append({
+                "id": r.get("id"),
+                "authority": r.get("source_authority"),
+                "clause": r.get("clause"),
+                "title": r.get("title"),
+                "score": r.get("relevance_score", 0.0)
+            })
+
+        primary_clause = f"[{top_rule.get('id')}] {top_rule.get('clause')}"
+        authority = top_rule.get("source_authority", "FSSAI")
+        framework = top_rule.get("framework", "Food Safety Regulations")
+
+        answer_parts = [
+            f"### 🛡️ Statutory Compliance Verdict: Grounded in {authority}\n",
+            f"**Query:** *\"{query}\"*\n",
+            f"**Primary Legal Authority:** {authority} ({framework}) | **Clause:** `{primary_clause}`\n",
+            f"\n#### 📜 Executive Regulatory Guidance:",
+            f"> {top_rule.get('text')}\n",
+            f"#### ⏱️ Key Statutory Thresholds & Mandates:"
+        ]
+
+        threshold_bullets = []
+        for r in retrieved_rules:
+            rule_text = r.get("text", "")
+            
+            if "2-hour" in rule_text or "4-hour" in rule_text or "holding time" in rule_text.lower():
+                threshold_bullets.append("- **Holding Timeline (FSSAI Reg 4(2)):** Strict 2h safe redistribution window; 4h absolute rejection ceiling for ambient cooked food.")
+            if "danger zone" in rule_text.lower() or "5°C" in rule_text or "65°C" in rule_text:
+                threshold_bullets.append("- **Temperature Control (FSSAI Reg 4(3)):** Bacterial danger zone is 5°C to 65°C. Hot holding must stay >= 65°C; cold holding <= 5°C.")
+            if "transit" in rule_text.lower() or "45 minute" in rule_text.lower() or "corridor" in rule_text.lower():
+                threshold_bullets.append("- **Municipal Transit Limit (LNN Sec 14):** Maximum 45 minutes across Lucknow municipal corridors; insulated thermal containers required for longer routes.")
+            if "dumping" in rule_text.lower() or "fine" in rule_text.lower() or "penalty" in rule_text.lower() or "25,000" in rule_text:
+                threshold_bullets.append("- **Municipal Waste Penalties (LNN Sec 10):** Commercial dumping in city bins strictly banned; spot penalties of ₹5,000 to ₹25,000.")
+            if "compost" in rule_text.lower() or "biomethanation" in rule_text.lower() or "non-compliant" in rule_text.lower():
+                threshold_bullets.append("- **Zero-Landfill Diversion (LNN Sec 18):** Unsafe/expired food must be diverted to campus aerobic composting or LNN biomethanation.")
+            if "indemnity" in rule_text.lower() or "good samaritan" in rule_text.lower() or "liability" in rule_text.lower():
+                threshold_bullets.append("- **Legal Protection (FSSAI Reg 4(5)):** Good Samaritan immunity protects donors acting in good faith from civil and criminal liability.")
+            if "form b" in rule_text.lower() or "register" in rule_text.lower():
+                threshold_bullets.append("- **Mandatory Audit Trail (FSSAI Reg 7):** Form B Surplus Food Handover Register must be recorded and archived for 1 year.")
+
+        threshold_bullets = list(dict.fromkeys(threshold_bullets))
+        if not threshold_bullets:
+            threshold_bullets.append("- **Operational Mandate:** Follow strict temperature logging, hygiene compliance, and shelter handoff verification.")
+
+        answer_parts.extend(threshold_bullets)
+
+        answer_parts.append("\n#### 🏛️ Supporting Statutory Clauses Cited:")
+        for r in retrieved_rules:
+            answer_parts.append(f"- **[{r.get('id')}] {r.get('clause')}:** {r.get('title')} *(Relevance Score: `{r.get('relevance_score', 0):.3f}`)*")
+
+        answer_markdown = "\n".join(answer_parts)
+
+        return {
+            "query": query,
+            "answer_markdown": answer_markdown,
+            "primary_clause": primary_clause,
+            "authority": authority,
+            "citations": citations,
+            "confidence_score": top_score
+        }
 

@@ -41,7 +41,8 @@ def run_simulation():
         storage_condition="hot_holding",
         origin_zone=4,
         shelter_display_name="Rain Basera Charbagh Railway Hub (Zone 1 (Charbagh / Station Road))",
-        pickup_location="Central Campus Mess, Gate 2"
+        pickup_location="Central Campus Mess, Gate 2",
+        measured_temp_celsius=temp_c_1
     )
 
     eval1 = res1["evaluation"]
@@ -75,7 +76,8 @@ def run_simulation():
         storage_condition="ambient",
         origin_zone=4,
         shelter_display_name="Rain Basera Gomti Nagar (Zone 4 (Gomti Nagar))",
-        pickup_location="North Dining Hall, Loading Bay"
+        pickup_location="North Dining Hall, Loading Bay",
+        measured_temp_celsius=temp_c_2
     )
 
     eval2 = res2["evaluation"]
@@ -105,7 +107,8 @@ def run_simulation():
         storage_condition="ambient",
         origin_zone=4,
         shelter_display_name="Rain Basera Charbagh Railway Hub (Zone 1 (Charbagh / Station Road))",
-        pickup_location="Central Campus Mess, Gate 2"
+        pickup_location="Central Campus Mess, Gate 2",
+        measured_temp_celsius=temp_c_3
     )
 
     eval3 = res3["evaluation"]
