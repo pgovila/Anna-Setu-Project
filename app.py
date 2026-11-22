@@ -13,6 +13,7 @@ from typing import Dict, Any, List, Optional
 
 # ZeroGPU compatibility for Hugging Face Spaces
 try:
+    # pyrefly: ignore[missing-import]
     import spaces
     HAS_SPACES = True
 except Exception:
@@ -894,12 +895,12 @@ if HAS_SPACES:
 def regulatory_qa_flow(query_text, authority_filter):
     """Generative RAG QA synthesized by IBM Granite citing legal clauses."""
     if not query_text or len(query_text.strip()) < 3:
-        return "Please enter a specific question about FSSAI or Lucknow Nagar Nigam regulations.", ""
+        return "Please enter a question about food safety or donation rules.", ""
 
     filter_val = None
     if authority_filter == "FSSAI Regulations Only":
         filter_val = "FSSAI"
-    elif authority_filter == "Lucknow Nagar Nigam By-Laws Only":
+    elif authority_filter == "Lucknow Nagar Nigam Rules Only":
         filter_val = "LUCKNOW_NAGAR_NIGAM"
 
     qa_res = pipeline.ask_regulations(query=query_text, top_k=3, filter_source=filter_val)
@@ -981,124 +982,125 @@ try:
     # pyrefly: ignore[missing-import]
     import gradio as gr
 
-    with gr.Blocks(title="Anna-Setu: AI Campus Food Rescue & Bio-Recycling Network") as demo:
-        gr.Markdown("# 🍽️ Anna-Setu: AI Campus Food Rescue & Bio-Recycling Network")
+    with gr.Blocks(title="Anna-Setu: Campus Food Rescue Network") as demo:
+        gr.Markdown("# 🍽️ Anna-Setu: Campus Food Rescue & Bio-Recycling Network")
         gr.Markdown(
-            "### 1M1B AI for Sustainability Virtual Internship • In Collaboration with IBM SkillsBuild & AICTE • Pankhuri Govila\n"
-            "*Powered by IBM Granite Models & Dual-Track Architecture: Track A (AI Platform & RAG Compliance) + Track B (IoT Plate-Waste Interceptor)*"
+            "### 1M1B AI for Sustainability Virtual Internship · IBM SkillsBuild & AICTE · Pankhuri Govila"
         )
 
         with gr.Tabs():
-            # TAB 1: SURPLUS RESCUE & RAG COMPLIANCE (WITH PLACE, MEAL, AND SIMULATED AI CONFIGS)
-            with gr.TabItem("📋 Surplus Handoff & RAG Compliance Evaluation"):
-                gr.Markdown("### 🍛 Cafeteria Service Handoff Logs & Statutory FSSAI Verification")
+            # ================================================================
+            # TAB 1: SURPLUS FOOD RESCUE (CHECK IF FOOD CAN BE DONATED)
+            # ================================================================
+            with gr.TabItem("🍛 Surplus Food Rescue"):
+                gr.Markdown("### Check if Surplus Food Can Be Donated")
                 gr.Markdown(
-                    "Enter the dining facility location and meal details below. The RAG pipeline automatically retrieves the governing "
-                    "safety rules and matches the optimal destination shelter, populating the AI configurations in real time."
+                    "Fill in the details of your leftover food below. Anna-Setu checks whether it is still "
+                    "safe to donate, finds the nearest shelter, and drafts a ready-to-send WhatsApp alert."
                 )
 
                 with gr.Row():
-                    # LEFT COLUMN: INPUTS & AI PIPELINE CONFIGURATIONS
+                    # LEFT COLUMN: INPUTS
                     with gr.Column(scale=5):
-                        # SECTION 1: PLACE & LOCATION DETAILS (ENTERED FIRST!)
-                        gr.Markdown("#### 📍 Step 1: Campus Dining Facility & Location (Place Details)")
+                        gr.Markdown("#### 📍 Step 1: Where is the food coming from?")
                         with gr.Row():
                             place_facility = gr.Dropdown(
-                                label="Dining Facility / Place Name",
+                                label="Dining Facility",
                                 choices=DINING_PLACES,
                                 value=DINING_PLACES[0]
                             )
                             origin_zone = gr.Dropdown(
-                                label="Campus Origin Zone (Lucknow)",
+                                label="City Zone (Lucknow)",
                                 choices=[label for label, _ in ZONE_CHOICES],
                                 value=ZONE_CHOICES[0][0]
                             )
                         pickup_loc = gr.Textbox(
-                            label="Specific Pickup Bay / Dispatch Gate Location",
+                            label="Pickup Gate / Collection Point",
                             value="Gate 2 Service Loading Bay (Rear Kitchen Entrance)"
                         )
 
-                        # SECTION 2: MEAL SERVICE & FOOD DETAILS (ENTERED SECOND!)
-                        gr.Markdown("#### 🍽️ Step 2: Meal Service & Surplus Food Details")
+                        gr.Markdown("#### 🍽️ Step 2: What food is left over?")
                         with gr.Row():
                             meal_type = gr.Dropdown(
-                                label="Meal Service Type",
+                                label="Meal Type",
                                 choices=["Breakfast", "Lunch", "Snacks / High Tea", "Dinner", "Other"],
                                 value="Lunch"
                             )
                             servings = gr.Number(
-                                label="Estimated Servings Leftover",
+                                label="Number of Servings Left",
                                 value=45,
                                 precision=0
                             )
 
                         item = gr.Textbox(
-                            label="Surplus Food Item(s)",
+                            label="Food Items (describe briefly)",
                             value="Vegetable Pulao, Dal Tadka & Chapati"
                         )
                         category = gr.Dropdown(
-                            label="Food Category (FSSAI Microbial Profile)",
+                            label="Food Type / Category",
                             choices=[label for label, _ in CATEGORY_CHOICES],
                             value=CATEGORY_CHOICES[0][0]
                         )
 
                         with gr.Row():
                             time_prep = gr.Textbox(
-                                label="Time Prepared (HH:MM 24h)",
-                                value="12:30"
+                                label="Time Food Was Cooked (HH:MM)",
+                                value="12:30",
+                                info="Use 24-hour format, e.g. 13:30 for 1:30 PM"
                             )
                             time_assess = gr.Textbox(
-                                label="Current Assessment Time (HH:MM 24h)",
-                                value="14:00"
+                                label="Current Time (HH:MM)",
+                                value="14:00",
+                                info="The time right now when you are checking"
                             )
 
                         with gr.Row():
                             storage = gr.Dropdown(
-                                label="Storage & Holding Condition",
+                                label="How is the food stored right now?",
                                 choices=[label for label, _ in STORAGE_CHOICES],
                                 value=STORAGE_CHOICES[0][0]
                             )
                             measured_temp = gr.Number(
-                                label="Measured Surface Temp (°C) [Optional Contactless IR Sensor]",
-                                value=None
+                                label="Food Temperature (°C) — Optional",
+                                value=None,
+                                info="Measure with a food thermometer. Leave blank if not measured."
                             )
 
-                        # SECTION 3: SIMULATED AI PIPELINE CONFIGURATIONS (MATCHING SCREENSHOT!)
-                        gr.Markdown("### 🧠 Simulated AI Pipeline Configurations")
-                        gr.Markdown("*These fields are automatically synchronized and populated from the RAG Pipeline and Shelter Directory:*")
+                        gr.Markdown("### 🤖 AI Safety Check (Auto-Updated)")
+                        gr.Markdown("*Anna-Setu automatically checks food safety rules and finds the best shelter as you fill in the form:*")
 
                         compliance_rule_box = gr.Textbox(
-                            label="Retrieved Safety Compliance Rule (RAG)",
+                            label="✅ Applicable Food Safety Rule",
                             value="[FSSAI-REG-4-2] Within 4-hour ambient holding limit per FSSAI Reg 4(2) & LNN Sec 14. Safe redistribution active until 16:30 IST.",
                             lines=2,
                             interactive=True
                         )
 
                         shelter_box = gr.Textbox(
-                            label="AI Matched Shelter Destination",
+                            label="🏠 Best Matching Shelter Nearby",
                             value="Rain Basera Gomti Nagar (Zone 4 (Gomti Nagar) - 2.1 km away | Route Transit: 15 mins | Bed Capacity: 100)",
                             lines=2,
                             interactive=True
                         )
 
                         with gr.Row():
-                            btn_sync = gr.Button("🔄 Sync AI Pipeline Configurations (RAG)", variant="secondary")
-                            btn_eval = gr.Button("Execute IBM Granite Notification Compiler", variant="primary")
+                            btn_sync = gr.Button("🔄 Refresh Safety Check", variant="secondary")
+                            btn_eval = gr.Button("🚀 Run Safety Check & Generate Shelter Alert", variant="primary")
 
-                    # RIGHT COLUMN: GENERATED OUTPUTS
+                    # RIGHT COLUMN: OUTPUTS
                     with gr.Column(scale=5):
-                        gr.Markdown("### ✅ Generated Output (WhatsApp / SMS Ready Format)")
-                        status_box = gr.Markdown(value="*Click 'Execute IBM Granite Notification Compiler' to evaluate surplus food safety and generate alert.*")
+                        gr.Markdown("### ✅ Results")
+                        status_box = gr.Markdown(value="*Fill in the details on the left and click **Run Safety Check** to get the donation verdict, shelter match, and ready-to-send alert message.*")
                         output_msg = gr.TextArea(
-                            label="AI-Drafted Broadcast Message (WhatsApp / SMS Ready)",
+                            label="📱 Ready-to-Send Shelter Alert (WhatsApp / SMS)",
                             lines=8,
                             interactive=False
                         )
-                        with gr.Accordion("📜 Retrieved FSSAI & LNN Regulatory Grounding (RAG)", open=True):
-                            rag_clauses_box = gr.Markdown(value="*Retrieved regulatory clauses will appear here.*")
-                        with gr.Accordion("📑 Official FSSAI Form B & LNN Gate Pass Manifest", open=False):
+                        with gr.Accordion("📜 Food Safety Rules That Apply (Why This Decision Was Made)", open=True):
+                            rag_clauses_box = gr.Markdown(value="*Safety rules will appear here after running the check.*")
+                        with gr.Accordion("📑 Official Handover Record (FSSAI Form B)", open=False):
                             manifest_box = gr.TextArea(
-                                label="Digital Compliance Audit Manifest",
+                                label="Handover Record",
                                 lines=12,
                                 interactive=False
                             )
@@ -1131,18 +1133,26 @@ try:
                     outputs=[status_box, output_msg, rag_clauses_box, manifest_box, compliance_rule_box, shelter_box]
                 )
 
-            # TAB 2: AI DINING DEMAND ADVISOR (MODULE 1)
-            with gr.TabItem("🔮 Module 1: AI Dining Demand Advisor"):
-                gr.Markdown("### 📊 Predictive Kitchen Demand & Procurement Optimization")
+            # ================================================================
+            # TAB 2: PREDICT HOW MUCH FOOD TO COOK (DEMAND ADVISOR)
+            # ================================================================
+            with gr.TabItem("🔮 Predict How Much Food to Cook Today"):
+                gr.Markdown("### 🔮 How Much Food Should We Cook Today?")
                 gr.Markdown(
-                    "Predicts actual student meal turnout using historical calendar, weather, and exam schedules. "
-                    "Replaces arbitrary 25% cooking buffers with a lean 5% safety buffer to eliminate food waste at the source."
+                    "Instead of guessing and cooking too much, Anna-Setu predicts how many students will "
+                    "actually show up for a meal — based on the day, weather, and exam schedule. "
+                    "This prevents food waste before it even happens."
                 )
                 with gr.Row():
                     with gr.Column(scale=5):
-                        enrolled_input = gr.Number(label="Total Enrolled Students in Dining Hall", value=1200, precision=0)
+                        gr.Markdown("### 📝 Tell Us About Today")
+                        enrolled_input = gr.Number(
+                            label="Total Students Registered for Dining",
+                            value=1200,
+                            precision=0
+                        )
                         meal_choice = gr.Dropdown(
-                            label="Meal Service Type",
+                            label="Which Meal?",
                             choices=["Lunch", "Dinner", "Breakfast"],
                             value="Lunch"
                         )
@@ -1152,26 +1162,28 @@ try:
                             value="Wednesday"
                         )
                         calendar_choice = gr.Dropdown(
-                            label="Academic Calendar Status",
+                            label="Academic Schedule",
                             choices=["Regular Academic Day", "Exam Week (High Attendance)", "Weekend / Pre-Holiday", "Post-Exam / Festival Eve"],
                             value="Regular Academic Day"
                         )
                         weather_choice = gr.Dropdown(
-                            label="Weather Forecast",
-                            choices=["Clear Mild (~24°C)", "Extreme Hot Summer (>38°C)", "Monsoon Heavy Rain", "Cold Winter (~12°C)"],
-                            value="Clear Mild (~24°C)"
+                            label="Today's Weather",
+                            choices=["Clear & Mild (~24°C)", "Very Hot Summer (>38°C)", "Monsoon / Heavy Rain", "Cold Winter (~12°C)"],
+                            value="Clear & Mild (~24°C)"
                         )
                         base_turnout_input = gr.Slider(
-                            label="Historical Baseline Turnout Rate (%)",
+                            label="Usual Attendance Rate (%)",
                             minimum=50,
                             maximum=100,
                             value=85,
-                            step=1
+                            step=1,
+                            info="On a normal day, what percentage of registered students eat here?"
                         )
-                        btn_predict = gr.Button("🔮 Run Predictive Demand Optimization", variant="primary")
+                        btn_predict = gr.Button("🔮 Calculate How Much to Cook", variant="primary")
 
                     with gr.Column(scale=5):
-                        demand_metrics_box = gr.Markdown(value="*Click 'Run Predictive Demand Optimization' to calculate targets.*")
+                        gr.Markdown("### 🎯 Today's Cooking Plan")
+                        demand_metrics_box = gr.Markdown(value="*Enter today's details on the left and click **Calculate How Much to Cook** to get a smart portion target and ingredient list.*")
                         demand_ing_box = gr.Markdown()
                         demand_guidance_box = gr.Markdown()
 
@@ -1181,30 +1193,33 @@ try:
                     outputs=[demand_metrics_box, demand_ing_box, demand_guidance_box]
                 )
 
-            # TAB 3: CONVERSATIONAL RAG REGULATORY ASSISTANT
-            with gr.TabItem("💬 Conversational RAG Regulatory Assistant"):
-                gr.Markdown("### 🏛️ Generative Legal QA on FSSAI Regulations & Lucknow Municipal By-Laws")
+            # ================================================================
+            # TAB 3: ASK A FOOD SAFETY QUESTION
+            # ================================================================
+            with gr.TabItem("💬 Ask a Food Safety Question"):
+                gr.Markdown("### 💬 Ask a Food Safety Question")
                 gr.Markdown(
-                    "Ask free-form legal and operational questions. The RAG pipeline retrieves authoritative statutory clauses and uses "
-                    "IBM Granite prompt synthesis to provide structured legal guidance with exact citations, safety boundaries, and liability protections."
+                    "Not sure if a certain food can be donated? Want to know the rules around food storage or transit? "
+                    "Ask a plain-English question below and get a clear answer backed by official FSSAI regulations "
+                    "and Lucknow Nagar Nigam guidelines."
                 )
                 with gr.Row():
                     with gr.Column(scale=8):
                         qa_input = gr.Textbox(
-                            label="Ask a Regulatory Question",
-                            placeholder="e.g., Can I donate cooked paneer curry after 3 hours at room temperature?",
+                            label="Your Question:",
+                            placeholder="e.g. How long can rice stay out before it becomes unsafe?",
                             value="Can I donate cooked paneer curry after 3 hours at room temperature?"
                         )
                     with gr.Column(scale=2):
                         authority_filter = gr.Dropdown(
-                            label="Filter Legal Authority",
-                            choices=["All Authorities", "FSSAI Regulations Only", "Lucknow Nagar Nigam By-Laws Only"],
-                            value="All Authorities"
+                            label="Filter by Rule Source",
+                            choices=["All Rules", "FSSAI Regulations Only", "Lucknow Nagar Nigam Rules Only"],
+                            value="All Rules"
                         )
-                btn_qa = gr.Button("⚖️ Synthesize Legal Guidance via RAG", variant="secondary")
+                btn_qa = gr.Button("🔍 Get Answer", variant="primary")
 
-                qa_answer_box = gr.Markdown(value="*Enter a question above and click to synthesize grounded legal guidance.*")
-                with gr.Accordion("📜 Source Law Citations & Chunks", open=True):
+                qa_answer_box = gr.Markdown(value="*Enter a question above and click **Get Answer**.*")
+                with gr.Accordion("📚 Source Rules Used to Answer This Question", open=True):
                     qa_citations_box = gr.Markdown()
 
                 btn_qa.click(
@@ -1213,37 +1228,43 @@ try:
                     outputs=[qa_answer_box, qa_citations_box]
                 )
 
-            # TAB 4: TRACK B SMART PLATE-WASTE INTERCEPTOR
-            with gr.TabItem("♻️ Track B: Plate-Waste Interceptor & Bio-Recycler"):
-                gr.Markdown("### 🍽️ Dish-Clearing Tray Return Simulator & Accelerated Bio-Recycling Station")
+            # ================================================================
+            # TAB 4: PLATE-WASTE RECYCLER (TRACK B)
+            # ================================================================
+            with gr.TabItem("♻️ Plate-Waste Recycler"):
+                gr.Markdown("### ♻️ Track B: Plate-Waste Recycler")
                 gr.Markdown(
-                    "Track B deploys an IoT-enabled dish-clearing kiosk (load cell, thermal sensor, display) that nudges diners "
-                    "and transforms scraped food scraps into nutrient-rich organic bio-fertilizer within 12-24 hours."
+                    "When students leave food on their plates, that waste is captured by a smart kiosk at the "
+                    "tray-return counter. It shows diners how much water and carbon they wasted — and converts "
+                    "all the scraps into clean organic fertilizer within 24 hours."
                 )
                 with gr.Row():
                     with gr.Column(scale=5):
-                        st_id = gr.Textbox(label="Diner / Student ID (Optional)", value="STUDENT-2026-88")
+                        gr.Markdown("### 🍽️ Simulate a Diner Returning Their Tray")
+                        gr.Markdown("Enter how much food was left uneaten on the plate:")
+                        st_id = gr.Textbox(label="Student / Diner ID (Optional)", value="STUDENT-2026-88")
                         hostel = gr.Dropdown(
-                            label="Hostel Dining Hall Block",
+                            label="Hostel Block",
                             choices=["Block A (Boys)", "Block B (Girls)", "Block C (International)", "Day Scholar Dining"],
                             value="Block B (Girls)"
                         )
                         waste_slider = gr.Slider(
-                            label="Scraped Plate Waste (Grams)",
+                            label="Food Left on Plate (grams)",
                             minimum=0,
                             maximum=450,
                             value=175,
                             step=5
                         )
                         diners_input = gr.Number(
-                            label="Total Daily Diners in Dining Hall",
+                            label="Total Diners Using This Dining Hall per Day",
                             value=850,
                             precision=0
                         )
-                        btn_sim = gr.Button("♻️ Simulate Tray Scrape & Bio-Recycle Yield", variant="primary")
+                        btn_sim = gr.Button("♻️ Show Impact & Fertilizer Yield", variant="primary")
 
                     with gr.Column(scale=5):
-                        nudge_output = gr.Markdown(value="*Click to simulate tray return.*")
+                        gr.Markdown("### 📺 What the Kiosk Screen Shows & What Happens Next")
+                        nudge_output = gr.Markdown(value="*Click the button on the left to simulate a tray return and see the results.*")
                         yield_output = gr.Markdown()
 
                 btn_sim.click(
@@ -1252,39 +1273,94 @@ try:
                     outputs=[nudge_output, yield_output]
                 )
 
-            # TAB 5: PROJECT TRACKER & MILESTONES (PankhuriGovila_YIRP)
-            with gr.TabItem("📊 Project Tracker & Statutory SOPs"):
-                gr.Markdown("### 📊 1M1B Project Tracker & Mentorship Sharing Register")
+            # ================================================================
+            # TAB 5: PROJECT TRACKER & MILESTONES
+            # ================================================================
+            with gr.TabItem("📊 Project Tracker"):
+                gr.Markdown("### 📊 Project Tracker — Anna-Setu (1M1B Internship)")
                 gr.Markdown(
-                    "**Project Tracker:** `PankhuriGovila_YIRP` | **Shared With:** `paramjeet@onemoneb.org` | "
-                    "**Intern:** Pankhuri Govila (1M1B AI for Sustainability Virtual Internship)\n\n"
-                    "---"
+                    "**Intern:** Pankhuri Govila · **Mentor:** Paramjeet Sir (paramjeet@onemoneb.org) · "
+                    "1M1B AI for Sustainability Virtual Internship\n\n---"
                 )
                 with gr.Row():
                     with gr.Column():
                         gr.Markdown(
-                            "#### 🚩 Key Project Milestones & Gates\n\n"
-                            "- **Milestone 1 (End-November 2026):** Project Prototype Completion & Institutional Approvals.\n"
-                            "  - Complete functional Anna-Setu Track A RAG software platform.\n"
-                            "  - Assemble Track B IoT hardware prototype with load cell and thermal sensor.\n"
-                            "  - Secure signed MoU with Campus Dining Administration and 2 local Lucknow shelter partners.\n\n"
-                            "- **Milestone 2 (End-December 2026):** Live Campus Pilot & Full Deployment.\n"
-                            "  - Deploy 2-week continuous pilot in campus cafeteria dining hall.\n"
-                            "  - Track meals rescued, plate waste diverted, and bio-fertilizer produced.\n"
-                            "  - Deliver comprehensive impact report and presentation for 1M1B evaluation."
+                            "#### 🚩 Key Milestones\n\n"
+                            "- **Milestone 1 (End-November 2026):** Build both Track A & B prototypes + get campus approvals.\n"
+                            "  - Complete the Anna-Setu Track A software platform.\n"
+                            "  - Assemble the Track B smart kiosk with load cell and thermal sensor.\n"
+                            "  - Sign agreements with the campus dining team and 2 local Lucknow shelters.\n\n"
+                            "- **Milestone 2 (End-December 2026):** Run a 2-week live pilot on campus + submit final impact report.\n"
+                            "  - Run a 2-week live pilot in the campus cafeteria.\n"
+                            "  - Track meals rescued, plate waste diverted, and fertilizer produced.\n"
+                            "  - Present final impact report to 1M1B for evaluation."
                         )
                     with gr.Column():
                         gr.Markdown(
-                            "#### 📚 Statutory Food Regulations Summary (FSSAI 2019)\n\n"
-                            "- **Bacterial Danger Zone:** 5°C to 65°C. Rapid exponential microbial proliferation.\n"
-                            "- **The 2h / 4h Rule (Reg 4(2)):**\n"
-                            "  - `< 2 hours:` Safe to redistribute, refrigerate (<=5°C), or reheat (>=74°C).\n"
-                            "  - `2 - 4 hours:` Safe for immediate consumption only.\n"
-                            "  - `> 4 hours:` Condemned from human consumption due to heat-stable toxins.\n"
-                            "- **Lucknow Nagar Nigam By-Laws:**\n"
-                            "  - Max 45-minute corridor transit ceiling across city traffic.\n"
-                            "  - Commercial food waste dumping in municipal bins carries ₹5,000 to ₹25,000 fine (Sec 10).\n"
-                            "  - Mandatory diversion of non-compliant food to decentralized composting (Sec 18)."
+                            "#### 📖 Food Safety Quick Reference\n\n"
+                            "- **Danger Zone:** 5°C to 65°C — bacteria grow rapidly here.\n"
+                            "- **The 2h / 4h Rule:**\n"
+                            "  - Under 2 hours: ✅ Safe to donate, chill, or reheat.\n"
+                            "  - 2–4 hours: ⚠️ Safe only for immediate consumption at the shelter.\n"
+                            "  - Over 4 hours: 🚫 Not safe for people — must go to compost.\n"
+                            "- **Lucknow City Rules:**\n"
+                            "  - Max 45-minute delivery time across city traffic.\n"
+                            "  - Dumping food in city bins = ₹5,000 to ₹25,000 fine (Sec 10).\n"
+                            "  - Expired food must go to campus composting, not mixed garbage (Sec 18)."
+                        )
+
+            # ================================================================
+            # TAB 6: FOOD SAFETY RULES GUIDE
+            # ================================================================
+            with gr.TabItem("📖 Food Safety Rules Guide"):
+                gr.Markdown("### 📖 Food Safety Rules — Simple Guide")
+                gr.Markdown(
+                    "Anna-Setu follows two sets of official rules: FSSAI national food safety regulations "
+                    "and Lucknow Nagar Nigam (LNN) municipal guidelines. Here's what they mean in plain language."
+                )
+                gr.Markdown("---")
+                with gr.Row():
+                    with gr.Column():
+                        gr.Markdown(
+                            "### 🇮🇳 FSSAI Surplus Food Regulations (2019)\n\n"
+                            "**What is the Danger Zone?**\n\n"
+                            "Food left between **5°C and 65°C** allows bacteria to grow very quickly. "
+                            "Always keep food either colder than 5°C or hotter than 65°C if it is waiting to be eaten or donated.\n\n"
+                            "**The 2-Hour / 4-Hour Rule (Regulation 4(2)):**\n\n"
+                            "| Time Since Cooking | What You Can Do |\n"
+                            "|---|---|\n"
+                            "| Less than 2 hours | ✅ Safe to donate, chill, or reheat |\n"
+                            "| 2–4 hours | ⚠️ Safe only if the shelter will eat it immediately on arrival |\n"
+                            "| More than 4 hours | 🚫 Not safe for people — must go to compost |\n\n"
+                            "**Keeping Food Hot or Cold (Regulation 4(3)):**\n\n"
+                            "- Hot food must stay at **65°C or above** at all times until served.\n"
+                            "- Refrigerated food must stay at **5°C or below**.\n\n"
+                            "**What CANNOT Be Donated (Regulation 4(4)):**\n\n"
+                            "- ❌ Food left on a diner's plate (plate waste / customer leftovers)\n"
+                            "- ❌ Cut salads, sliced fruits, or open chutneys left at room temperature for more than 2 hours\n\n"
+                            "**Are Donors Protected by Law? (Regulation 4(5) & Section 7):**\n\n"
+                            "Yes. If a donor follows the rules above and donates in good faith, they are **legally protected** "
+                            "from being sued if something goes wrong later in the delivery chain.\n\n"
+                            "**Record Keeping (Regulation 7):**\n\n"
+                            "Every donation must be logged in an **official Form B register** noting the food type, quantity, "
+                            "cooking time, temperature, and signatures. Records must be kept for 1 year."
+                        )
+                    with gr.Column():
+                        gr.Markdown(
+                            "### 🏙️ Lucknow Nagar Nigam (City Council) Rules\n\n"
+                            "**Maximum Delivery Time (Section 14):**\n\n"
+                            "Food in transit must reach the shelter within **45 minutes** due to Lucknow traffic and summer heat (>38°C). "
+                            "For longer routes, insulated thermal containers are required.\n\n"
+                            "**No Dumping in Garbage Bins (Section 10):**\n\n"
+                            "It is **illegal** to throw commercial food waste into city dustbins or roadside dumps. "
+                            "Spot fines range from **₹5,000 to ₹25,000**.\n\n"
+                            "**Expired Food Must Be Composted (Section 18):**\n\n"
+                            "Food that is past its safe window must **never** go into mixed garbage. "
+                            "It must be sorted as green wet waste and sent to campus composting or the city's "
+                            "Kanha Upvan biomethanation facility.\n\n"
+                            "**Gate Clearance for Outgoing Food Vehicles (Section 21):**\n\n"
+                            "Campus security must verify and timestamp all food rescue vehicles leaving the premises "
+                            "with an Anna-Setu digital gate pass."
                         )
 
     if __name__ == "__main__":
