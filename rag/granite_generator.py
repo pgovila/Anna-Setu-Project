@@ -4,7 +4,7 @@ Synthesizes compliance check results, retrieved statutory clauses,
 and logistics metadata into broadcast notifications and audit manifests.
 """
 
-from typing import Dict, Any
+from typing import Dict, Any, Optional, List
 
 
 class GraniteAlertCompiler:
@@ -124,7 +124,6 @@ class GraniteAlertCompiler:
             "Mess Manager, Anna-Setu Campus Hub         Verified Shelter / NGO Coordinator\n"
             "======================================================================"
         )
-        return manifest
         return manifest
 
     def compile_rag_qa_answer(self, query: str, retrieved_rules: list) -> Dict[str, Any]:
