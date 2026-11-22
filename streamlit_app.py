@@ -110,6 +110,107 @@ SHELTER_LIST = ["Auto-Match Closest Verified Shelter (Recommended)"] + pipeline.
 st.title("🍽️ Anna-Setu: Campus Food Rescue & Bio-Recycling Network")
 st.caption("1M1B AI for Sustainability Virtual Internship · IBM SkillsBuild & AICTE · Pankhuri Govila")
 
+# =============================================================================
+# WELCOME TUTORIAL — shown as an overlay on first visit, dismissable
+# =============================================================================
+if "tutorial_dismissed" not in st.session_state:
+    st.session_state.tutorial_dismissed = False
+
+if not st.session_state.tutorial_dismissed:
+    with st.container(border=True):
+        st.markdown(
+            """
+<div style="text-align:center; padding: 4px 0 12px;">
+  <span style="font-size:40px;">🍽️</span><br>
+  <span style="font-size:22px; font-weight:700;">Welcome to Anna-Setu</span><br>
+  <span style="font-size:14px; color:#57606a;">Your AI-powered campus food rescue and bio-recycling assistant</span>
+</div>
+""",
+            unsafe_allow_html=True,
+        )
+
+        st.markdown("---")
+        st.markdown("#### What does Anna-Setu do?")
+        st.markdown(
+            "Anna-Setu (**'Food Bridge'** in Hindi) connects campus dining halls with nearby shelters "
+            "so leftover cooked food reaches people in need — safely and legally — instead of going to waste. "
+            "It also turns unavoidable plate waste into organic fertilizer on-site."
+        )
+
+        st.markdown("---")
+        st.markdown("#### 🗂️ The App Has 4 Tabs — Here's What Each One Does:")
+
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.info(
+                "**🍛 Tab 1 · Surplus Food Rescue**\n\n"
+                "This is the main tool. It has two parts:\n\n"
+                "• **Check if food can be donated** — fill in what food is left over, "
+                "when it was cooked, and how it's stored. Anna-Setu instantly checks "
+                "if it's still safe under FSSAI rules, finds the nearest verified shelter, "
+                "and writes a ready-to-send WhatsApp alert.\n\n"
+                "• **Predict how much to cook today** — tell Anna-Setu the day, weather, "
+                "and exam schedule, and it tells the kitchen exactly how many portions to cook "
+                "so food waste is prevented before it starts."
+            )
+            st.success(
+                "**💬 Tab 3 · Ask a Food Safety Question**\n\n"
+                "Type any plain-English question like *'Can I donate rice after 3 hours?'* "
+                "or *'What is the penalty for dumping food in Lucknow?'* "
+                "and get a clear, rule-backed answer drawn from official FSSAI 2019 regulations "
+                "and Lucknow Nagar Nigam guidelines."
+            )
+        with col_b:
+            st.warning(
+                "**♻️ Tab 2 · Plate-Waste Recycler**\n\n"
+                "This simulates the Track B smart kiosk at the tray-return counter. "
+                "Move the slider to set how many grams a student left on their plate. "
+                "The kiosk screen shows the diner the water and carbon they wasted, "
+                "and the right panel shows how all that plate waste is converted into "
+                "clean organic fertilizer within 24 hours — with zero going to landfill."
+            )
+            st.info(
+                "**📖 Tab 4 · Food Safety Rules Guide**\n\n"
+                "A plain-language reference card for the two sets of rules Anna-Setu follows:\n\n"
+                "• **FSSAI Surplus Food Regulations 2019** — the 2h/4h rule, danger zone "
+                "temperatures, what can and cannot be donated, and legal protection for donors.\n\n"
+                "• **Lucknow Nagar Nigam (City Council) rules** — the 45-minute delivery "
+                "limit, fines for dumping food, and composting requirements."
+            )
+
+        st.markdown("---")
+        st.markdown("#### 🚀 Quick Start — Try This in 3 Steps:")
+        s1, s2, s3 = st.columns(3)
+        s1.markdown(
+            "**Step 1**\n\n"
+            "Go to **Tab 1 → Check if Surplus Food Can Be Donated**.\n\n"
+            "Select your dining facility, choose the meal type (e.g. Lunch), "
+            "and the form pre-fills with a sample food batch."
+        )
+        s2.markdown(
+            "**Step 2**\n\n"
+            "Click **🚀 Run Safety Check & Generate Shelter Alert**.\n\n"
+            "Anna-Setu will show a green/yellow/red verdict, the matched shelter, "
+            "and a WhatsApp message ready to copy and send."
+        )
+        s3.markdown(
+            "**Step 3**\n\n"
+            "Switch to **Tab 2 (Plate-Waste Recycler)** and drag the waste slider.\n\n"
+            "Watch the bio-fertilizer yield update live as you change the amount "
+            "of food left on plates."
+        )
+
+        st.markdown("---")
+        col_btn, _ = st.columns([1, 3])
+        with col_btn:
+            if st.button("✅ Got it — Take me to the app!", type="primary", use_container_width=True):
+                st.session_state.tutorial_dismissed = True
+                st.rerun()
+
+        st.caption("💡 You can always revisit this guide in the **📖 Food Safety Rules Guide** tab.")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
 # Four Tabs
 tab1, tab2, tab3, tab5 = st.tabs([
     "🍛 Surplus Food Rescue",

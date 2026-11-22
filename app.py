@@ -988,6 +988,73 @@ try:
             "### 1M1B AI for Sustainability Virtual Internship · IBM SkillsBuild & AICTE · Pankhuri Govila"
         )
 
+        # ================================================================
+        # WELCOME TUTORIAL — open by default on first load, collapsible
+        # ================================================================
+        with gr.Accordion("👋 Welcome! Click here to learn how to use Anna-Setu", open=True):
+            gr.Markdown(
+                """
+<div style="text-align:center; padding:8px 0 16px;">
+  <span style="font-size:36px;">🍽️</span><br>
+  <strong style="font-size:20px;">Welcome to Anna-Setu</strong><br>
+  <span style="color:#666; font-size:13px;">Your AI-powered campus food rescue and bio-recycling assistant</span>
+</div>
+""")
+            gr.Markdown("---")
+            gr.Markdown(
+                "**Anna-Setu** (*'Food Bridge'* in Hindi) connects campus dining halls with nearby shelters "
+                "so leftover cooked food reaches people in need — safely and legally — instead of going to waste. "
+                "It also turns unavoidable plate waste into organic fertilizer on-site.\n\n"
+                "---"
+            )
+            gr.Markdown("#### 🗂️ The App Has 5 Tabs — Here's What Each One Does:")
+            with gr.Row():
+                with gr.Column():
+                    gr.Markdown(
+                        "> **🍛 Tab 1 · Surplus Food Rescue**\n\n"
+                        "The main tool. Fill in what food is left over, when it was cooked, and how it's stored. "
+                        "Anna-Setu checks if it's safe to donate under FSSAI rules, finds the nearest verified shelter, "
+                        "and drafts a ready-to-send WhatsApp alert.\n\n"
+                        "> **🔮 Tab 2 · Predict How Much Food to Cook Today**\n\n"
+                        "Tell Anna-Setu the day, weather, and academic schedule. It calculates exactly "
+                        "how many portions to cook — cutting overproduction and preventing waste before it starts."
+                    )
+                with gr.Column():
+                    gr.Markdown(
+                        "> **💬 Tab 3 · Ask a Food Safety Question**\n\n"
+                        "Type any plain-English question like *'Can I donate rice after 3 hours?'* "
+                        "and get a clear, rule-backed answer drawn from official FSSAI 2019 and Lucknow city guidelines.\n\n"
+                        "> **♻️ Tab 4 · Plate-Waste Recycler**\n\n"
+                        "Simulates the Track B smart kiosk at the tray-return counter. Move the slider to see "
+                        "how plate waste is converted into clean organic fertilizer within 24 hours — zero to landfill.\n\n"
+                        "> **📖 Tab 5 · Food Safety Rules Guide**\n\n"
+                        "A plain-language reference for FSSAI regulations and Lucknow city rules — "
+                        "temperatures, time limits, donation restrictions, and legal protections."
+                    )
+            gr.Markdown("---")
+            gr.Markdown("#### 🚀 Try This in 3 Steps to Get Started:")
+            with gr.Row():
+                gr.Markdown(
+                    "**① Open Tab 1 · Surplus Food Rescue**\n\n"
+                    "Select your dining facility and choose **Lunch** as the meal type. "
+                    "The form pre-fills with a sample food batch automatically."
+                )
+                gr.Markdown(
+                    "**② Click 🚀 Run Safety Check & Generate Shelter Alert**\n\n"
+                    "Anna-Setu shows a 🟢 green / 🟡 yellow / 🔴 red verdict, "
+                    "the matched shelter with distance, and a WhatsApp message ready to copy and send."
+                )
+                gr.Markdown(
+                    "**③ Switch to Tab 4 · Plate-Waste Recycler**\n\n"
+                    "Drag the *Food Left on Plate* slider and watch the bio-fertilizer "
+                    "yield and methane-avoided figures update instantly."
+                )
+            gr.Markdown(
+                "---\n"
+                "*💡 Collapse this guide any time by clicking the arrow at the top of this box. "
+                "Detailed food safety rules are always available in **📖 Tab 5**.*"
+            )
+
         with gr.Tabs():
             # ================================================================
             # TAB 1: SURPLUS FOOD RESCUE (CHECK IF FOOD CAN BE DONATED)
