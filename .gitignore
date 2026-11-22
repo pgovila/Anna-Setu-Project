@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+﻿# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -28,3 +28,8 @@ Thumbs.db
 Planet Prompt AI*
 PLANET_PROMPT_AI*
 
+
+# Exception subfolders -- kept locally only, not tracked in this repo
+Innovators Mentorship/
+Internship Submission/
+Prompt Planet AI Hackathon/
