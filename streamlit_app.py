@@ -110,12 +110,11 @@ SHELTER_LIST = ["Auto-Match Closest Verified Shelter (Recommended)"] + pipeline.
 st.title("🍽️ Anna-Setu: Campus Food Rescue & Bio-Recycling Network")
 st.caption("1M1B AI for Sustainability Virtual Internship · IBM SkillsBuild & AICTE · Pankhuri Govila")
 
-# Five Tabs
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+# Four Tabs
+tab1, tab2, tab3, tab5 = st.tabs([
     "🍛 Surplus Food Rescue",
     "♻️ Plate-Waste Recycler",
     "💬 Ask a Food Safety Question",
-    "📊 Project Tracker",
     "📖 Food Safety Rules Guide"
 ])
 
@@ -554,65 +553,7 @@ with tab3:
                 st.caption(f"Keywords: `{'`, `'.join(clause.get('keywords', []))}`")
 
 # =============================================================================
-# TAB 4: PROJECT TRACKER & MILESTONES
-# =============================================================================
-with tab4:
-    st.subheader("📊 Project Tracker — Anna-Setu (1M1B Internship)")
-    st.caption("Intern: Pankhuri Govila · Mentor: Paramjeet Sir (paramjeet@onemoneb.org) · 1M1B AI for Sustainability")
-
-    t_m1, t_m2, t_m3 = st.columns(3)
-    t_m1.info("**Milestone 1:** End-November 2026\n\nBuild both Track A & B prototypes + get campus approvals")
-    t_m2.info("**Milestone 2:** End-December 2026\n\nRun a 2-week live pilot on campus + submit final impact report")
-    t_m3.info("**Intern:** Pankhuri Govila\n\n1M1B AI for Sustainability Virtual Internship")
-
-    st.write("---")
-    st.markdown("#### 📋 Task Log & Weekly Progress")
-
-    try:
-        df_tracker = pd.read_csv("PankhuriGovila_YIRP_Project_Tracker.csv")
-        st.dataframe(df_tracker, use_container_width=True, hide_index=True)
-    except Exception as e:
-        st.error(f"Could not load tracker file: {e}")
-
-    st.write("---")
-    st.markdown("#### 📁 Download Project Files:")
-    d_c1, d_c2, d_c3 = st.columns(3)
-    with d_c1:
-        try:
-            with open("PankhuriGovila_YIRP_Project_Tracker.xlsx", "rb") as f:
-                st.download_button(
-                    "📥 Project Tracker (Excel)",
-                    f,
-                    "PankhuriGovila_YIRP_Project_Tracker.xlsx",
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-        except FileNotFoundError:
-            st.caption("Excel tracker not available.")
-    with d_c2:
-        try:
-            with open("Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf", "rb") as f:
-                st.download_button(
-                    "📥 Project Brief (PDF)",
-                    f,
-                    "Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf",
-                    "application/pdf"
-                )
-        except FileNotFoundError:
-            st.caption("PDF brief not available.")
-    with d_c3:
-        try:
-            with open("PankhuriGovila_YIRP_Project_Tracker.csv", "rb") as f:
-                st.download_button(
-                    "📥 Project Tracker (CSV)",
-                    f,
-                    "PankhuriGovila_YIRP_Project_Tracker.csv",
-                    "text/csv"
-                )
-        except FileNotFoundError:
-            st.caption("CSV tracker not available.")
-
-# =============================================================================
-# TAB 5: FOOD SAFETY RULES GUIDE
+# TAB 4 (was 5): FOOD SAFETY RULES GUIDE
 # =============================================================================
 with tab5:
     st.subheader("📖 Food Safety Rules — Simple Guide")

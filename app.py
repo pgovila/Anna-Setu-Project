@@ -1274,43 +1274,7 @@ try:
                 )
 
             # ================================================================
-            # TAB 5: PROJECT TRACKER & MILESTONES
-            # ================================================================
-            with gr.TabItem("📊 Project Tracker"):
-                gr.Markdown("### 📊 Project Tracker — Anna-Setu (1M1B Internship)")
-                gr.Markdown(
-                    "**Intern:** Pankhuri Govila · **Mentor:** Paramjeet Sir (paramjeet@onemoneb.org) · "
-                    "1M1B AI for Sustainability Virtual Internship\n\n---"
-                )
-                with gr.Row():
-                    with gr.Column():
-                        gr.Markdown(
-                            "#### 🚩 Key Milestones\n\n"
-                            "- **Milestone 1 (End-November 2026):** Build both Track A & B prototypes + get campus approvals.\n"
-                            "  - Complete the Anna-Setu Track A software platform.\n"
-                            "  - Assemble the Track B smart kiosk with load cell and thermal sensor.\n"
-                            "  - Sign agreements with the campus dining team and 2 local Lucknow shelters.\n\n"
-                            "- **Milestone 2 (End-December 2026):** Run a 2-week live pilot on campus + submit final impact report.\n"
-                            "  - Run a 2-week live pilot in the campus cafeteria.\n"
-                            "  - Track meals rescued, plate waste diverted, and fertilizer produced.\n"
-                            "  - Present final impact report to 1M1B for evaluation."
-                        )
-                    with gr.Column():
-                        gr.Markdown(
-                            "#### 📖 Food Safety Quick Reference\n\n"
-                            "- **Danger Zone:** 5°C to 65°C — bacteria grow rapidly here.\n"
-                            "- **The 2h / 4h Rule:**\n"
-                            "  - Under 2 hours: ✅ Safe to donate, chill, or reheat.\n"
-                            "  - 2–4 hours: ⚠️ Safe only for immediate consumption at the shelter.\n"
-                            "  - Over 4 hours: 🚫 Not safe for people — must go to compost.\n"
-                            "- **Lucknow City Rules:**\n"
-                            "  - Max 45-minute delivery time across city traffic.\n"
-                            "  - Dumping food in city bins = ₹5,000 to ₹25,000 fine (Sec 10).\n"
-                            "  - Expired food must go to campus composting, not mixed garbage (Sec 18)."
-                        )
-
-            # ================================================================
-            # TAB 6: FOOD SAFETY RULES GUIDE
+            # TAB 5: FOOD SAFETY RULES GUIDE
             # ================================================================
             with gr.TabItem("📖 Food Safety Rules Guide"):
                 gr.Markdown("### 📖 Food Safety Rules — Simple Guide")
