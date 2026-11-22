@@ -18,11 +18,35 @@ st.set_page_config(
 # ── Global CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-/* ── Font & base ── */
-html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
+/* ── Font & base — explicit dark text everywhere ── */
+html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 
-/* ── App background ── */
+/* Force dark text on all Streamlit content areas */
+.stApp,
+.stApp p,
+.stApp li,
+.stApp span,
+.stApp label,
+.stApp div,
+section[data-testid="stSidebar"],
+[data-testid="stAppViewContainer"],
+[data-testid="stVerticalBlock"],
+[data-testid="stMarkdownContainer"],
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] span,
+.stMarkdown, .stMarkdown p, .stMarkdown li,
+.stTextInput label, .stSelectbox label,
+.stNumberInput label, .stSlider label,
+.stTextArea label {
+    color: #1a1a1a !important;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── App background — white to avoid any colour bleed ── */
 .stApp { background: #f4f7f4; }
+[data-testid="stAppViewContainer"] { background: #f4f7f4; }
+[data-testid="stMain"] { background: #f4f7f4; }
 
 /* ── Hero banner ── */
 .hero-banner {
@@ -55,12 +79,14 @@ html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
     padding: 20px 22px; margin-bottom: 14px;
     border: 1px solid #e0e8e0;
     box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    color: #1a1a1a;
 }
+.section-card strong, .section-card span, .section-card p { color: #1a1a1a !important; }
 
 /* ── Step header pills ── */
 .step-pill {
     display: inline-block;
-    background: #e8f5e9; color: #1b5e2f;
+    background: #e8f5e9; color: #1b5e2f !important;
     border-radius: 20px; padding: 4px 14px;
     font-size: 12px; font-weight: 700; margin-bottom: 10px;
 }

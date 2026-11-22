@@ -982,11 +982,82 @@ try:
     # pyrefly: ignore[missing-import]
     import gradio as gr
 
-    with gr.Blocks(title="Anna-Setu: Campus Food Rescue Network") as demo:
-        gr.Markdown("# 🍽️ Anna-Setu: Campus Food Rescue & Bio-Recycling Network")
-        gr.Markdown(
-            "### 1M1B AI for Sustainability Virtual Internship · IBM SkillsBuild & AICTE · Pankhuri Govila"
-        )
+    with gr.Blocks(title="Anna-Setu: Campus Food Rescue Network", css="""
+/* ── Force dark text everywhere ── */
+body, .gradio-container, .gradio-container p, .gradio-container span,
+.gradio-container label, .gradio-container div, .gradio-container li,
+.prose, .prose p, .prose li, .prose span,
+.block, .block p, .block span, .block li {
+    color: #1a1a1a !important;
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+}
+/* ── App background ── */
+.gradio-container { background: #f4f7f4 !important; }
+/* ── Hero banner ── */
+.anna-hero {
+    background: linear-gradient(135deg, #1b5e2f 0%, #2e7d32 55%, #f9a825 100%);
+    border-radius: 16px; padding: 28px 32px 24px; margin-bottom: 16px;
+}
+.anna-hero h1, .anna-hero p, .anna-hero span { color: white !important; }
+/* ── Stat chips ── */
+.anna-stat {
+    background: rgba(255,255,255,.18); border-radius: 10px;
+    padding: 8px 16px; display: inline-block; text-align: center; margin: 4px;
+}
+.anna-stat .num { font-size: 20px; font-weight: 800; color: white !important; display: block; }
+.anna-stat .lbl { font-size: 10px; color: rgba(255,255,255,.85) !important; letter-spacing:.04em; }
+/* ── Tabs ── */
+.tab-nav button { color: #1a1a1a !important; font-weight: 600; }
+.tab-nav button.selected { background: #2e7d32 !important; color: white !important; }
+/* ── Primary buttons ── */
+button.primary { background: linear-gradient(135deg, #2e7d32, #388e3c) !important;
+    color: white !important; border-radius: 10px !important; border: none !important;
+    font-weight: 700 !important; }
+button.primary:hover { background: #1b5e2f !important; }
+/* ── Accordion ── */
+.label-wrap span { color: #1a1a1a !important; font-weight: 600 !important; }
+/* ── Info boxes in markdown ── */
+blockquote { border-left: 4px solid #2e7d32; background: #f1f8f1;
+    padding: 10px 16px; border-radius: 0 8px 8px 0; color: #1a1a1a !important; }
+blockquote p, blockquote strong { color: #1a1a1a !important; }
+/* ── Tables ── */
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #e0e8e0; padding: 8px 12px; color: #1a1a1a !important; }
+th { background: #e8f5e9; font-weight: 700; }
+/* ── Textbox / textarea labels ── */
+.svelte-1gfkn6j, .svelte-1gfkn6j label, .eta-bar { color: #1a1a1a !important; }
+""") as demo:
+        # ── Hero Banner ──────────────────────────────────────────────────────
+        gr.HTML("""
+<div class="anna-hero">
+  <div style="display:flex;align-items:center;gap:14px;">
+    <svg width="48" height="48" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="26" cy="26" r="26" fill="rgba(255,255,255,0.15)"/>
+      <path d="M10 34 Q26 12 42 34" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <line x1="8" y1="34" x2="44" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="17" cy="29" r="3" fill="#f9a825"/>
+      <circle cx="26" cy="22" r="3" fill="#f9a825"/>
+      <circle cx="35" cy="29" r="3" fill="#f9a825"/>
+      <circle cx="13" cy="34" r="5" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
+      <circle cx="39" cy="34" r="5" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
+    </svg>
+    <div>
+      <h1 style="font-size:26px;font-weight:800;margin:0 0 2px;color:white;">Anna-Setu</h1>
+      <p style="font-size:13px;margin:0;color:rgba(255,255,255,.88);">Campus Food Rescue &amp; Bio-Recycling Network</p>
+      <span style="display:inline-block;background:rgba(255,255,255,.18);border-radius:20px;
+                   padding:3px 12px;font-size:11px;font-weight:600;margin-top:8px;color:white;">
+        🌿 1M1B · IBM SkillsBuild · AICTE · Pankhuri Govila
+      </span>
+    </div>
+  </div>
+  <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+    <div class="anna-stat"><span class="num">6+</span><span class="lbl">VERIFIED SHELTERS</span></div>
+    <div class="anna-stat"><span class="num">10</span><span class="lbl">FSSAI RULES EMBEDDED</span></div>
+    <div class="anna-stat"><span class="num">45 min</span><span class="lbl">MAX DELIVERY TIME</span></div>
+    <div class="anna-stat"><span class="num">24h</span><span class="lbl">WASTE → FERTILIZER</span></div>
+  </div>
+</div>
+""")
 
         # ================================================================
         # WELCOME TUTORIAL — open by default on first load, collapsible
