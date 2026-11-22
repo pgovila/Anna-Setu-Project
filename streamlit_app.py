@@ -6,169 +6,220 @@ Covers Dual Tracks: Track A (Software AI & RAG Engine) + Track B (Smart Plate-Wa
 
 import streamlit as st
 import pandas as pd
+import base64
+import os
 from datetime import datetime
 from rag.pipeline import AnnaSetuRAGPipeline
 
+def _img_to_b64(path: str) -> str:
+    """Return a base64 data URI for an image file, for use in HTML."""
+    if not os.path.exists(path):
+        return ""
+    with open(path, "rb") as f:
+        data = base64.b64encode(f.read()).decode()
+    ext = path.rsplit(".", 1)[-1].lower()
+    mime = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg"}.get(ext, "image/png")
+    return f"data:{mime};base64,{data}"
+
+LOGO_B64 = _img_to_b64("Anna Setu.png")
+
 st.set_page_config(
     page_title="Anna-Setu: Campus Food Rescue Network",
-    page_icon="🍽️",
+    page_icon="Anna Setu.png",
     layout="wide"
 )
 
 # ── Global CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-/* ── Font & base — explicit dark text everywhere ── */
+/* ═══════════════════════════════════════════════════════
+   ANNA-SETU BRAND PALETTE (from Anna Setu.png logo)
+   Green:  #1a7a3c   Gold: #f5a623   Orange: #e8891a
+   Light green accent: #4caf77   BG: #f2f8f4
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Font & base ── */
 html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 
-/* Force dark text on all Streamlit content areas */
+/* ── App background ── */
 .stApp,
-.stApp p,
-.stApp li,
-.stApp span,
-.stApp label,
-.stApp div,
-section[data-testid="stSidebar"],
 [data-testid="stAppViewContainer"],
-[data-testid="stVerticalBlock"],
-[data-testid="stMarkdownContainer"],
-[data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] li,
-[data-testid="stMarkdownContainer"] span,
+[data-testid="stMain"] {
+    background: #f2f8f4 !important;
+}
+
+/* ── Force dark text on ALL Streamlit content ── */
+.stApp, .stApp p, .stApp li, .stApp span, .stApp label, .stApp div,
+[data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"],
+[data-testid="stMarkdownContainer"], [data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li, [data-testid="stMarkdownContainer"] span,
 .stMarkdown, .stMarkdown p, .stMarkdown li,
-.stTextInput label, .stSelectbox label,
-.stNumberInput label, .stSlider label,
-.stTextArea label {
+.stTextInput label, .stSelectbox label, .stNumberInput label,
+.stSlider label, .stTextArea label,
+[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p {
     color: #1a1a1a !important;
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* ── App background — white to avoid any colour bleed ── */
-.stApp { background: #f4f7f4; }
-[data-testid="stAppViewContainer"] { background: #f4f7f4; }
-[data-testid="stMain"] { background: #f4f7f4; }
-
-/* ── Hero banner ── */
-.hero-banner {
-    background: linear-gradient(135deg, #1b5e2f 0%, #2e7d32 55%, #f9a825 100%);
-    border-radius: 16px;
-    padding: 32px 36px 28px;
-    margin-bottom: 8px;
-    color: white;
+/* ── Fix text boxes — white background, dark text ── */
+.stTextArea textarea,
+.stTextInput input,
+[data-testid="stTextArea"] textarea,
+[data-testid="stTextInput"] input {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    border: 1.5px solid #c8dfc8 !important;
+    border-radius: 8px !important;
 }
-.hero-banner h1 { font-size: 28px; font-weight: 800; margin: 0 0 4px; color: white; }
-.hero-banner p  { font-size: 14px; opacity: .88; margin: 0; color: white; }
+.stTextArea textarea:focus,
+.stTextInput input:focus {
+    border-color: #1a7a3c !important;
+    box-shadow: 0 0 0 2px rgba(26,122,60,.15) !important;
+}
+
+/* ── Fix selectbox, number input ── */
+.stSelectbox div[data-baseweb="select"] > div,
+.stNumberInput input {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    border-color: #c8dfc8 !important;
+}
+
+/* ── Hero banner — logo green + gold gradient ── */
+.hero-banner {
+    background: linear-gradient(135deg, #1a7a3c 0%, #2a9d50 60%, #f5a623 100%);
+    border-radius: 18px;
+    padding: 32px 36px 28px;
+    margin-bottom: 10px;
+}
+.hero-banner h1 { font-size: 28px; font-weight: 800; margin: 0 0 4px; color: white !important; }
+.hero-banner p  { font-size: 14px; opacity: .9; margin: 0; color: white !important; }
 .hero-tag {
-    display: inline-block; background: rgba(255,255,255,.18);
-    border-radius: 20px; padding: 3px 12px;
-    font-size: 11px; font-weight: 600; margin-top: 10px; color: white;
+    display: inline-block; background: rgba(255,255,255,.22);
+    border-radius: 20px; padding: 3px 14px;
+    font-size: 11px; font-weight: 600; margin-top: 10px; color: white !important;
 }
 
 /* ── Stat chips in hero ── */
-.hero-stats { display: flex; gap: 20px; margin-top: 16px; flex-wrap: wrap; }
-.hero-stat  {
-    background: rgba(255,255,255,.15); border-radius: 10px;
+.hero-stats { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.hero-stat {
+    background: rgba(255,255,255,.18); border-radius: 10px;
     padding: 8px 16px; text-align: center;
 }
-.hero-stat .num  { font-size: 22px; font-weight: 800; display: block; }
-.hero-stat .lbl  { font-size: 10px; opacity: .85; letter-spacing: .04em; }
+.hero-stat .num { font-size: 22px; font-weight: 800; display: block; color: white !important; }
+.hero-stat .lbl { font-size: 10px; opacity: .85; letter-spacing: .04em; color: white !important; }
 
 /* ── Section card ── */
 .section-card {
     background: white; border-radius: 14px;
     padding: 20px 22px; margin-bottom: 14px;
-    border: 1px solid #e0e8e0;
-    box-shadow: 0 1px 4px rgba(0,0,0,.06);
-    color: #1a1a1a;
+    border: 1px solid #c8dfc8;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    color: #1a1a1a !important;
 }
-.section-card strong, .section-card span, .section-card p { color: #1a1a1a !important; }
+.section-card *, .section-card strong, .section-card span,
+.section-card p, .section-card b { color: #1a1a1a !important; }
 
-/* ── Step header pills ── */
+/* ── Step header pills — light green bg, dark green text ── */
 .step-pill {
     display: inline-block;
-    background: #e8f5e9; color: #1b5e2f !important;
+    background: #d6edd8; color: #1a7a3c !important;
     border-radius: 20px; padding: 4px 14px;
     font-size: 12px; font-weight: 700; margin-bottom: 10px;
+    border: 1px solid #b2d8b4;
 }
 
-/* ── Tab bar accent ── */
+/* ── Tabs — lighter green active tab ── */
 .stTabs [data-baseweb="tab-list"] {
     background: white;
     border-radius: 12px 12px 0 0;
     padding: 4px 8px 0;
     gap: 4px;
-    border-bottom: 2px solid #e0e8e0;
+    border-bottom: 2px solid #c8dfc8;
 }
 .stTabs [data-baseweb="tab"] {
     border-radius: 10px 10px 0 0;
     font-weight: 600; font-size: 13px;
     padding: 8px 16px;
-    color: #555;
+    color: #2a5e30 !important;
 }
 .stTabs [aria-selected="true"] {
-    background: #2e7d32 !important;
+    background: #4caf77 !important;
     color: white !important;
 }
+.stTabs [aria-selected="false"]:hover {
+    background: #e8f5e9 !important;
+}
 
-/* ── Primary button ── */
+/* ── Primary button — logo green ── */
 .stButton > button[kind="primary"] {
-    background: linear-gradient(135deg, #2e7d32, #388e3c) !important;
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
     border: none !important; border-radius: 10px !important;
+    color: white !important;
     font-weight: 700 !important; font-size: 14px !important;
     padding: 10px 20px !important;
-    box-shadow: 0 2px 8px rgba(46,125,50,.35) !important;
+    box-shadow: 0 2px 8px rgba(26,122,60,.30) !important;
 }
 .stButton > button[kind="primary"]:hover {
-    background: linear-gradient(135deg, #1b5e2f, #2e7d32) !important;
-    box-shadow: 0 4px 14px rgba(46,125,50,.45) !important;
+    background: linear-gradient(135deg, #145e30, #1a7a3c) !important;
+    box-shadow: 0 4px 14px rgba(26,122,60,.40) !important;
 }
 
-/* ── Secondary button ── */
-.stButton > button[kind="secondary"] {
-    border: 2px solid #2e7d32 !important;
-    color: #2e7d32 !important; border-radius: 10px !important;
+/* ── Secondary / default button ── */
+.stButton > button[kind="secondary"],
+.stButton > button:not([kind="primary"]) {
+    background: white !important;
+    border: 2px solid #1a7a3c !important;
+    color: #1a7a3c !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
+}
+.stButton > button[kind="secondary"]:hover,
+.stButton > button:not([kind="primary"]):hover {
+    background: #e8f5e9 !important;
 }
 
 /* ── Metric cards ── */
 [data-testid="metric-container"] {
     background: white; border-radius: 12px;
-    border: 1px solid #e0e8e0; padding: 12px 16px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    border: 1px solid #c8dfc8; padding: 12px 16px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+[data-testid="metric-container"] label,
+[data-testid="metric-container"] [data-testid="stMetricLabel"] p,
+[data-testid="metric-container"] [data-testid="stMetricValue"] {
+    color: #1a1a1a !important;
 }
 
-/* ── Tutorial overlay ── */
-.tutorial-backdrop {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.55);
-    z-index: 999; display: flex;
-    align-items: center; justify-content: center;
+/* ── Expander ── */
+.streamlit-expanderHeader {
+    background: #e8f5e9 !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    color: #1a7a3c !important;
 }
-.tutorial-card {
-    background: white; border-radius: 20px;
-    max-width: 680px; width: 92%;
-    padding: 36px 40px 32px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.35);
-    position: relative;
+
+/* ── Alerts ── */
+.stAlert { border-radius: 10px !important; }
+.stAlert p { color: inherit !important; }
+
+/* ── Bordered containers ── */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: #c8dfc8 !important;
+    border-radius: 12px !important;
+    background: white !important;
+}
+
+/* ── Slider track ── */
+[data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"] {
+    background: #1a7a3c !important;
 }
 
 /* ── Progress dots ── */
-.dots { display: flex; gap: 8px; justify-content: center; margin: 20px 0 0; }
-.dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #ccc; transition: background .2s;
-}
-.dot.active { background: #2e7d32; transform: scale(1.2); }
+.dot.active { background: #1a7a3c; }
 
-/* ── Expander polish ── */
-.streamlit-expanderHeader {
-    background: #f1f8f1 !important;
-    border-radius: 10px !important;
-    font-weight: 600 !important;
-}
-
-/* ── Info/success/warning box tweaks ── */
-.stAlert { border-radius: 10px !important; }
+/* ── Dataframe / table header ── */
+.dataframe thead th { background: #d6edd8 !important; color: #1a1a1a !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -450,19 +501,13 @@ if not st.session_state.tutorial_done:
 # =============================================================================
 # HERO BANNER
 # =============================================================================
-st.markdown("""
+st.markdown(f"""
 <div class="hero-banner">
-  <div style="display:flex;align-items:center;gap:14px;">
-    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="26" cy="26" r="26" fill="rgba(255,255,255,0.15)"/>
-      <path d="M10 34 Q26 12 42 34" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <line x1="8" y1="34" x2="44" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="17" cy="29" r="3" fill="#f9a825"/>
-      <circle cx="26" cy="22" r="3" fill="#f9a825"/>
-      <circle cx="35" cy="29" r="3" fill="#f9a825"/>
-      <circle cx="13" cy="34" r="5" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
-      <circle cx="39" cy="34" r="5" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
-    </svg>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <img src="{LOGO_B64}"
+         style="width:62px;height:62px;border-radius:14px;object-fit:cover;
+                box-shadow:0 2px 10px rgba(0,0,0,.25);"
+         alt="Anna-Setu Logo"/>
     <div>
       <h1>Anna-Setu</h1>
       <p>Campus Food Rescue &amp; Bio-Recycling Network</p>

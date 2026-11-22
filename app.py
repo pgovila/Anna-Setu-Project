@@ -8,8 +8,23 @@ Includes self-contained embedded RAG fallback for standalone deployment (e.g. Hu
 
 import sys
 import re
+import base64
+import os
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
+
+
+def _img_to_b64(path: str) -> str:
+    """Return a base64 data URI for an image, for embedding in HTML."""
+    if not os.path.exists(path):
+        return ""
+    with open(path, "rb") as f:
+        data = base64.b64encode(f.read()).decode()
+    ext = path.rsplit(".", 1)[-1].lower()
+    mime = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg"}.get(ext, "image/png")
+    return f"data:{mime};base64,{data}"
+
+LOGO_B64_HF = _img_to_b64("Anna Setu.png")
 
 # ZeroGPU compatibility for Hugging Face Spaces
 try:
@@ -1028,19 +1043,18 @@ th { background: #e8f5e9; font-weight: 700; }
 .svelte-1gfkn6j, .svelte-1gfkn6j label, .eta-bar { color: #1a1a1a !important; }
 """) as demo:
         # ── Hero Banner ──────────────────────────────────────────────────────
-        gr.HTML("""
+        _logo_img = (
+            f'<img src="{LOGO_B64_HF}" '
+            'style="width:62px;height:62px;border-radius:14px;object-fit:cover;'
+            'box-shadow:0 2px 10px rgba(0,0,0,.25);" alt="Anna-Setu Logo"/>'
+            if LOGO_B64_HF else
+            '<div style="width:62px;height:62px;border-radius:14px;background:rgba(255,255,255,.2);'
+            'display:flex;align-items:center;justify-content:center;font-size:28px;">🍽️</div>'
+        )
+        gr.HTML(f"""
 <div class="anna-hero">
   <div style="display:flex;align-items:center;gap:14px;">
-    <svg width="48" height="48" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="26" cy="26" r="26" fill="rgba(255,255,255,0.15)"/>
-      <path d="M10 34 Q26 12 42 34" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-      <line x1="8" y1="34" x2="44" y2="34" stroke="white" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="17" cy="29" r="3" fill="#f9a825"/>
-      <circle cx="26" cy="22" r="3" fill="#f9a825"/>
-      <circle cx="35" cy="29" r="3" fill="#f9a825"/>
-      <circle cx="13" cy="34" r="5" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
-      <circle cx="39" cy="34" r="5" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2"/>
-    </svg>
+    {_logo_img}
     <div>
       <h1 style="font-size:26px;font-weight:800;margin:0 0 2px;color:white;">Anna-Setu</h1>
       <p style="font-size:13px;margin:0;color:rgba(255,255,255,.88);">Campus Food Rescue &amp; Bio-Recycling Network</p>
