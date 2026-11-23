@@ -998,49 +998,149 @@ try:
     import gradio as gr
 
     with gr.Blocks(title="Anna-Setu: Campus Food Rescue Network", css="""
-/* ── Force dark text everywhere ── */
-body, .gradio-container, .gradio-container p, .gradio-container span,
-.gradio-container label, .gradio-container div, .gradio-container li,
-.prose, .prose p, .prose li, .prose span,
-.block, .block p, .block span, .block li {
-    color: #1a1a1a !important;
+/* ══════════════════════════════════════════════════════════
+   ANNA-SETU BRAND THEME — Gradio 4.x
+   Palette: #0d4a22 (deep) → #1a7a3c (mid) → #2a9d50 (light) → #f5a623 (gold)
+   Strategy:
+     - App background: deep-to-gold gradient
+     - All content blocks: white (#ffffff) surface, dark (#1a1a1a) text
+     - Hero banner: gradient with white text
+     - Labels / headings inside blocks: dark green
+   ══════════════════════════════════════════════════════════ */
+
+/* ── 1. Page background ── */
+body, .gradio-container, gradio-app {
+    background: linear-gradient(160deg, #0d4a22 0%, #1a7a3c 40%, #2a9d50 70%, #c97a10 100%) !important;
+    min-height: 100vh;
     font-family: 'Segoe UI', system-ui, sans-serif !important;
 }
-/* ── App background ── */
-.gradio-container { background: #f4f7f4 !important; }
-/* ── Hero banner ── */
+
+/* ── 2. All content blocks → white cards ── */
+.block, .gr-block, .gr-box, .gr-padded,
+.gradio-container .block,
+div[data-testid="block"] {
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(26,122,60,.15) !important;
+    box-shadow: 0 2px 12px rgba(13,74,34,.10) !important;
+}
+
+/* ── 3. ALL text inside white blocks → dark ── */
+.block *, .gr-block *, .gr-box *,
+.block p, .block span, .block li, .block label, .block strong, .block em,
+.block h1, .block h2, .block h3, .block h4,
+.prose *, .prose p, .prose span, .prose li, .prose strong,
+.prose h1, .prose h2, .prose h3, .prose h4,
+label, .svelte-1gfkn6j, .eta-bar,
+span[data-testid="block-label"],
+.output-class, .output-markdown { color: #1a1a1a !important; }
+
+/* ── 4. Widget labels specifically → dark green ── */
+.block label, .block .label-wrap span,
+span.text-sm, span.text-gray-500,
+.block .svelte-1b6s6s, .block .wrap { color: #1a5c30 !important; }
+
+/* ── 5. Headings inside blocks → deep green ── */
+.block h1, .block h2, .block h3, .block h4,
+.prose h1, .prose h2, .prose h3, .prose h4 { color: #0d4a22 !important; }
+
+/* ── 6. Hero banner (custom HTML) ── */
 .anna-hero {
-    background: linear-gradient(135deg, #1b5e2f 0%, #2e7d32 55%, #f9a825 100%);
-    border-radius: 16px; padding: 28px 32px 24px; margin-bottom: 16px;
+    background: linear-gradient(135deg, #0d4a22 0%, #1a7a3c 45%, #2a9d50 75%, #f5a623 100%);
+    border-radius: 24px; padding: 28px 32px 24px; margin-bottom: 16px;
+    box-shadow: 0 4px 24px rgba(13,74,34,.40);
+    border: none !important;
 }
-.anna-hero h1, .anna-hero p, .anna-hero span { color: white !important; }
-/* ── Stat chips ── */
+.anna-hero, .anna-hero h1, .anna-hero p, .anna-hero span,
+.anna-hero * { color: #ffffff !important; }
+.anna-hero .num { color: #ffffff !important; font-weight: 800; }
+.anna-hero .lbl { color: rgba(255,255,255,.88) !important; }
+
+/* ── 7. Stat chips in hero ── */
 .anna-stat {
-    background: rgba(255,255,255,.18); border-radius: 10px;
-    padding: 8px 16px; display: inline-block; text-align: center; margin: 4px;
+    background: rgba(255,255,255,.18) !important; border-radius: 16px !important;
+    padding: 10px 18px; display: inline-block; text-align: center; margin: 4px;
+    border: 1px solid rgba(255,255,255,.25) !important;
 }
-.anna-stat .num { font-size: 20px; font-weight: 800; color: white !important; display: block; }
-.anna-stat .lbl { font-size: 10px; color: rgba(255,255,255,.85) !important; letter-spacing:.04em; }
-/* ── Tabs ── */
-.tab-nav button { color: #1a1a1a !important; font-weight: 600; }
-.tab-nav button.selected { background: #2e7d32 !important; color: white !important; }
-/* ── Primary buttons ── */
-button.primary { background: linear-gradient(135deg, #2e7d32, #388e3c) !important;
-    color: white !important; border-radius: 10px !important; border: none !important;
-    font-weight: 700 !important; }
-button.primary:hover { background: #1b5e2f !important; }
-/* ── Accordion ── */
-.label-wrap span { color: #1a1a1a !important; font-weight: 600 !important; }
-/* ── Info boxes in markdown ── */
-blockquote { border-left: 4px solid #2e7d32; background: #f1f8f1;
-    padding: 10px 16px; border-radius: 0 8px 8px 0; color: #1a1a1a !important; }
-blockquote p, blockquote strong { color: #1a1a1a !important; }
-/* ── Tables ── */
-table { border-collapse: collapse; width: 100%; }
-th, td { border: 1px solid #e0e8e0; padding: 8px 12px; color: #1a1a1a !important; }
-th { background: #e8f5e9; font-weight: 700; }
-/* ── Textbox / textarea labels ── */
-.svelte-1gfkn6j, .svelte-1gfkn6j label, .eta-bar { color: #1a1a1a !important; }
+.anna-stat .num { font-size: 20px; font-weight: 800; color: #ffffff !important; display: block; }
+.anna-stat .lbl { font-size: 10px; color: rgba(255,255,255,.88) !important; letter-spacing: .05em; }
+
+/* ── 8. Tabs ── */
+.tab-nav { background: rgba(255,255,255,.95) !important; border-radius: 999px !important;
+    padding: 4px 6px !important; gap: 4px !important;
+    box-shadow: 0 2px 8px rgba(13,74,34,.15) !important;
+    border: 1px solid rgba(26,122,60,.2) !important; }
+.tab-nav button { color: #1a5c30 !important; font-weight: 600 !important;
+    border-radius: 999px !important; padding: 6px 16px !important;
+    background: transparent !important; }
+.tab-nav button.selected {
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+    color: #ffffff !important; box-shadow: 0 2px 8px rgba(26,122,60,.35) !important; }
+.tab-nav button:hover:not(.selected) { background: rgba(26,122,60,.1) !important; }
+
+/* ── 9. Primary buttons ── */
+button.primary, .gr-button-primary, button[variant="primary"] {
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+    color: #ffffff !important; border-radius: 999px !important;
+    border: none !important; font-weight: 700 !important;
+    box-shadow: 0 3px 12px rgba(26,122,60,.35) !important; }
+button.primary:hover, .gr-button-primary:hover {
+    background: linear-gradient(135deg, #0d4a22, #1a7a3c) !important; }
+
+/* ── 10. Secondary buttons ── */
+button.secondary, .gr-button-secondary, button[variant="secondary"] {
+    background: #ffffff !important; border: 2px solid #1a7a3c !important;
+    color: #1a7a3c !important; border-radius: 999px !important; font-weight: 600 !important; }
+
+/* ── 11. Accordion headers ── */
+.label-wrap { background: #f0f9f2 !important; border-radius: 16px !important;
+    border: 1px solid rgba(26,122,60,.2) !important; }
+.label-wrap span { color: #1a7a3c !important; font-weight: 600 !important; }
+details summary { background: #f0f9f2 !important; border-radius: 16px !important;
+    color: #1a7a3c !important; font-weight: 600 !important; }
+
+/* ── 12. Textbox / inputs ── */
+input[type="text"], input[type="number"], input[type="search"],
+textarea, .gr-text-input, .gr-input {
+    background: #ffffff !important; color: #1a1a1a !important;
+    border: 1.5px solid #a8cfb0 !important; border-radius: 16px !important; }
+input:focus, textarea:focus {
+    border-color: #1a7a3c !important;
+    box-shadow: 0 0 0 3px rgba(26,122,60,.18) !important; outline: none !important; }
+
+/* ── 13. Dropdown / select ── */
+.gr-dropdown, select {
+    background: #ffffff !important; color: #1a1a1a !important;
+    border: 1.5px solid #a8cfb0 !important; border-radius: 16px !important; }
+
+/* ── 14. Slider ── */
+input[type="range"] { accent-color: #1a7a3c !important; }
+
+/* ── 15. Blockquotes ── */
+blockquote { border-left: 4px solid #1a7a3c !important;
+    background: #f0f9f2 !important; padding: 10px 16px;
+    border-radius: 0 16px 16px 0; color: #1a1a1a !important; }
+blockquote *, blockquote p, blockquote strong { color: #1a1a1a !important; }
+
+/* ── 16. Tables ── */
+table { border-collapse: collapse; width: 100%; border-radius: 12px; overflow: hidden; }
+th { background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+    color: #ffffff !important; padding: 10px 14px; font-weight: 700; }
+td { border: 1px solid #d0e8d4; padding: 8px 12px; color: #1a1a1a !important;
+    background: #ffffff !important; }
+
+/* ── 17. Output/status text boxes ── */
+.output-textbox, .gr-textbox, [data-testid="textbox"] textarea {
+    background: #ffffff !important; color: #1a1a1a !important;
+    border-radius: 16px !important; }
+
+/* ── 18. Info / warning / error boxes ── */
+.info, .warning, .error { border-radius: 12px !important; }
+
+/* ── 19. Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,.1); }
+::-webkit-scrollbar-thumb { background: #1a7a3c; border-radius: 999px; }
 """) as demo:
         # ── Hero Banner ──────────────────────────────────────────────────────
         _logo_img = (

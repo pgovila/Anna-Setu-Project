@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Anna-Setu — Campus Food Rescue Network</title>
+  <title>Anna-Setu - Campus Food Rescue Network</title>
   <style>
     /* ── Reset & base ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -69,6 +69,16 @@
       transition: background .2s, transform .15s !important;
     }
     .nav-cta:hover { background: #ffbe4f !important; transform: translateY(-1px); }
+    .nav-cta-secondary {
+      background: rgba(255,255,255,.12);
+      border: 1.5px solid rgba(255,255,255,.35);
+      color: var(--white) !important;
+      font-weight: 600 !important;
+      padding: 6px 18px;
+      border-radius: var(--radius-pill);
+      transition: background .2s, border-color .2s !important;
+    }
+    .nav-cta-secondary:hover { background: rgba(255,255,255,.22) !important; border-color: rgba(255,255,255,.65) !important; }
 
     /* ── HERO ─────────────────────────────────────────────────────── */
     .hero {
@@ -375,7 +385,8 @@
     <li><a href="#features">Features</a></li>
     <li><a href="#impact">Impact</a></li>
     <li><a href="#sdgs">SDGs</a></li>
-    <li><a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="nav-cta">Try the App →</a></li>
+    <li><a href="https://pgovila-anna-setu-demo.streamlit.app" target="_blank" class="nav-cta-secondary">Streamlit App</a></li>
+    <li><a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="nav-cta">Hugging Face App →</a></li>
   </ul>
 </nav>
 
@@ -390,19 +401,22 @@
     </div>
     <img src="Anna Setu.png" alt="Anna-Setu Logo" class="hero-logo-img" />
     <h1>The <em>Food Bridge</em><br/>Every Campus Needs</h1>
-    <p class="hero-sub">Anna-Setu (अन्न सेतु) — Hindi for "Food Bridge"</p>
+    <p class="hero-sub">Anna-Setu (अन्न सेतु) - Hindi for "Food Bridge"</p>
     <p class="hero-desc">
       Every day, campus dining halls cook <strong>thousands of extra portions</strong> that go to landfill while
       <strong>millions go hungry</strong>. Anna-Setu is an AI-powered platform that
       checks food safety in seconds, matches surplus to the nearest shelter, and turns plate waste
-      into fertilizer — <strong>zero to landfill</strong>.
+      into fertilizer - <strong>zero to landfill</strong>.
     </p>
     <div class="hero-buttons">
-      <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="btn-primary">
-        🚀 Be Part of the Change — Try the App
+      <a href="https://pgovila-anna-setu-demo.streamlit.app" target="_blank" class="btn-primary">
+        🚀 Try on Streamlit
       </a>
-      <a href="#problem" class="btn-secondary">Learn More ↓</a>
+      <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="btn-secondary">
+        🤗 Try on Hugging Face
+      </a>
     </div>
+    <p style="color:rgba(255,255,255,.55);font-size:12px;margin-top:12px;">Two platforms, same powerful tool</p>
     <div class="hero-stats">
       <div class="hero-stat"><span class="n">40%</span><span class="l">Food cooked goes uneaten</span></div>
       <div class="hero-stat"><span class="n">6+</span><span class="l">Verified shelters covered</span></div>
@@ -424,12 +438,12 @@
     <div class="problem-strip">
       <div>
         <span class="section-label" style="background:rgba(255,255,255,.18);">The Problem</span>
-        <h2>India wastes ₹92,000 crore of food every year —<br/>campuses are a silent contributor.</h2>
+        <h2>India wastes Rs. 92,000 crore of food every year -<br/>campuses are a silent contributor.</h2>
         <p>
-          Institutional kitchens over-produce by <strong>20–40%</strong> using fixed static buffers.
-          Food that could nourish people instead becomes methane-emitting landfill or municipal waste —
+          Institutional kitchens over-produce by <strong>20-40%</strong> using fixed static buffers.
+          Food that could nourish people instead becomes methane-emitting landfill or municipal waste -
           violating both <strong>FSSAI regulations</strong> and <strong>Lucknow Nagar Nigam by-laws</strong>.
-          No scalable, legally-grounded digital tool existed to fix this — until now.
+          No scalable, legally-grounded digital tool existed to fix this - until now.
         </p>
       </div>
       <div class="problem-numbers">
@@ -461,7 +475,7 @@
   <div class="section-inner">
     <span class="section-label">How it Works</span>
     <h2 class="section-title">From Surplus to Shelter in 3 Steps</h2>
-    <p class="section-desc">Anna-Setu runs two parallel tracks — Track A for digital AI compliance and Track B for physical plate-waste hardware.</p>
+    <p class="section-desc">Anna-Setu runs two parallel tracks - Track A for digital AI compliance and Track B for physical plate-waste hardware.</p>
     <div class="steps-grid">
       <div class="step-card">
         <span class="step-icon">📋</span>
@@ -491,13 +505,13 @@
         <span class="step-icon">🌱</span>
         <div class="step-num">5</div>
         <h3>Fertilizer in 24h</h3>
-        <p>PTC ceramic heating + aerobic aeration converts food scraps into dry, odourless organic fertilizer within 24 hours — zero municipal burden.</p>
+        <p>PTC ceramic heating + aerobic aeration converts food scraps into dry, odourless organic fertilizer within 24 hours - zero municipal burden.</p>
       </div>
       <div class="step-card">
         <span class="step-icon">📊</span>
         <div class="step-num">6</div>
         <h3>Predict & Prevent</h3>
-        <p>The demand advisor uses day, weather, and academic calendar signals to calculate optimal cooking quantities — stopping waste before it starts.</p>
+        <p>The demand advisor uses day, weather, and academic calendar signals to calculate optimal cooking quantities - stopping waste before it starts.</p>
       </div>
     </div>
   </div>
@@ -510,17 +524,17 @@
   <div class="section-inner">
     <span class="section-label">Platform Features</span>
     <h2 class="section-title">Everything in One Place</h2>
-    <p class="section-desc">Available on both Streamlit and Hugging Face — designed for dining hall staff, wardens, and sustainability officers.</p>
+    <p class="section-desc">Available on both Streamlit and Hugging Face - designed for dining hall staff, wardens, and sustainability officers.</p>
     <div class="features-grid">
       <div class="feat-card">
         <div class="feat-icon">⚖️</div>
         <h3>FSSAI-Grounded Compliance</h3>
-        <p>Every decision cites the exact clause — Regulation 4(2), 4(3), 4(4), 4(5) and Section 7. Legally defensible documentation auto-generated.</p>
+        <p>Every decision cites the exact clause - Regulation 4(2), 4(3), 4(4), 4(5) and Section 7. Legally defensible documentation auto-generated.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🧠</div>
         <h3>IBM Granite RAG Engine</h3>
-        <p>A retrieval-augmented generation pipeline built on IBM Granite synthesises answers from verified food safety knowledge bases — no hallucinations.</p>
+        <p>A retrieval-augmented generation pipeline built on IBM Granite synthesises answers from verified food safety knowledge bases - no hallucinations.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon">📍</div>
@@ -540,7 +554,7 @@
       <div class="feat-card">
         <div class="feat-icon">💬</div>
         <h3>Plain-English Q&A</h3>
-        <p>Ask "Can I donate rice after 3 hours?" and get a clear rule-backed answer drawn from official regulations — accessible to all staff levels.</p>
+        <p>Ask "Can I donate rice after 3 hours?" and get a clear rule-backed answer drawn from official regulations - accessible to all staff levels.</p>
       </div>
     </div>
   </div>
@@ -662,11 +676,16 @@
     <h2>Ready to Bridge the Gap?</h2>
     <p>
       Every time you use Anna-Setu, a meal that would have gone to waste reaches someone who needs it.
-      Join the network — it takes less than 2 minutes to run your first food safety check.
+      Join the network - it takes less than 2 minutes to run your first food safety check.
     </p>
-    <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="btn-primary">
-      🍽️ Be Part of the Change — Open the App
-    </a>
+    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+      <a href="https://pgovila-anna-setu-demo.streamlit.app" target="_blank" class="btn-primary">
+        🚀 Open on Streamlit
+      </a>
+      <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="btn-secondary" style="border-color:rgba(255,255,255,.5);color:#fff;">
+        🤗 Open on Hugging Face
+      </a>
+    </div>
   </div>
 </div>
 
@@ -674,9 +693,11 @@
      FOOTER
 ══════════════════════════════════════ -->
 <footer>
-  <strong>Anna-Setu</strong> — Campus Food Rescue &amp; Bio-Recycling Network<br/>
+  <strong>Anna-Setu</strong> - Campus Food Rescue &amp; Bio-Recycling Network<br/>
   Built by <strong>Pankhuri Govila</strong> · 1M1B AI for Sustainability Virtual Internship 2025 · IBM SkillsBuild · AICTE<br/>
   <span style="margin-top:6px;display:inline-block;">
+    <a href="https://pgovila-anna-setu-demo.streamlit.app" target="_blank">Streamlit App</a>
+    &nbsp;·&nbsp;
     <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank">Hugging Face App</a>
     &nbsp;·&nbsp;
     <a href="https://github.com/pgovila/Anna-Setu-Project" target="_blank">GitHub</a>
