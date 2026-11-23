@@ -1,7 +1,7 @@
 """
 Unified RAG Pipeline for Anna-Setu.
-Coordinates semantic retrieval of FSSAI & Lucknow Nagar Nigam guidelines,
-safety timeline verification, and IBM Granite notification generation.
+Coordinates lexical (TF-IDF) retrieval of FSSAI & Lucknow Nagar Nigam guidelines,
+safety timeline verification, and template-based notification generation.
 """
 
 import os
@@ -9,7 +9,7 @@ import json
 from typing import Dict, Any, List, Optional
 from .retriever import RegulatoryRetriever
 from .compliance_engine import FoodComplianceEngine
-from .granite_generator import GraniteAlertCompiler
+from .granite_generator import TemplateAlertCompiler
 
 
 class AnnaSetuRAGPipeline:
@@ -17,14 +17,22 @@ class AnnaSetuRAGPipeline:
     High-level orchestrator for the Anna-Setu Compliance & Redistribution RAG Pipeline.
     """
 
+    # Maps UI filter values (which may differ from document source_type tags) to the
+    # canonical source_type strings stored on each document by the retriever.
+    _FILTER_SOURCE_MAP = {
+        "FSSAI": "FSSAI",
+        "LUCKNOW_NAGAR_NIGAM": "LNN",
+        "LNN": "LNN",
+    }
+
     def __init__(self, kb_dir: Optional[str] = None):
         self.retriever = RegulatoryRetriever(kb_dir=kb_dir)
         self.engine = FoodComplianceEngine(retriever=self.retriever)
-        self.compiler = GraniteAlertCompiler()
+        self.compiler = TemplateAlertCompiler()
         self.shelters = self._load_shelters(kb_dir)
 
     def _load_shelters(self, kb_dir: Optional[str]) -> List[Dict[str, Any]]:
-        """Loads verified Lucknow shelter directory."""
+        """Loads illustrative Lucknow shelter directory (sample data - confirm before use)."""
         if kb_dir is None:
             base_dir = os.path.dirname(os.path.abspath(__file__))
             kb_dir = os.path.join(base_dir, "knowledge_base")
@@ -63,8 +71,10 @@ class AnnaSetuRAGPipeline:
         requires_cold_storage: bool = False
     ) -> Dict[str, Any]:
         """
-        AI heuristics matching the closest shelter based on zone proximity,
-        corridor transit times, capacity sufficiency, and cold-chain support.
+        Heuristic shelter-matching based on zone proximity, transit time, capacity,
+        and cold-chain availability (illustrative sample data - confirm before dispatch).
+        Transit durations are read directly from the compliance engine's zone matrix so
+        that the display value and the safety verdict always agree.
         """
         best_shelter = None
         best_score = -999.0
@@ -76,21 +86,22 @@ class AnnaSetuRAGPipeline:
             capacity = s.get("capacity_servings", 100)
             has_cold = s.get("cold_storage_available", False)
 
-            # Zone proximity calculation
-            # Transit values aligned with compliance_engine LUCKNOW_ZONE_TRANSIT matrix
-            # (same-zone intra-corridor = 20 min, adjacent = 25-35 min, distant = 35+ min)
-            if s_zone == origin_zone:
+            # Use the engine's transit matrix so display and verdict always agree.
+            transit = self.engine._estimate_transit_minutes(origin_zone, s_zone)
+
+            # Zone proximity score derived from transit time (lower = better proximity).
+            if transit <= 20:
                 zone_score = 50.0
-                transit = 20   # matches LUCKNOW_ZONE_TRANSIT (x,x) = 20
                 distance_km = 2.1
-            elif abs(s_zone - origin_zone) in (1, 3):
-                zone_score = 30.0
-                transit = 25
-                distance_km = 5.2
+            elif transit <= 30:
+                zone_score = 35.0
+                distance_km = 4.5
+            elif transit <= 40:
+                zone_score = 20.0
+                distance_km = 6.5
             else:
                 zone_score = 10.0
-                transit = 35
-                distance_km = 8.5
+                distance_km = 9.0
 
             # Capacity matching score
             cap_score = 20.0 if capacity >= servings else (capacity / max(1, servings)) * 10.0
@@ -108,18 +119,31 @@ class AnnaSetuRAGPipeline:
 
         if not best_shelter and self.shelters:
             best_shelter = self.shelters[0]
+            best_transit = self.engine._estimate_transit_minutes(origin_zone, best_shelter.get("zone_id", 1))
 
         zone_label = best_shelter.get('zone_name', f"Zone {best_shelter.get('zone_id')}")
+
+        # Capacity warning
+        capacity = best_shelter.get("capacity_servings", 100)
+        capacity_note = ""
+        if servings > capacity:
+            capacity_note = (
+                f" ⚠️ Capacity {capacity} servings < {servings} requested - "
+                "consider splitting between two shelters."
+            )
+
         display_str = (
             f"{best_shelter['name']} ({zone_label} - "
-            f"{best_distance_km:.1f} km away | Route Transit: {best_transit} mins | Meal capacity: {best_shelter.get('capacity_servings', 100)} servings)"
+            f"{best_distance_km:.1f} km away | Route Transit: {best_transit} mins | "
+            f"Meal capacity: {capacity} servings){capacity_note}"
         )
 
         return {
             "shelter": best_shelter,
             "display_str": display_str,
             "estimated_transit_mins": best_transit,
-            "distance_km": best_distance_km
+            "distance_km": best_distance_km,
+            "capacity_exceeded": servings > capacity
         }
 
     def sync_ai_pipeline_configurations(
@@ -238,7 +262,7 @@ class AnnaSetuRAGPipeline:
             shelter_name=shelter_clean_name
         )
 
-        # Generate outputs via IBM Granite prompt templates
+        # Generate outputs via template-based alert compiler
         alert_msg = self.compiler.compile_shelter_alert(
             eval_result,
             pickup_location=pickup_location,
@@ -274,15 +298,21 @@ class AnnaSetuRAGPipeline:
         }
 
     def query_regulations(self, query: str, top_k: int = 4, filter_source: Optional[str] = None) -> List[Dict[str, Any]]:
-        """Direct semantic search against FSSAI & LNN regulatory corpora."""
+        """Direct lexical (TF-IDF) search against FSSAI & LNN regulatory corpora."""
+        # Normalise UI filter values to the canonical source_type tag in documents.
+        if filter_source:
+            filter_source = self._FILTER_SOURCE_MAP.get(filter_source, filter_source)
         return self.retriever.retrieve(query, top_k=top_k, filter_source=filter_source)
 
     def ask_regulations(self, query: str, top_k: int = 4, filter_source: Optional[str] = None) -> Dict[str, Any]:
         """
-        Executes end-to-end Generative RAG Q&A:
-        1. Retrieves relevant FSSAI 2019 and Lucknow Nagar Nigam statutory clauses.
-        2. Synthesizes an authoritative compliance answer citing legal clauses, temperature thresholds, and directives.
+        Executes end-to-end lexical RAG Q&A:
+        1. Retrieves relevant FSSAI 2019 and Lucknow Nagar Nigam statutory clauses via TF-IDF.
+        2. Assembles an authoritative compliance answer citing legal clauses, temperature thresholds, and directives.
         """
+        # Normalise UI filter values (e.g. "LUCKNOW_NAGAR_NIGAM") to doc source_type ("LNN").
+        if filter_source:
+            filter_source = self._FILTER_SOURCE_MAP.get(filter_source, filter_source)
         retrieved_rules = self.retriever.retrieve(query, top_k=top_k, filter_source=filter_source)
         res = self.compiler.compile_rag_qa_answer(query, retrieved_rules)
         res["synthesized_answer"] = res["answer_markdown"]
@@ -301,24 +331,35 @@ class AnnaSetuRAGPipeline:
         base_turnout_rate: Optional[float] = None
     ) -> Dict[str, Any]:
         """
-        Predictive Time-Series Demand Forecasting (Module 1 - Smart Campus Dining Advisor).
-        Models historical student eating habits, academic calendar shocks, and weather
-        to recommend precise daily cooking counts and ingredient procurement targets.
+        Attendance Multiplier Demand Estimator (Module 1 - Smart Campus Dining Advisor).
+        Applies fixed day-of-week, weather, and academic-calendar multipliers to estimate
+        dining turnout. This is a multiplier model, not a regression-trained time-series model.
+        Outputs are illustrative and should be calibrated against real swipe-card data.
         """
         if academic_calendar:
             academic_period = academic_calendar
         if weather:
             weather_condition = weather
 
-        meal_base = {
+        # Per-meal baseline attendance rates (illustrative defaults from typical campus data).
+        # When the user supplies base_turnout_rate from the slider, we keep the slider value
+        # as the LUNCH baseline and scale other meals proportionally, so the meal selector
+        # actually changes the output.
+        MEAL_BASE_DEFAULTS = {
             "breakfast": 0.70,
             "lunch": 0.88,
             "snacks": 0.55,
             "dinner": 0.82
-        }.get(meal_type.lower(), 0.85)
+        }
+        LUNCH_DEFAULT = MEAL_BASE_DEFAULTS["lunch"]
+        meal_key = meal_type.lower()
+        per_meal_default = MEAL_BASE_DEFAULTS.get(meal_key, 0.85)
 
         if base_turnout_rate is not None:
-            meal_base = base_turnout_rate
+            # Scale the slider value by the per-meal ratio so Breakfast/Dinner differ from Lunch.
+            meal_base = base_turnout_rate * (per_meal_default / LUNCH_DEFAULT)
+        else:
+            meal_base = per_meal_default
 
         dow_factor = {
             "monday": 0.98,
@@ -331,13 +372,17 @@ class AnnaSetuRAGPipeline:
         }.get(day_of_week.lower(), 0.95)
 
         academic_factor = 1.0
-        if "exam" in academic_period.lower():
-            academic_factor = 1.14
-        elif "fest" in academic_period.lower() or "cultural" in academic_period.lower():
+        # Check more specific strings first so "post-exam" does not accidentally match "exam".
+        _ap = academic_period.lower()
+        if "post-exam" in _ap or "post exam" in _ap or "festival eve" in _ap or "fest" in _ap or "cultural" in _ap:
             academic_factor = 0.86
-        elif "holiday" in academic_period.lower() or "long weekend" in academic_period.lower():
+        elif "exam" in _ap:
+            academic_factor = 1.14
+        elif "fest" in _ap or "cultural" in _ap:
+            academic_factor = 0.86
+        elif "holiday" in _ap or "long weekend" in _ap:
             academic_factor = 0.62
-        elif "vacation" in academic_period.lower() or "break" in academic_period.lower():
+        elif "vacation" in _ap or "break" in _ap:
             academic_factor = 0.22
 
         weather_factor = 1.0
@@ -349,25 +394,33 @@ class AnnaSetuRAGPipeline:
         final_rate = min(1.0, max(0.15, meal_base * dow_factor * academic_factor * weather_factor))
         predicted_turnout = int(round(enrolled_students * final_rate))
 
+        # NOTE: unforecasted_prep uses a fixed 105% baseline for the engine's internal
+        # portions_saved / cost_savings_inr fields. The Streamlit UI overrides this with
+        # the user's buffer slider (see Tab 2) - use _prevented and multiply by 42.5 there.
         unforecasted_prep = int(round(enrolled_students * 1.05)) if final_rate > 0.7 else int(round(enrolled_students * 0.90))
         recommended_prep = int(round(predicted_turnout * 1.05))
-        
+
         portions_saved = max(0, unforecasted_prep - recommended_prep)
         procurement_saved_inr = portions_saved * 42.50
 
+        # Ingredient breakdown (illustrative ratios - calibrate against actual mess recipe cards).
+        # Raw weights per diner: rice/grains 140 g, dal/lentils 60 g, vegetables 150 g,
+        # cooking oil 25 g, dairy/paneer 50 g, spices 12 g.
         ingredient_breakdown = {
             "rice_or_grains_kg": round(predicted_turnout * 0.14, 1),
-            "dal_or_lentils_kg": round(predicted_turnout * 0.16, 1),
+            "dal_or_lentils_kg": round(predicted_turnout * 0.06, 1),   # typical raw dal ~60 g/diner
             "vegetables_kg": round(predicted_turnout * 0.15, 1),
             "cooking_oil_kg": round(predicted_turnout * 0.025, 1),
-            "dairy_or_paneer_kg": round(predicted_turnout * 0.08, 1),
+            "dairy_or_paneer_kg": round(predicted_turnout * 0.05, 1),  # typical dairy ~50 g/diner
             "spices_kg": round(predicted_turnout * 0.012, 1)
         }
 
         rec_summary = (
             f"Morning Kitchen Directive: Prepare {recommended_prep} portions for {meal_type.title()} "
-            f"({predicted_turnout} expected diners + 5% safety buffer). Cuts buffer by 80%, saving "
-            f"~{portions_saved} surplus meals (₹{procurement_saved_inr:,.2f})."
+            f"({predicted_turnout} expected diners + 5% safety buffer). "
+            f"Engine estimate: saves ~{portions_saved} surplus meals vs. 105% baseline "
+            f"(₹{procurement_saved_inr:,.2f}). Actual savings depend on your kitchen's buffer - "
+            f"adjust the buffer slider on-screen."
         )
 
         return {
@@ -380,7 +433,10 @@ class AnnaSetuRAGPipeline:
             "predicted_turnout_students": predicted_turnout,
             "turnout_pct": round(final_rate * 100, 1),
             "turnout_rate_pct": round(final_rate * 100, 1),
-            "confidence_interval_95": (int(predicted_turnout * 0.96), int(predicted_turnout * 1.04)),
+            # NOTE: "indicative ±4%" range - there is no statistical 95% confidence interval
+            # behind this figure. Rename if publishing to avoid implying a fitted distribution.
+            "indicative_range_4pct": (int(predicted_turnout * 0.96), int(predicted_turnout * 1.04)),
+            "confidence_interval_95": (int(predicted_turnout * 0.96), int(predicted_turnout * 1.04)),  # kept for back-compat
             "unforecasted_prep": unforecasted_prep,
             "traditional_unoptimized_target": unforecasted_prep,
             "recommended_prep": recommended_prep,

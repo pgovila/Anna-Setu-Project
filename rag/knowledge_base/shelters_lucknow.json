@@ -9,7 +9,7 @@
     "target_beneficiaries": "Unhoused daily wage earners, stranded rail passengers",
     "cold_storage_available": false,
     "contact_channel": "WhatsApp Business (+91 94150 XXXXX)",
-    "coordinator": "Shri Rajesh Verma (LNN Shelter In-Charge)"
+    "coordinator": "LNN Shelter Manager (Charbagh Hub)"
   },
   {
     "id": "SHELTER-LNN-02",
@@ -21,7 +21,7 @@
     "target_beneficiaries": "Economically disadvantaged patient attendants & rural families",
     "cold_storage_available": true,
     "contact_channel": "WhatsApp Business (+91 94520 XXXXX)",
-    "coordinator": "Dr. S. K. Tripathi (KGMU Welfare Liaison)"
+    "coordinator": "KGMU Welfare Liaison (Shelter Coordinator)"
   },
   {
     "id": "SHELTER-LNN-03",
@@ -33,7 +33,7 @@
     "target_beneficiaries": "Urban night shelters & migratory construction labour camps",
     "cold_storage_available": false,
     "contact_channel": "WhatsApp Business (+91 98390 XXXXX)",
-    "coordinator": "Smt. Sunita Devi (Supervisor)"
+    "coordinator": "LNN Shelter Supervisor (Zone 4)"
   },
   {
     "id": "SHELTER-LNN-04",
@@ -45,7 +45,7 @@
     "target_beneficiaries": "Migrant day labourers and transit travelers",
     "cold_storage_available": false,
     "contact_channel": "WhatsApp Business (+91 91400 XXXXX)",
-    "coordinator": "Mohd. Arif (Terminal Welfare Liaison)"
+    "coordinator": "ISBT Terminal Welfare Liaison"
   },
   {
     "id": "SHELTER-NGO-05",
@@ -57,7 +57,7 @@
     "target_beneficiaries": "Slum clusters, destitute elders, night distributions",
     "cold_storage_available": true,
     "contact_channel": "WhatsApp (+91 97930 XXXXX)",
-    "coordinator": "Vikas Agarwal (Volunteer Lead)"
+    "coordinator": "Volunteer Lead (Roti Bank Chapter)"
   },
   {
     "id": "SHELTER-NGO-06",
@@ -69,7 +69,6 @@
     "target_beneficiaries": "Vulnerable women and children in institutional care",
     "cold_storage_available": true,
     "contact_channel": "WhatsApp (+91 96210 XXXXX)",
-    "coordinator": "Meera Saxena (Center Administrator)"
+    "coordinator": "Centre Administrator (Women & Child Shelter)"
   }
 ]
-

@@ -652,10 +652,10 @@ DEMO_SCENARIOS = {
         "meal": "Lunch",
         "category_idx": 0,   # cooked_grains_curry - urgent when elapsed+transit > 150 min
         "storage_idx": 0,
-        "time_prep": "12:00", "time_assess": "14:15",  # 135 min elapsed + 20 transit = 155 > 150 urgent threshold
+        "time_prep": "12:00", "time_assess": "14:30",  # 150 min elapsed + 20 transit = 170 > 150 urgent threshold
         "item": "Vegetable Pulao, Dal Tadka",
         "servings": 40,
-        "help": "High-moisture food cooked ~2h 15m ago at room temperature - in the urgent dispatch window (elapsed+transit > 2.5h).",
+        "help": "High-moisture food cooked 2h 30m ago at room temperature - 70 min left in the urgent dispatch window (elapsed 150 + transit 20 = 170 min, limit 240 min).",
     },
     "green": {
         "label": "🟢 Safe to Donate",
@@ -1109,31 +1109,41 @@ with tab1:
         origin_zone_id = ZONE_DICT[origin_zone_choice]
         temp_c_val     = float(temp_input) if (temp_input is not None) else None
 
-        sync_data = pipeline.sync_ai_pipeline_configurations(
-            origin_zone=origin_zone_id, item=item_input,
-            servings=int(servings_input), category_key=category_key,
-            time_prepared=time_prep_input, assessment_time=time_assess_input,
-            storage_condition=storage_key, measured_temp_celsius=temp_c_val
-        )
+        # Wrap in try/except so a malformed time entry does not crash the live preview.
+        sync_data = None
+        if not _time_error:
+            try:
+                sync_data = pipeline.sync_ai_pipeline_configurations(
+                    origin_zone=origin_zone_id, item=item_input,
+                    servings=int(servings_input), category_key=category_key,
+                    time_prepared=time_prep_input, assessment_time=time_assess_input,
+                    storage_condition=storage_key, measured_temp_celsius=temp_c_val
+                )
+            except ValueError:
+                sync_data = None
+
         with st.container(border=True):
-            _rule_text = sync_data["retrieved_safety_rule"]
-            _shelter_text = sync_data["ai_matched_shelter"]
-            st.markdown(
-                f'<div style="background:#f0f7f2;border:1.5px solid #a8cfb0;border-radius:10px;'
-                f'padding:10px 14px;font-size:13px;color:#1a1a1a;margin-bottom:10px;">'
-                f'<strong style="color:#1a7a3c;">📜 Safety Rule:</strong> {_rule_text}</div>',
-                unsafe_allow_html=True
-            )
-            st.markdown(
-                f'<div style="background:#f0f7f2;border:1.5px solid #a8cfb0;border-radius:10px;'
-                f'padding:10px 14px;font-size:13px;color:#1a1a1a;">'
-                f'<strong style="color:#1a7a3c;">🏠 Nearest Shelter (illustrative sample data):</strong> {_shelter_text}</div>',
-                unsafe_allow_html=True
-            )
-            st.caption(
-                "⚠️ Preview does not include transit time. "
-                "The final verdict (below) adds estimated delivery time and may differ."
-            )
+            if sync_data:
+                _rule_text = sync_data["retrieved_safety_rule"]
+                _shelter_text = sync_data["ai_matched_shelter"]
+                st.markdown(
+                    f'<div style="background:#f0f7f2;border:1.5px solid #a8cfb0;border-radius:10px;'
+                    f'padding:10px 14px;font-size:13px;color:#1a1a1a;margin-bottom:10px;">'
+                    f'<strong style="color:#1a7a3c;">📜 Safety Rule:</strong> {_rule_text}</div>',
+                    unsafe_allow_html=True
+                )
+                st.markdown(
+                    f'<div style="background:#f0f7f2;border:1.5px solid #a8cfb0;border-radius:10px;'
+                    f'padding:10px 14px;font-size:13px;color:#1a1a1a;">'
+                    f'<strong style="color:#1a7a3c;">🏠 Nearest Shelter (illustrative sample data):</strong> {_shelter_text}</div>',
+                    unsafe_allow_html=True
+                )
+                st.caption(
+                    "⚠️ Preview does not include transit time. "
+                    "The final verdict (below) adds estimated delivery time and may differ."
+                )
+            else:
+                st.info("Enter valid times above (HH:MM format) to see the live safety preview.")
 
         run_button = st.button(
             "✅ Check if This Food Can Be Donated",
@@ -1147,17 +1157,33 @@ with tab1:
             if _time_error:
                 st.error("Fix the time inputs on the left before running the check.", icon="⚠️")
             else:
+                _shelter_display = (
+                    sync_data["ai_matched_shelter"]
+                    if sync_data
+                    else "Auto-Match Closest Verified Shelter (Recommended)"
+                )
                 res = pipeline.evaluate_surplus(
                     item=item_input, servings=int(servings_input), category_key=category_key,
                     time_prepared=time_prep_input, assessment_time=time_assess_input,
                     storage_condition=storage_key, origin_zone=origin_zone_id,
-                    shelter_display_name=sync_data["ai_matched_shelter"],
+                    shelter_display_name=_shelter_display,
                     pickup_location=pickup_loc_input, facility_place=facility_input,
                     meal_type=meal_type_choice, measured_temp_celsius=temp_c_val
                 )
                 eval_data = res["evaluation"]
                 timeline  = eval_data["timeline"]
                 status    = eval_data["status"]
+
+                # Capacity warning (shown above verdict for all compliant batches)
+                _shelter_obj = res.get("shelter_details") or {}
+                _shelter_cap = _shelter_obj.get("capacity_servings", 0) if _shelter_obj else 0
+                if _shelter_cap and int(servings_input) > _shelter_cap and status != "NON_COMPLIANT_REJECTED":
+                    st.warning(
+                        f"⚠️ **Capacity mismatch:** {int(servings_input)} servings requested but "
+                        f"{_shelter_obj.get('name','this shelter')} can receive only {_shelter_cap}. "
+                        "Consider splitting the batch between two shelters.",
+                        icon="🏠"
+                    )
 
                 # ── Verdict banner (badge already contains emoji - no separate icon) ──
                 safe_until = timeline.get("safe_pickup_by", "N/A")
@@ -1185,7 +1211,7 @@ with tab1:
   <div style="font-size:13px;color:#ef9a9a;margin-top:8px;">{eval_data['reason']}</div>
 </div>""", unsafe_allow_html=True)
 
-                if eval_data.get("temp_summary"):
+                if eval_data.get("temp_summary") and eval_data["temp_summary"] != "NOT MEASURED":
                     st.warning(f"🌡️ **Temperature:** {eval_data['temp_summary']}")
 
                 # ── Time metrics ───────────────────────────────────────────
@@ -1333,11 +1359,14 @@ with tab2:
                 "Attendance uses fixed day-of-week and weather multipliers, not regression-trained data. "
                 "Actual savings depend on your kitchen's real baseline - adjust the buffer slider above."
             )
+            # Money and water computed from the same _prevented variable used for the meals metric
+            # so all three numbers on screen are consistent.
+            _money_saved = _prevented * 42.50
             dm1, dm2, dm3 = st.columns(3)
             dm1.metric("Meals of Waste Prevented",
                        f"{_prevented}",
                        help=f"vs. your {baseline_buffer_pct}% buffer baseline")
-            dm2.metric("Money Saved",               f"Rs.{d_res['cost_savings_inr']:,.2f}")
+            dm2.metric("Money Saved",               f"Rs.{_money_saved:,.2f}")
             dm3.metric("Water Saved",               f"{_prevented * 266:,.0f} L")
             st.caption(
                 "Water factor: 266 L per meal = 0.35 kg/meal × 760 L/kg (Mekonnen & Hoekstra 2011). "
@@ -1374,14 +1403,22 @@ with tab2:
                 f"'Without App' assumes your {baseline_buffer_pct}% overproduction buffer. "
                 "'Saved' = Without App minus With App. Modelled estimates only."
             )
-            # Prominent kitchen instruction card
+            # Prominent kitchen instruction card - built from the same _prevented / _money_saved
+            # variables shown in the metrics above, so the numbers always agree on screen.
+            _rec_text = (
+                f"Prepare {d_res['recommended_cooking_target']} portions for "
+                f"{meal_input.title()} "
+                f"({d_res['predicted_turnout_students']} expected diners + 5% safety buffer). "
+                f"Saves ~{_prevented} surplus meals vs. your {baseline_buffer_pct}% buffer "
+                f"(Rs.{_money_saved:,.2f} and {_prevented * 266:,.0f} L water)."
+            )
             st.markdown(f"""
 <div style="background:#1b5e20;border-radius:14px;padding:18px 22px;margin-top:12px;">
   <div style="font-size:13px;font-weight:700;color:#a5d6a7;margin-bottom:4px;">
     👨‍🍳 KITCHEN INSTRUCTION FOR TODAY
   </div>
   <div style="font-size:17px;font-weight:800;color:#ffffff;line-height:1.5;">
-    {d_res['recommendation_summary']}
+    {_rec_text}
   </div>
 </div>
 """, unsafe_allow_html=True)

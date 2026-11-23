@@ -1,5 +1,5 @@
 """
-IBM Granite Prompt Compiler & Formatter for Anna-Setu.
+Template Alert Compiler & Formatter for Anna-Setu.
 Synthesizes compliance check results, retrieved statutory clauses,
 and logistics metadata into broadcast notifications and audit manifests.
 """
@@ -7,10 +7,12 @@ and logistics metadata into broadcast notifications and audit manifests.
 from typing import Dict, Any, Optional, List
 
 
-class GraniteAlertCompiler:
+class TemplateAlertCompiler:
     """
-    Implements IBM Granite prompt engineering logic to generate compliant
+    Template-based alert compiler that generates compliant
     WhatsApp/SMS alerts, campus gate passes, and audit log records.
+    Does not use an LLM or IBM Granite model - output is assembled from
+    structured templates populated with evaluation data.
     """
 
     SYSTEM_PROMPT = (
@@ -208,4 +210,8 @@ class GraniteAlertCompiler:
             "citations": citations,
             "confidence_score": top_score
         }
+
+
+# Back-compat alias so code that still imports GraniteAlertCompiler works unchanged.
+GraniteAlertCompiler = TemplateAlertCompiler
 

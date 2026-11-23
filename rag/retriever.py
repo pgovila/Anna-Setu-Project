@@ -1,7 +1,8 @@
 """
 Regulatory Document Retriever for Anna-Setu RAG Pipeline.
 Indexes FSSAI and Lucknow Nagar Nigam statutory texts and performs
-semantic & keyword retrieval using TF-IDF and Cosine Similarity.
+lexical (TF-IDF) retrieval using Cosine Similarity on TF-IDF vectors.
+Not a semantic/embedding-based retriever - results depend on keyword overlap.
 """
 
 import os
@@ -15,7 +16,8 @@ import numpy as np
 class RegulatoryRetriever:
     """
     Retrieves official food safety clauses and municipal directives
-    from FSSAI (2019) and Lucknow Nagar Nigam (LNN) knowledge bases.
+    from FSSAI (2019) and Lucknow Nagar Nigam (LNN) knowledge bases
+    using lexical (TF-IDF) similarity, not semantic/embedding search.
     """
 
     def __init__(self, kb_dir: Optional[str] = None):
@@ -95,14 +97,14 @@ class RegulatoryRetriever:
         min_score: float = 0.05
     ) -> List[Dict[str, Any]]:
         """
-        Executes semantic retrieval for relevant regulatory clauses given a query.
-        
+        Executes lexical (TF-IDF) retrieval for relevant regulatory clauses given a query.
+
         Args:
-            query: Natural language query or scenario terms (e.g. "cooked rice holding time ambient")
+            query: Keyword query or scenario terms (e.g. "cooked rice holding time ambient")
             top_k: Number of highest ranking clauses to retrieve
-            filter_source: Optional filter ('FSSAI' or 'LNN')
+            filter_source: Optional filter - must match source_type in documents ('FSSAI' or 'LNN')
             min_score: Minimum cosine similarity score threshold
-        
+
         Returns:
             List of matching regulation documents with similarity scores
         """
