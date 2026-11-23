@@ -999,7 +999,7 @@ try:
 
     with gr.Blocks(title="Anna-Setu: Campus Food Rescue Network", css="""
 /* ══════════════════════════════════════════════════════════
-   ANNA-SETU — Gradio 4.x  |  Glass-panel design on gradient
+   ANNA-SETU - Gradio 4.x  |  Glass-panel design on gradient
    Palette: #0d4a22 → #1a7a3c → #2a9d50 → #f5a623 (gold)
    Strategy:
      - Page bg: deep green → mid green → gold gradient (always visible)
@@ -1009,7 +1009,7 @@ try:
      - Hero: opaque gradient card (stands out from page bg)
    ══════════════════════════════════════════════════════════ */
 
-/* ── 1. Page background — always the logo gradient ── */
+/* ── 1. Page background - always the logo gradient ── */
 body, .gradio-container, gradio-app, #root {
     background: linear-gradient(145deg, #0d4a22 0%, #1a7a3c 40%, #2a9d50 72%, #c97a10 100%) !important;
     min-height: 100vh;
@@ -1033,7 +1033,7 @@ p, span, label, div, li, strong, em, h1, h2, h3, h4, h5 {
     box-shadow: 0 4px 20px rgba(0,0,0,.18) !important;
 }
 
-/* ── 4. Hero banner — opaque gradient card ── */
+/* ── 4. Hero banner - opaque gradient card ── */
 .anna-hero {
     background: linear-gradient(135deg, #0a3318 0%, #0d4a22 40%, #1a7a3c 75%, #f5a623 100%) !important;
     border-radius: 24px; padding: 28px 32px 24px; margin-bottom: 10px;
@@ -1049,7 +1049,7 @@ p, span, label, div, li, strong, em, h1, h2, h3, h4, h5 {
 .anna-stat .num { font-size: 20px; font-weight: 800; color: #f5a623 !important; display: block; }
 .anna-stat .lbl { font-size: 10px; color: rgba(255,255,255,.85) !important; letter-spacing: .05em; }
 
-/* ── 5. Tabs — gold active, frosted inactive ── */
+/* ── 5. Tabs - gold active, frosted inactive ── */
 .tab-nav {
     background: rgba(0,0,0,.25) !important; border-radius: 999px !important;
     padding: 4px 6px !important; gap: 4px !important;
@@ -1071,7 +1071,7 @@ p, span, label, div, li, strong, em, h1, h2, h3, h4, h5 {
     color: #ffffff !important;
 }
 
-/* ── 6. Inputs — white bg, dark text (must be readable) ── */
+/* ── 6. Inputs - white bg, dark text (must be readable) ── */
 input[type="text"], input[type="number"], input[type="search"], textarea {
     background: rgba(255,255,255,.95) !important;
     color: #1a1a1a !important;
@@ -1090,7 +1090,7 @@ input + label, .gr-input label, .gr-textbox label { color: rgba(255,255,255,.9) 
 select { background: rgba(255,255,255,.95) !important; color: #1a1a1a !important;
     border-radius: 14px !important; border: 1.5px solid rgba(255,255,255,.4) !important; }
 
-/* ── 8. Primary buttons — gold ── */
+/* ── 8. Primary buttons - gold ── */
 button.primary, .gr-button-primary, button[variant="primary"] {
     background: linear-gradient(135deg, #f5a623, #c97a10) !important;
     color: #0d4a22 !important; border-radius: 999px !important;
@@ -1117,7 +1117,7 @@ details summary {
     color: #ffffff !important; font-weight: 600 !important;
 }
 
-/* ── 11. Markdown headings — gold accent ── */
+/* ── 11. Markdown headings - gold accent ── */
 .prose h3, .prose h4, .block h3, .block h4 { color: #f5a623 !important; }
 .prose h1, .prose h2, .block h1, .block h2 { color: #ffffff !important; }
 
@@ -1194,7 +1194,7 @@ input[type="range"] { accent-color: #f5a623 !important; }
 """)
 
         # ================================================================
-        # WELCOME POP-UP MODAL — shown on first load, dismissed via button
+        # WELCOME POP-UP MODAL - shown on first load, dismissed via button
         # ================================================================
         _modal_logo = (
             f'<img src="{LOGO_B64_HF}" style="width:80px;height:80px;border-radius:20px;'

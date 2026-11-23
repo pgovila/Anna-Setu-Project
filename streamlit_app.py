@@ -32,109 +32,234 @@ st.set_page_config(
 # ── Global CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-/* ═══════════════════════════════════════════════════════
-   ANNA-SETU BRAND PALETTE
-   Deep Green #1a7a3c · Mid Green #2a9d50 · Gold #f5a623
-   BG: clean off-white · Surface: white · Text: #1a1a1a
-   ═══════════════════════════════════════════════════════ */
-
 /* ── Font & base ── */
-html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
+html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
 
-/* ── App background — clean off-white (not gradient) ── */
+/* ── App background ── */
 .stApp,
 [data-testid="stAppViewContainer"],
-[data-testid="stMain"] {
+[data-testid="stMain"],
+[data-testid="stAppViewBlockContainer"] {
     background: #f4f9f5 !important;
 }
 
-/* ── All text dark by default — targeted, NOT .stApp * (too broad) ── */
+/* ── All layout blocks transparent so app bg shows through ── */
+[data-testid="stVerticalBlock"],
+[data-testid="stHorizontalBlock"],
+[data-testid="column"],
+[data-testid="stColumn"],
+div[data-testid="stForm"],
+div[data-testid="stForm"] > div {
+    background-color: transparent !important;
+}
+
+/* ── Bordered containers - white card ── */
+[data-testid="stVerticalBlockBorderWrapper"],
+[data-testid="stVerticalBlockBorderWrapper"] > div,
+[data-testid="stVerticalBlockBorderWrapper"] > div > div,
+[data-testid="stVerticalBlockBorderWrapper"] > div > div > div {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border: 1.5px solid rgba(26,122,60,.22) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
+}
+
+/* ── Widget labels dark ── */
+[data-testid="stWidgetLabel"] p,
+[data-testid="stWidgetLabel"] span,
+.stTextInput label, .stSelectbox label,
+.stNumberInput label, .stSlider label, .stTextArea label,
 [data-testid="stMarkdownContainer"] p,
 [data-testid="stMarkdownContainer"] li,
 [data-testid="stMarkdownContainer"] span,
-[data-testid="stMarkdownContainer"] strong,
-.stTextInput label, .stSelectbox label, .stNumberInput label,
-.stSlider label, .stTextArea label,
-[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p,
-.stMarkdown p, .stMarkdown li, .stMarkdown strong {
+[data-testid="stMarkdownContainer"] strong {
     color: #1a1a1a !important;
-    font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* ── Hero text — explicit white, highest specificity ── */
-.hero-banner h1,
-.hero-banner h1 *,
-div.hero-banner h1 { color: #ffffff !important; }
-div.hero-banner p,
-div.hero-banner span { color: #ffffff !important; }
-
-/* ── Fix text boxes — white bg, dark text, fully rounded ── */
-.stTextArea textarea,
-.stTextInput input,
-[data-testid="stTextArea"] textarea,
-[data-testid="stTextInput"] input {
+/* ── ELIMINATE ALL BLACK BOXES ACROSS THE ENTIRE APP ── */
+div[data-baseweb="select"],
+div[data-baseweb="select"] > div,
+div[data-baseweb="select"] > div > div,
+div[data-baseweb="select"] div,
+div[data-baseweb="select"] span,
+div[data-baseweb="select"] input,
+div[data-baseweb="select"] [data-testid="stMarkdownContainer"],
+div[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
+div[data-baseweb="input"],
+div[data-baseweb="base-input"],
+div[data-testid="stSelectbox"],
+div[data-testid="stSelectbox"] div,
+div[data-testid="stTextInput"],
+div[data-testid="stTextInput"] div,
+div[data-testid="stNumberInput"],
+div[data-testid="stNumberInput"] div,
+div[data-testid="stTextArea"],
+div[data-testid="stTextArea"] div {
     background-color: #ffffff !important;
+    background: #ffffff !important;
     color: #1a1a1a !important;
-    border: 1.5px solid #a8cfb0 !important;
-    border-radius: 16px !important;
 }
-.stTextArea textarea:focus,
-.stTextInput input:focus {
+div[data-baseweb="select"] > div {
+    border: 1.5px solid #a8cfb0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 4px rgba(13,74,34,.06) !important;
+    min-height: 42px !important;
+}
+div[data-baseweb="select"] > div:hover,
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #1a7a3c !important;
+    box-shadow: 0 0 0 3px rgba(26,122,60,.18) !important;
+}
+div[data-baseweb="select"] svg,
+div[data-baseweb="select"] svg path {
+    fill: #1a7a3c !important;
+    color: #1a7a3c !important;
+}
+
+/* ── RESTART TUTORIAL PILL & BUTTON: STRICTLY PLAIN WHITE WITH CLEAR GREEN TEXT ── */
+.restart-tutorial-container,
+.restart-tutorial-container div,
+.restart-tutorial-container [data-testid="stButton"],
+.restart-tutorial-container button,
+.restart-tutorial-container button[kind="secondary"],
+.restart-tutorial-container button[data-testid="baseButton-secondary"] {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 2px solid #1a7a3c !important;
+    color: #0d4a22 !important;
+    border-radius: 999px !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    box-shadow: 0 2px 10px rgba(26,122,60,.2) !important;
+}
+.restart-tutorial-container button *,
+.restart-tutorial-container [data-testid="stMarkdownContainer"] p,
+.restart-tutorial-container button p,
+.restart-tutorial-container button span,
+.restart-tutorial-container button div {
+    color: #0d4a22 !important;
+    background: transparent !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.restart-tutorial-container button:hover {
+    background-color: #e8f5e9 !important;
+    background: #e8f5e9 !important;
+    border-color: #0d4a22 !important;
+    color: #0d4a22 !important;
+}
+.restart-tutorial-container button:hover * {
+    color: #0d4a22 !important;
+}
+
+/* Dropdown popover list items */
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+div[data-baseweb="popover"] div,
+div[data-baseweb="menu"],
+ul[data-baseweb="menu"],
+ul[data-baseweb="menu"] li,
+li[role="option"] {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+ul[data-baseweb="menu"] {
+    border: 1.5px solid #a8cfb0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12) !important;
+}
+li[role="option"] {
+    color: #1a1a1a !important;
+    padding: 10px 14px !important;
+}
+li[role="option"]:hover,
+li[role="option"][aria-selected="true"] {
+    background-color: #e8f5e9 !important;
+    background: #e8f5e9 !important;
+    color: #1a7a3c !important;
+}
+li[role="option"] *,
+li[role="option"] p,
+li[role="option"] span,
+li[role="option"] div {
+    color: inherit !important;
+    background: transparent !important;
+}
+li[role="option"]:hover *,
+li[role="option"][aria-selected="true"] * {
+    color: #1a7a3c !important;
+    font-weight: 700 !important;
+}
+
+/* ── TEXT INPUTS & TEXTAREA: PLAIN WHITE CONTAINERS ── */
+[data-testid="stTextInput"],
+[data-testid="stTextInput"] > div,
+[data-testid="stTextInput"] div[data-baseweb="input"],
+[data-testid="stTextInput"] div[data-baseweb="base-input"],
+[data-testid="stTextInput"] input,
+.stTextInput,
+.stTextInput input,
+[data-testid="stTextArea"],
+[data-testid="stTextArea"] > div,
+[data-testid="stTextArea"] div[data-baseweb="textarea"],
+[data-testid="stTextArea"] div[data-baseweb="base-input"],
+[data-testid="stTextArea"] textarea,
+.stTextArea,
+.stTextArea textarea {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+[data-testid="stTextInput"] input,
+[data-testid="stTextArea"] textarea,
+.stTextInput input,
+.stTextArea textarea {
+    border: 1.5px solid #a8cfb0 !important;
+    border-radius: 12px !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    padding: 10px 14px !important;
+}
+[data-testid="stTextInput"] input:focus,
+[data-testid="stTextArea"] textarea:focus {
     border-color: #1a7a3c !important;
     box-shadow: 0 0 0 3px rgba(26,122,60,.18) !important;
 }
 
-/* ── Selectbox — all parts: trigger, value, dropdown menu, items ── */
-/* Trigger container + value text */
-.stSelectbox div[data-baseweb="select"] > div,
-.stSelectbox div[data-baseweb="select"] div,
-.stSelectbox [data-baseweb="select"] {
-    background-color: #ffffff !important;
-    color: #1a1a1a !important;
-    border-color: #a8cfb0 !important;
-    border-radius: 12px !important;
-}
-/* Selected value text */
-.stSelectbox [data-baseweb="select"] [data-testid="stMarkdownContainer"],
-.stSelectbox div[class*="ValueContainer"] *,
-.stSelectbox div[class*="singleValue"],
-.stSelectbox div[class*="placeholder"] {
-    color: #1a1a1a !important;
-    background: transparent !important;
-}
-/* Dropdown popup list */
-ul[data-baseweb="menu"],
-[data-baseweb="popover"] ul,
-[data-baseweb="menu"] {
-    background-color: #ffffff !important;
-    border: 1px solid #a8cfb0 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 20px rgba(26,122,60,.15) !important;
-}
-/* Dropdown items */
-[data-baseweb="menu"] li,
-[data-baseweb="menu"] [role="option"],
-ul[data-baseweb="menu"] li {
-    background-color: #ffffff !important;
-    color: #1a1a1a !important;
-}
-/* Dropdown item hover → orange highlight with black text */
-[data-baseweb="menu"] li:hover,
-[data-baseweb="menu"] [role="option"]:hover,
-[data-baseweb="menu"] li[aria-selected="true"] {
-    background-color: #f5a623 !important;
-    color: #1a1a1a !important;
-    font-weight: 600 !important;
-}
-/* Number input */
+/* ── NUMBER INPUT: PLAIN WHITE CONTAINER ── */
+[data-testid="stNumberInput"],
+[data-testid="stNumberInput"] > div,
+[data-testid="stNumberInput"] div[data-baseweb="input"],
+[data-testid="stNumberInput"] div[data-baseweb="base-input"],
+[data-testid="stNumberInput"] input,
+.stNumberInput,
 .stNumberInput input {
     background-color: #ffffff !important;
+    background: #ffffff !important;
     color: #1a1a1a !important;
-    border-color: #a8cfb0 !important;
-    border-radius: 12px !important;
 }
-/* Dropdown arrow icon */
-.stSelectbox svg { color: #1a7a3c !important; fill: #1a7a3c !important; }
+[data-testid="stNumberInput"] input,
+.stNumberInput input {
+    border: 1.5px solid #a8cfb0 !important;
+    border-radius: 8px !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+[data-testid="stNumberInput"] button,
+.stNumberInput button {
+    background-color: #f0f7f2 !important;
+    color: #1a7a3c !important;
+    border-color: #a8cfb0 !important;
+}
 
 /* ── Hero banner ── */
 .hero-banner {
@@ -151,8 +276,10 @@ ul[data-baseweb="menu"] li {
     border-radius: 999px; padding: 4px 16px;
     font-size: 11px; font-weight: 600; margin-top: 10px; color: #ffffff !important;
 }
+.hero-banner h1, .hero-banner h1 *, div.hero-banner h1,
+div.hero-banner p, div.hero-banner span { color: #ffffff !important; }
 
-/* ── Stat chips in hero ── */
+/* ── Hero stat chips ── */
 .hero-stats { display: flex; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
 .hero-stat {
     background: rgba(255,255,255,.18); border-radius: 16px;
@@ -162,9 +289,9 @@ ul[data-baseweb="menu"] li {
 .hero-stat .num { font-size: 22px; font-weight: 800; display: block; color: #ffffff !important; }
 .hero-stat .lbl { font-size: 10px; opacity: .88; letter-spacing: .05em; color: #ffffff !important; }
 
-/* ── Section card — rounded rectangle, white surface ── */
+/* ── Section card ── */
 .section-card {
-    background: #ffffff;
+    background: #ffffff !important;
     border-radius: 20px;
     padding: 20px 24px;
     margin-bottom: 14px;
@@ -172,10 +299,9 @@ ul[data-baseweb="menu"] li {
     box-shadow: 0 2px 10px rgba(13,74,34,.10);
     color: #1a1a1a !important;
 }
-.section-card *, .section-card strong, .section-card span,
-.section-card p, .section-card b { color: #1a1a1a !important; }
+.section-card * { color: #1a1a1a !important; }
 
-/* ── Step header pills — fully rounded, gold accent ── */
+/* ── Step pills ── */
 .step-pill {
     display: inline-block;
     background: linear-gradient(90deg, #1a7a3c, #2a9d50);
@@ -185,15 +311,7 @@ ul[data-baseweb="menu"] li {
     box-shadow: 0 2px 6px rgba(26,122,60,.30);
 }
 
-/* ── Bordered containers — rounded rectangles on white ── */
-[data-testid="stVerticalBlockBorderWrapper"] {
-    border-color: rgba(26,122,60,.22) !important;
-    border-radius: 20px !important;
-    background: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
-}
-
-/* ── Tabs — pill-style on white tray ── */
+/* ── Tabs ── */
 .stTabs [data-baseweb="tab-list"] {
     background: #ffffff;
     border-radius: 14px;
@@ -213,23 +331,18 @@ ul[data-baseweb="menu"] li {
     border: none !important;
     outline: none !important;
 }
-/* Remove red/default underline Streamlit adds */
 .stTabs [data-baseweb="tab"]::after,
 .stTabs [data-baseweb="tab"]::before { display: none !important; }
-.stTabs [data-baseweb="tab-highlight"] { display: none !important; }
-.stTabs [data-baseweb="tab-border"]    { display: none !important; }
-/* Active tab: green box, bold orange text */
+.stTabs [data-baseweb="tab-highlight"],
+.stTabs [data-baseweb="tab-border"] { display: none !important; }
 .stTabs [aria-selected="true"] {
     background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
     color: #f5a623 !important;
     font-weight: 800 !important;
     box-shadow: 0 2px 10px rgba(26,122,60,.35) !important;
 }
-.stTabs [aria-selected="false"] { color: #2a2a2a !important; font-weight: 600 !important; }
-.stTabs [aria-selected="false"]:hover {
-    background: #e8f5e9 !important; color: #1a7a3c !important;
-}
-/* Propagate colour to all children of tab button */
+.stTabs [aria-selected="false"] { color: #2a2a2a !important; }
+.stTabs [aria-selected="false"]:hover { background: #e8f5e9 !important; color: #1a7a3c !important; }
 .stTabs [data-baseweb="tab"] p,
 .stTabs [data-baseweb="tab"] span,
 .stTabs [data-baseweb="tab"] div { color: inherit !important; }
@@ -237,39 +350,93 @@ ul[data-baseweb="menu"] li {
 .stTabs [aria-selected="true"] span,
 .stTabs [aria-selected="true"] div { color: #f5a623 !important; font-weight: 800 !important; }
 
-/* ── Primary button — green gradient, rounded ── */
-.stButton > button[kind="primary"] {
-    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
-    border: none !important; border-radius: 999px !important;
-    color: #ffffff !important;
-    font-weight: 700 !important; font-size: 14px !important;
-    padding: 10px 24px !important;
-    box-shadow: 0 3px 12px rgba(26,122,60,.35) !important;
-    transition: all .2s;
-}
-.stButton > button[kind="primary"]:hover {
-    background: linear-gradient(135deg, #0d4a22, #1a7a3c) !important;
-    box-shadow: 0 5px 18px rgba(26,122,60,.45) !important;
-    transform: translateY(-1px);
-}
-
-/* ── Secondary / default button ── */
-.stButton > button[kind="secondary"],
-.stButton > button:not([kind="primary"]) {
+/* ── Buttons - secondary / default (Restart Tutorial and all secondary buttons) ── */
+button,
+div[data-testid="stButton"] button,
+div[data-testid="stButton"] button[kind="secondary"],
+.stButton button,
+.stButton > button,
+button[data-testid="baseButton-secondary"],
+button[kind="secondary"] {
+    background-color: #ffffff !important;
     background: #ffffff !important;
     border: 2px solid #1a7a3c !important;
-    color: #1a7a3c !important;
+    color: #0d4a22 !important;
     border-radius: 999px !important;
-    font-weight: 600 !important;
-    box-shadow: 0 1px 4px rgba(26,122,60,.15) !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    padding: 6px 18px !important;
+    box-shadow: 0 2px 8px rgba(26,122,60,.16) !important;
+    cursor: pointer !important;
 }
-.stButton > button[kind="secondary"]:hover,
-.stButton > button:not([kind="primary"]):hover {
+button *,
+div[data-testid="stButton"] button *,
+div[data-testid="stButton"] button[kind="secondary"] *,
+.stButton button *,
+.stButton > button *,
+button[data-testid="baseButton-secondary"] *,
+button[kind="secondary"] *,
+div[data-testid="stButton"] [data-testid="stMarkdownContainer"] p,
+button[data-testid="baseButton-secondary"] p {
+    color: #0d4a22 !important;
+    background: transparent !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+button:hover,
+div[data-testid="stButton"] button:hover,
+button[data-testid="baseButton-secondary"]:hover,
+button[kind="secondary"]:hover,
+.stButton > button:hover {
+    background-color: #e8f5e9 !important;
     background: #e8f5e9 !important;
-    transform: translateY(-1px);
+    border-color: #0d4a22 !important;
+    color: #0d4a22 !important;
+}
+button:hover *,
+div[data-testid="stButton"] button:hover *,
+button[data-testid="baseButton-secondary"]:hover * {
+    color: #0d4a22 !important;
 }
 
-/* ── Metric cards — white rounded rectangles ── */
+/* ── Buttons - primary: green gradient, white text ── */
+button[data-testid="baseButton-primary"],
+button[kind="primary"],
+.stButton > button[kind="primary"],
+.stButton > button[data-testid="baseButton-primary"],
+div[data-testid="stButton"] button[kind="primary"],
+div[data-testid="stButton"] button[data-testid="baseButton-primary"] {
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+    background-color: #1a7a3c !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 10px 24px !important;
+    box-shadow: 0 3px 12px rgba(26,122,60,.35) !important;
+    border-radius: 999px !important;
+}
+button[data-testid="baseButton-primary"] *,
+button[kind="primary"] *,
+.stButton > button[kind="primary"] *,
+.stButton > button[data-testid="baseButton-primary"] *,
+div[data-testid="stButton"] button[kind="primary"] *,
+div[data-testid="stButton"] button[data-testid="baseButton-primary"] *,
+button[data-testid="baseButton-primary"] p,
+button[kind="primary"] p {
+    color: #ffffff !important;
+    background: transparent !important;
+    font-weight: 700 !important;
+}
+button[data-testid="baseButton-primary"]:hover,
+button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #0d4a22, #1a7a3c) !important;
+    background-color: #0d4a22 !important;
+    box-shadow: 0 5px 18px rgba(26,122,60,.45) !important;
+}
+
+/* ── Metric cards ── */
 [data-testid="metric-container"] {
     background: #ffffff !important;
     border-radius: 20px !important;
@@ -279,40 +446,34 @@ ul[data-baseweb="menu"] li {
 }
 [data-testid="metric-container"] label,
 [data-testid="metric-container"] [data-testid="stMetricLabel"] p,
-[data-testid="metric-container"] [data-testid="stMetricValue"] {
-    color: #1a1a1a !important;
-}
+[data-testid="metric-container"] [data-testid="stMetricValue"] { color: #1a1a1a !important; }
 
-/* ── Expander ── */
-.streamlit-expanderHeader {
-    background: rgba(255,255,255,.92) !important;
+/* ── Expanders ── */
+[data-testid="stExpander"] {
+    background: #ffffff !important;
     border-radius: 16px !important;
-    font-weight: 600 !important;
-    color: #1a7a3c !important;
+    border: 1px solid rgba(26,122,60,.18) !important;
 }
+[data-testid="stExpander"] summary { color: #1a7a3c !important; font-weight: 600 !important; }
 
-/* ── Alerts — rounded ── */
+/* ── Alerts ── */
 .stAlert { border-radius: 16px !important; }
 .stAlert p { color: inherit !important; }
 
-/* ── Slider track — green ── */
+/* ── Slider ── */
 [data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"] {
     background: #1a7a3c !important;
 }
 
-/* ── Dataframe / table ── */
+/* ── Tables ── */
 .dataframe thead th {
     background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
     color: #ffffff !important;
-    border-radius: 8px 8px 0 0;
 }
 .dataframe tbody td { color: #1a1a1a !important; }
 
-/* ── Sidebar (if shown) ── */
-[data-testid="stSidebar"] {
-    background: rgba(13,74,34,.92) !important;
-    border-radius: 0 20px 20px 0;
-}
+/* ── Sidebar ── */
+[data-testid="stSidebar"] { background: rgba(13,74,34,.92) !important; }
 [data-testid="stSidebar"] * { color: #ffffff !important; }
 </style>
 """, unsafe_allow_html=True)
@@ -330,27 +491,27 @@ CATEGORY_OPTIONS = [
     ("Dry Cooked Staples (Rotis, Chapatis, Dry Sabzi)", "dry_staples_roti"),
     ("Dairy, Paneer Curries, Milk Sweets & Kheer", "dairy_sweets"),
     ("Dry Fried Snacks (Samosas, Cutlets, Pakoras)", "fried_snacks"),
-    ("Raw Cut Salads, Sliced Fruits — ⚠️ Cannot be donated", "raw_salads_cut_fruits"),
-    ("Plate Waste / Leftover from Diners' Plates — ⚠️ Strictly Prohibited", "plate_waste")
+    ("Raw Cut Salads, Sliced Fruits - Cannot be donated ⚠️", "raw_salads_cut_fruits"),
+    ("Plate Waste / Leftover from Diners' Plates - Strictly Prohibited ⚠️", "plate_waste")
 ]
 CATEGORY_DICT = {label: key for label, key in CATEGORY_OPTIONS}
 
 STORAGE_OPTIONS = [
-    ("Kept at Room Temperature (~25°C – 35°C)", "ambient"),
-    ("Kept Hot — maintained at 65°C or above", "hot_holding"),
-    ("Kept in Fridge / Cold Storage — 5°C or below", "refrigerated")
+    ("Kept at Room Temperature (~25°C - 35°C)", "ambient"),
+    ("Kept Hot - maintained at 65°C or above", "hot_holding"),
+    ("Kept in Fridge / Cold Storage - 5°C or below", "refrigerated")
 ]
 STORAGE_DICT = {label: key for label, key in STORAGE_OPTIONS}
 
 ZONE_OPTIONS = [
-    ("Zone 4 – Gomti Nagar, Extension, Indira Nagar", 4),
-    ("Zone 1 – Hazratganj, Chowk, Charbagh, Qaiserbagh", 1),
-    ("Zone 2 – Aishbagh, Rajajipuram", 2),
-    ("Zone 3 – Aliganj, Jankipuram, Vikas Nagar", 3),
-    ("Zone 5 – Alambagh, Singar Nagar, Krishna Nagar", 5),
-    ("Zone 6 – Hardoi Road, Dubagga, Kakori", 6),
-    ("Zone 7 – Chinhat, Faizabad Road, BBD Corridor", 7),
-    ("Zone 8 – Sarojini Nagar, Transport Nagar, Airport", 8)
+    ("Zone 4 - Gomti Nagar, Extension, Indira Nagar", 4),
+    ("Zone 1 - Hazratganj, Chowk, Charbagh, Qaiserbagh", 1),
+    ("Zone 2 - Aishbagh, Rajajipuram", 2),
+    ("Zone 3 - Aliganj, Jankipuram, Vikas Nagar", 3),
+    ("Zone 5 - Alambagh, Singar Nagar, Krishna Nagar", 5),
+    ("Zone 6 - Hardoi Road, Dubagga, Kakori", 6),
+    ("Zone 7 - Chinhat, Faizabad Road, BBD Corridor", 7),
+    ("Zone 8 - Sarojini Nagar, Transport Nagar, Airport", 8)
 ]
 ZONE_DICT = {label: zone_id for label, zone_id in ZONE_OPTIONS}
 
@@ -393,10 +554,10 @@ SLIDE_CONTENT = [
 <p style="font-size:15px;line-height:1.75;color:#333;margin:0;">
   <strong>Anna-Setu</strong> means <em>"Food Bridge"</em> in Hindi.<br><br>
   Every day, campus dining halls cook more food than students can eat.
-  Anna-Setu helps your team donate that leftover food to nearby shelters —
+  Anna-Setu helps your team donate that leftover food to nearby shelters -
   <strong>safely and quickly.</strong><br><br>
   Food that cannot be donated is turned into
-  <strong>clean compost fertilizer</strong> in 24 hours — nothing goes to landfill.
+  <strong>clean compost fertilizer</strong> in 24 hours - nothing goes to landfill.
 </p>
 <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;">
   <div style="background:#e8f5e9;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
@@ -577,7 +738,7 @@ if not st.session_state.tutorial_done:
 
     # Assemble the modal card as a normal page element (NOT position:fixed).
     # Using fixed positioning hides Streamlit buttons behind the overlay.
-    # The page background CSS already shows the green gradient — the card
+    # The page background CSS already shows the green gradient - the card
     # sits centred on that gradient as a white pop-up panel.
     _modal_html = (
         '<div style="max-width:680px;margin:40px auto 0;'
@@ -607,7 +768,7 @@ if not st.session_state.tutorial_done:
     # ── Spacer so buttons don't sit flush against card ─────────────────────
     st.markdown('<div style="height:16px;"></div>', unsafe_allow_html=True)
 
-    # ── Navigation buttons — rendered in normal page flow below the card ───
+    # ── Navigation buttons - rendered in normal page flow below the card ───
     btn_cols = st.columns([1, 1, 1, 1])
 
     with btn_cols[0]:
@@ -661,12 +822,14 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # small "restart tutorial" link
-restart_col, _ = st.columns([1, 5])
+restart_col, _ = st.columns([1.8, 4.2])
 with restart_col:
-    if st.button("📖 Restart Tutorial", help="See the step-by-step guide again", type="secondary"):
+    st.markdown('<div class="restart-tutorial-container">', unsafe_allow_html=True)
+    if st.button("📖 Restart Tutorial", key="btn_restart_tutorial", help="See the step-by-step guide again", type="secondary"):
         st.session_state.tutorial_done = False
         st.session_state.tutorial_step = 0
         st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -682,7 +845,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 # =============================================================================
-# TAB 1 — DONATE SURPLUS FOOD
+# TAB 1 - DONATE SURPLUS FOOD
 # =============================================================================
 with tab1:
     st.markdown("""
@@ -831,7 +994,7 @@ with tab1:
 """, unsafe_allow_html=True)
 
 # =============================================================================
-# TAB 2 — PLAN HOW MUCH TO COOK
+# TAB 2 - PLAN HOW MUCH TO COOK
 # =============================================================================
 with tab2:
     st.markdown("""
@@ -917,7 +1080,7 @@ with tab2:
 """, unsafe_allow_html=True)
 
 # =============================================================================
-# TAB 3 — PLATE-WASTE RECYCLER
+# TAB 3 - PLATE-WASTE RECYCLER
 # =============================================================================
 with tab3:
     st.markdown("""
@@ -994,7 +1157,7 @@ with tab3:
         st.markdown(f'<div style="background:white;border-radius:12px;padding:16px 18px;border:1px solid #e0e8e0;">{steps_html}</div>', unsafe_allow_html=True)
 
 # =============================================================================
-# TAB 4 — ASK A FOOD SAFETY QUESTION
+# TAB 4 - ASK A FOOD SAFETY QUESTION
 # =============================================================================
 with tab4:
     st.markdown("""
@@ -1039,7 +1202,7 @@ with tab4:
                 st.caption(f"Keywords: `{'`, `'.join(clause.get('keywords', []))}`")
 
 # =============================================================================
-# TAB 5 — FOOD SAFETY RULES GUIDE
+# TAB 5 - FOOD SAFETY RULES GUIDE
 # =============================================================================
 with tab5:
     st.markdown("""
