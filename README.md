@@ -1,12 +1,12 @@
 # 🍛 Anna-Setu: Campus Food Rescue & Bio-Recycling Network
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://anna-setu-project-koankcapp5g58vt67b9sibn.streamlit.app/)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pgovila-anna-setu-demo.streamlit.app)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **Anna-Setu** (*"Food Bridge"* in Hindi) is a campus surplus food rescue and plate-waste bio-recycling management platform. It bridges institutional dining halls with nearby community shelters, enforces national food safety standards (FSSAI Surplus Food Regulations 2019), and simulates the conversion of non-edible plate waste into dry soil conditioner via a PTC bio-recycler.
 
-> **Canonical app file:** `streamlit_app.py` — this is the deployed Streamlit application.
+> **Canonical app file:** `streamlit_app.py` - this is the deployed Streamlit application.
 > `app.py` is a **legacy Gradio prototype** kept for reference only. It will not run unless Gradio is manually installed (not in `requirements.txt`).
 
 ---
@@ -15,7 +15,7 @@
 
 | Resource | Link |
 |---|---|
-| Live Streamlit App | [https://anna-setu-project-koankcapp5g58vt67b9sibn.streamlit.app/](https://anna-setu-project-koankcapp5g58vt67b9sibn.streamlit.app/) |
+| Live Streamlit App | [https://pgovila-anna-setu-demo.streamlit.app](https://pgovila-anna-setu-demo.streamlit.app) |
 | Landing Page | `index.html` (open locally or via GitHub Pages) |
 
 ---
