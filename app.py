@@ -24,7 +24,7 @@ def _img_to_b64(path: str) -> str:
     mime = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg"}.get(ext, "image/png")
     return f"data:{mime};base64,{data}"
 
-LOGO_B64_HF = _img_to_b64("Anna Setu.png")
+LOGO_B64_HF = _img_to_b64("Anna Setu Transparent.png") or _img_to_b64("Anna Setu.png")
 
 # ZeroGPU compatibility for Hugging Face Spaces
 try:

@@ -21,7 +21,7 @@ def _img_to_b64(path: str) -> str:
     mime = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg"}.get(ext, "image/png")
     return f"data:{mime};base64,{data}"
 
-LOGO_B64 = _img_to_b64("Anna Setu.png")
+LOGO_B64 = _img_to_b64("Anna Setu Transparent.png") or _img_to_b64("Anna Setu.png")
 
 st.set_page_config(
     page_title="Anna-Setu: Campus Food Rescue Network",
@@ -33,157 +33,191 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* ═══════════════════════════════════════════════════════
-   ANNA-SETU BRAND PALETTE (from Anna Setu.png logo)
-   Green:  #1a7a3c   Gold: #f5a623   Orange: #e8891a
-   Light green accent: #4caf77   BG: #f2f8f4
+   ANNA-SETU BRAND PALETTE — extracted from Anna Setu.png
+   Deep Green : #1a7a3c   Mid Green  : #2a9d50
+   Gold/Amber : #f5a623   Orange     : #e8891a
+   App BG     : gradient  Surface    : white
    ═══════════════════════════════════════════════════════ */
 
 /* ── Font & base ── */
 html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 
-/* ── App background ── */
+/* ── Full-page gradient background matching logo palette ── */
 .stApp,
-[data-testid="stAppViewContainer"],
-[data-testid="stMain"] {
-    background: #f2f8f4 !important;
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(160deg, #0d4a22 0%, #1a7a3c 35%, #2a9d50 65%, #c97a10 100%) !important;
+    min-height: 100vh;
+}
+[data-testid="stMain"],
+[data-testid="stVerticalBlock"] > div:first-child {
+    background: transparent !important;
 }
 
-/* ── Force dark text on ALL Streamlit content ── */
-.stApp, .stApp p, .stApp li, .stApp span, .stApp label, .stApp div,
-[data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"],
-[data-testid="stMarkdownContainer"], [data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] li, [data-testid="stMarkdownContainer"] span,
-.stMarkdown, .stMarkdown p, .stMarkdown li,
+/* ── Force dark text on all widget labels (they sit on white surfaces) ── */
 .stTextInput label, .stSelectbox label, .stNumberInput label,
 .stSlider label, .stTextArea label,
-[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p {
+[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p,
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] span,
+.stMarkdown p, .stMarkdown li {
     color: #1a1a1a !important;
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
-/* ── Fix text boxes — white background, dark text ── */
+/* ── Top-level markdown that sits directly on the gradient stays white ── */
+[data-testid="stAppViewContainer"] > section > div > div > div > div
+> [data-testid="stVerticalBlock"] > div
+> [data-testid="stVerticalBlock"] > div
+> [data-testid="stMarkdownContainer"] > p {
+    color: #ffffff !important;
+}
+
+/* ── Fix text boxes — white bg, dark text, fully rounded ── */
 .stTextArea textarea,
 .stTextInput input,
 [data-testid="stTextArea"] textarea,
 [data-testid="stTextInput"] input {
     background-color: #ffffff !important;
     color: #1a1a1a !important;
-    border: 1.5px solid #c8dfc8 !important;
-    border-radius: 8px !important;
+    border: 1.5px solid #a8cfb0 !important;
+    border-radius: 16px !important;
 }
 .stTextArea textarea:focus,
 .stTextInput input:focus {
     border-color: #1a7a3c !important;
-    box-shadow: 0 0 0 2px rgba(26,122,60,.15) !important;
+    box-shadow: 0 0 0 3px rgba(26,122,60,.18) !important;
 }
 
-/* ── Fix selectbox, number input ── */
+/* ── Selectbox, number input ── */
 .stSelectbox div[data-baseweb="select"] > div,
 .stNumberInput input {
     background-color: #ffffff !important;
     color: #1a1a1a !important;
-    border-color: #c8dfc8 !important;
+    border-color: #a8cfb0 !important;
+    border-radius: 16px !important;
 }
 
-/* ── Hero banner — logo green + gold gradient ── */
+/* ── Hero banner ── */
 .hero-banner {
-    background: linear-gradient(135deg, #1a7a3c 0%, #2a9d50 60%, #f5a623 100%);
-    border-radius: 18px;
+    background: linear-gradient(135deg, #0d4a22 0%, #1a7a3c 45%, #2a9d50 75%, #f5a623 100%);
+    border-radius: 24px;
     padding: 32px 36px 28px;
     margin-bottom: 10px;
+    box-shadow: 0 4px 24px rgba(13,74,34,.40);
 }
-.hero-banner h1 { font-size: 28px; font-weight: 800; margin: 0 0 4px; color: white !important; }
-.hero-banner p  { font-size: 14px; opacity: .9; margin: 0; color: white !important; }
+.hero-banner h1 { font-size: 28px; font-weight: 800; margin: 0 0 4px; color: #ffffff !important; }
+.hero-banner p  { font-size: 14px; opacity: .92; margin: 0; color: #ffffff !important; }
 .hero-tag {
     display: inline-block; background: rgba(255,255,255,.22);
-    border-radius: 20px; padding: 3px 14px;
-    font-size: 11px; font-weight: 600; margin-top: 10px; color: white !important;
+    border-radius: 999px; padding: 4px 16px;
+    font-size: 11px; font-weight: 600; margin-top: 10px; color: #ffffff !important;
 }
 
 /* ── Stat chips in hero ── */
-.hero-stats { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
 .hero-stat {
-    background: rgba(255,255,255,.18); border-radius: 10px;
-    padding: 8px 16px; text-align: center;
+    background: rgba(255,255,255,.18); border-radius: 16px;
+    padding: 10px 18px; text-align: center;
+    border: 1px solid rgba(255,255,255,.25);
 }
-.hero-stat .num { font-size: 22px; font-weight: 800; display: block; color: white !important; }
-.hero-stat .lbl { font-size: 10px; opacity: .85; letter-spacing: .04em; color: white !important; }
+.hero-stat .num { font-size: 22px; font-weight: 800; display: block; color: #ffffff !important; }
+.hero-stat .lbl { font-size: 10px; opacity: .88; letter-spacing: .05em; color: #ffffff !important; }
 
-/* ── Section card ── */
+/* ── Section card — rounded rectangle, white surface ── */
 .section-card {
-    background: white; border-radius: 14px;
-    padding: 20px 22px; margin-bottom: 14px;
-    border: 1px solid #c8dfc8;
-    box-shadow: 0 1px 4px rgba(0,0,0,.05);
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(26,122,60,.18);
+    box-shadow: 0 2px 10px rgba(13,74,34,.10);
     color: #1a1a1a !important;
 }
 .section-card *, .section-card strong, .section-card span,
 .section-card p, .section-card b { color: #1a1a1a !important; }
 
-/* ── Step header pills — light green bg, dark green text ── */
+/* ── Step header pills — fully rounded, gold accent ── */
 .step-pill {
     display: inline-block;
-    background: #d6edd8; color: #1a7a3c !important;
-    border-radius: 20px; padding: 4px 14px;
+    background: linear-gradient(90deg, #1a7a3c, #2a9d50);
+    color: #ffffff !important;
+    border-radius: 999px; padding: 5px 18px;
     font-size: 12px; font-weight: 700; margin-bottom: 10px;
-    border: 1px solid #b2d8b4;
+    box-shadow: 0 2px 6px rgba(26,122,60,.30);
 }
 
-/* ── Tabs — lighter green active tab ── */
+/* ── Bordered containers — rounded rectangles on white ── */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-color: rgba(26,122,60,.22) !important;
+    border-radius: 20px !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
+}
+
+/* ── Tabs — pill-style, fully rounded active tab ── */
 .stTabs [data-baseweb="tab-list"] {
-    background: white;
-    border-radius: 12px 12px 0 0;
-    padding: 4px 8px 0;
+    background: rgba(255,255,255,.92);
+    border-radius: 999px;
+    padding: 4px 6px;
     gap: 4px;
-    border-bottom: 2px solid #c8dfc8;
+    border-bottom: none;
+    box-shadow: 0 2px 8px rgba(13,74,34,.12);
+    display: inline-flex;
 }
 .stTabs [data-baseweb="tab"] {
-    border-radius: 10px 10px 0 0;
+    border-radius: 999px;
     font-weight: 600; font-size: 13px;
-    padding: 8px 16px;
-    color: #2a5e30 !important;
+    padding: 7px 18px;
+    color: #1a5c30 !important;
+    background: transparent;
 }
 .stTabs [aria-selected="true"] {
-    background: #4caf77 !important;
-    color: white !important;
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(26,122,60,.35) !important;
 }
 .stTabs [aria-selected="false"]:hover {
-    background: #e8f5e9 !important;
+    background: rgba(26,122,60,.10) !important;
 }
 
-/* ── Primary button — logo green ── */
+/* ── Primary button — green gradient, rounded ── */
 .stButton > button[kind="primary"] {
     background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
-    border: none !important; border-radius: 10px !important;
-    color: white !important;
+    border: none !important; border-radius: 999px !important;
+    color: #ffffff !important;
     font-weight: 700 !important; font-size: 14px !important;
-    padding: 10px 20px !important;
-    box-shadow: 0 2px 8px rgba(26,122,60,.30) !important;
+    padding: 10px 24px !important;
+    box-shadow: 0 3px 12px rgba(26,122,60,.35) !important;
+    transition: all .2s;
 }
 .stButton > button[kind="primary"]:hover {
-    background: linear-gradient(135deg, #145e30, #1a7a3c) !important;
-    box-shadow: 0 4px 14px rgba(26,122,60,.40) !important;
+    background: linear-gradient(135deg, #0d4a22, #1a7a3c) !important;
+    box-shadow: 0 5px 18px rgba(26,122,60,.45) !important;
+    transform: translateY(-1px);
 }
 
 /* ── Secondary / default button ── */
 .stButton > button[kind="secondary"],
 .stButton > button:not([kind="primary"]) {
-    background: white !important;
+    background: rgba(255,255,255,.92) !important;
     border: 2px solid #1a7a3c !important;
     color: #1a7a3c !important;
-    border-radius: 10px !important;
+    border-radius: 999px !important;
     font-weight: 600 !important;
 }
 .stButton > button[kind="secondary"]:hover,
 .stButton > button:not([kind="primary"]):hover {
-    background: #e8f5e9 !important;
+    background: #e0f2e6 !important;
 }
 
-/* ── Metric cards ── */
+/* ── Metric cards — white rounded rectangles ── */
 [data-testid="metric-container"] {
-    background: white; border-radius: 12px;
-    border: 1px solid #c8dfc8; padding: 12px 16px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(26,122,60,.18) !important;
+    padding: 14px 18px !important;
+    box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
 }
 [data-testid="metric-container"] label,
 [data-testid="metric-container"] [data-testid="stMetricLabel"] p,
@@ -193,33 +227,35 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 
 /* ── Expander ── */
 .streamlit-expanderHeader {
-    background: #e8f5e9 !important;
-    border-radius: 10px !important;
+    background: rgba(255,255,255,.92) !important;
+    border-radius: 16px !important;
     font-weight: 600 !important;
     color: #1a7a3c !important;
 }
 
-/* ── Alerts ── */
-.stAlert { border-radius: 10px !important; }
+/* ── Alerts — rounded ── */
+.stAlert { border-radius: 16px !important; }
 .stAlert p { color: inherit !important; }
 
-/* ── Bordered containers ── */
-[data-testid="stVerticalBlockBorderWrapper"] {
-    border-color: #c8dfc8 !important;
-    border-radius: 12px !important;
-    background: white !important;
-}
-
-/* ── Slider track ── */
+/* ── Slider track — green ── */
 [data-testid="stSlider"] [data-baseweb="slider"] [role="progressbar"] {
     background: #1a7a3c !important;
 }
 
-/* ── Progress dots ── */
-.dot.active { background: #1a7a3c; }
+/* ── Dataframe / table ── */
+.dataframe thead th {
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+    color: #ffffff !important;
+    border-radius: 8px 8px 0 0;
+}
+.dataframe tbody td { color: #1a1a1a !important; }
 
-/* ── Dataframe / table header ── */
-.dataframe thead th { background: #d6edd8 !important; color: #1a1a1a !important; }
+/* ── Sidebar (if shown) ── */
+[data-testid="stSidebar"] {
+    background: rgba(13,74,34,.92) !important;
+    border-radius: 0 20px 20px 0;
+}
+[data-testid="stSidebar"] * { color: #ffffff !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -509,8 +545,8 @@ st.markdown(f"""
                 box-shadow:0 2px 10px rgba(0,0,0,.25);"
          alt="Anna-Setu Logo"/>
     <div>
-      <h1>Anna-Setu</h1>
-      <p>Campus Food Rescue &amp; Bio-Recycling Network</p>
+      <h1 style="color:#ffffff !important;font-size:28px;font-weight:800;margin:0 0 4px;">Anna-Setu</h1>
+      <p style="color:#ffffff !important;font-size:14px;opacity:.92;margin:0;">Campus Food Rescue &amp; Bio-Recycling Network</p>
       <span class="hero-tag">🌿 1M1B · IBM SkillsBuild · AICTE · Pankhuri Govila</span>
     </div>
   </div>
