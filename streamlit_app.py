@@ -1490,6 +1490,14 @@ with tab3:
         sim_water_liters = (sim_waste_grams / 1000.0) * 760.0
         sim_co2e_grams   = (sim_waste_grams / 1000.0) * 2300.0
 
+        block_messages = {
+            "Block A (Boys)": "91% clean plates this week - great job!",
+            "Block B (Girls)": "94% clean plates this week - ranked #1 on campus!",
+            "Block C (International)": "89% clean plates this week - top 3 on campus!",
+            "Day Scholar Dining": "87% clean plates this week - keep improving!"
+        }
+        sim_block_msg = block_messages.get(sim_hostel_block, "91% clean plates this week - great job!")
+
         st.markdown('<div class="step-pill" style="margin-top:14px;">📺 What the Student Sees on the Kiosk Screen</div>', unsafe_allow_html=True)
         st.markdown(f"""
 <div class="kiosk-screen" style="background:linear-gradient(135deg, #0d4a22 0%, #155724 100%);border-radius:18px;padding:22px 26px;color:#ffffff !important;font-size:14.5px;line-height:1.8;box-shadow:0 6px 20px rgba(13,74,34,.35);border:1.5px solid rgba(255,255,255,.18);">
@@ -1504,7 +1512,7 @@ with tab3:
     🌍 <strong style="color:#ffffff !important;">Carbon footprint:</strong> <span style="color:#ffffff !important;">{sim_co2e_grams:.0f}g CO2 equivalent</span>
   </div>
   <div style="color:#ffffff !important;margin-bottom:12px;">
-    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">[sample message]</span>
+    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">{sim_block_msg}</span>
   </div>
   <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;color:#ffffff !important;font-size:13px;border-left:3px solid #ffd54f;">
     💡 <strong style="color:#ffffff !important;">Tip:</strong> <span style="color:#ffffff !important;">Take only what you can finish. Second helpings are always available!</span>
