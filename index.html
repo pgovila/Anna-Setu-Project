@@ -401,10 +401,9 @@
     <h1>The <em>Food Bridge</em><br/>Every Campus Needs</h1>
     <p class="hero-sub">Anna-Setu (अन्न सेतु) - Hindi for "Food Bridge"</p>
     <p class="hero-desc">
-      Every day, campus dining halls cook <strong>thousands of extra portions</strong> that go to landfill while
-      <strong>millions go hungry</strong>. Anna-Setu is an AI-powered platform that
-      checks food safety in seconds, matches surplus to the nearest shelter, and turns plate waste
-      into fertilizer - <strong>zero to landfill</strong>.
+      Every day, campus dining halls cook <strong>20-40% more food than students eat</strong>, sending it to landfill while
+      <strong>millions go hungry</strong>. Anna-Setu checks food safety in seconds, matches surplus to the nearest shelter, and turns plate waste
+      into soil conditioner - <strong>zero to landfill</strong>.
     </p>
     <div class="hero-buttons">
       <a href="https://pgovila-anna-setu-demo.streamlit.app" target="_blank" class="btn-primary">
@@ -412,10 +411,10 @@
       </a>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><span class="n">40%</span><span class="l">Food cooked goes uneaten</span></div>
-      <div class="hero-stat"><span class="n">6+</span><span class="l">Verified shelters covered</span></div>
+      <div class="hero-stat"><span class="n">20-40%</span><span class="l">Institutional over-production</span></div>
+      <div class="hero-stat"><span class="n">6+</span><span class="l">Sample shelters indexed</span></div>
       <div class="hero-stat"><span class="n">45 min</span><span class="l">Max safe delivery window</span></div>
-      <div class="hero-stat"><span class="n">24h</span><span class="l">Waste → Fertilizer</span></div>
+      <div class="hero-stat"><span class="n">24h</span><span class="l">Waste to soil conditioner</span></div>
     </div>
   </div>
   <div class="scroll-hint">
@@ -432,30 +431,29 @@
     <div class="problem-strip">
       <div>
         <span class="section-label" style="background:rgba(255,255,255,.18);">The Problem</span>
-        <h2>India wastes Rs. 92,000 crore of food every year -<br/>campuses are a silent contributor.</h2>
+        <h2>India's food loss problem starts in institutional kitchens -<br/>campuses are a silent contributor.</h2>
         <p>
           Institutional kitchens over-produce by <strong>20-40%</strong> using fixed static buffers.
-          Food that could nourish people instead becomes methane-emitting landfill or municipal waste -
-          violating both <strong>FSSAI regulations</strong> and <strong>Lucknow Nagar Nigam by-laws</strong>.
-          No scalable, legally-grounded digital tool existed to fix this - until now.
+          Food that could nourish people instead becomes methane-emitting landfill or municipal waste.
+          FSSAI Surplus Food Regulations 2019 require safe redistribution, but no campus-ready digital tool existed to implement them.
         </p>
       </div>
       <div class="problem-numbers">
         <div class="prob-num">
-          <div class="pn">₹92K Cr</div>
-          <div class="pl">Food wasted annually in India</div>
-        </div>
-        <div class="prob-num">
           <div class="pn">19 Cr</div>
-          <div class="pl">People undernourished in India</div>
+          <div class="pl">People undernourished in India (FAO 2023)</div>
         </div>
         <div class="prob-num">
-          <div class="pn">8%</div>
-          <div class="pl">Global GHG from food waste</div>
+          <div class="pn">40%</div>
+          <div class="pl">Food produced that is lost or wasted in India (UNEP)</div>
         </div>
         <div class="prob-num">
-          <div class="pn">0</div>
-          <div class="pl">Digital campus tools before Anna-Setu</div>
+          <div class="pn">8-10%</div>
+          <div class="pl">Global GHG emissions from food waste (IPCC)</div>
+        </div>
+        <div class="prob-num">
+          <div class="pn">2019</div>
+          <div class="pl">FSSAI Surplus Food Regulations - no campus tool existed</div>
         </div>
       </div>
     </div>
@@ -468,44 +466,48 @@
 <section id="how">
   <div class="section-inner">
     <span class="section-label">How it Works</span>
-    <h2 class="section-title">From Surplus to Shelter in 3 Steps</h2>
-    <p class="section-desc">Anna-Setu runs two parallel tracks - Track A for digital AI compliance and Track B for physical plate-waste hardware.</p>
-    <div class="steps-grid">
+    <h2 class="section-title">Two Tracks. Six Steps.</h2>
+    <p class="section-desc">Anna-Setu runs two parallel tracks - Track A (digital safety &amp; rescue) and Track B (physical plate-waste recycler).</p>
+    <p style="font-weight:700;color:var(--green-mid);margin-bottom:12px;">Track A - Surplus Food Rescue</p>
+    <div class="steps-grid" style="margin-bottom:36px;">
       <div class="step-card">
         <span class="step-icon">📋</span>
-        <div class="step-num">1</div>
+        <div class="step-num">A1</div>
         <h3>Log the Surplus</h3>
-        <p>Kitchen staff enter what food is left over, when it was cooked, and how it's stored. Takes under 60 seconds.</p>
+        <p>Kitchen staff enter food item, cooking time and storage condition. Takes under 60 seconds.</p>
       </div>
       <div class="step-card">
-        <span class="step-icon">🤖</span>
-        <div class="step-num">2</div>
-        <h3>AI Safety Check</h3>
-        <p>The RAG compliance engine cross-checks FSSAI Regulation 4(2) and LNN Section 14 and returns a 🟢 / 🟡 / 🔴 verdict in real time.</p>
+        <span class="step-icon">🛡️</span>
+        <div class="step-num">A2</div>
+        <h3>Rule-Based Safety Check</h3>
+        <p>Deterministic rules grounded in FSSAI Surplus Food Regulations 2019 return a 🟢 / 🟡 / 🔴 verdict. Rules decide safety - not an LLM.</p>
       </div>
       <div class="step-card">
         <span class="step-icon">🏠</span>
-        <div class="step-num">3</div>
-        <h3>Match & Alert Shelter</h3>
-        <p>The nearest verified Rain Basera shelter is auto-matched by zone and capacity. A WhatsApp-ready alert is generated instantly.</p>
+        <div class="step-num">A3</div>
+        <h3>Match &amp; Alert Shelter</h3>
+        <p>The nearest sample Rain Basera shelter is matched by zone. A WhatsApp-ready advance notice is generated instantly.</p>
       </div>
+    </div>
+    <p style="font-weight:700;color:var(--green-mid);margin-bottom:12px;">Track B - Plate-Waste Recycler</p>
+    <div class="steps-grid">
       <div class="step-card">
         <span class="step-icon">♻️</span>
-        <div class="step-num">4</div>
-        <h3>Recycle Plate Waste</h3>
-        <p>Track B: a smart IoT kiosk at the tray-return counter weighs plate scraps, nudges diners, and feeds the on-site bio-recycler.</p>
+        <div class="step-num">B1</div>
+        <h3>Weigh Plate Scraps</h3>
+        <p>Track B concept: an IoT kiosk at the tray-return counter weighs plate scraps and nudges diners with their water and carbon footprint.</p>
       </div>
       <div class="step-card">
         <span class="step-icon">🌱</span>
-        <div class="step-num">5</div>
-        <h3>Fertilizer in 24h</h3>
-        <p>PTC ceramic heating + aerobic aeration converts food scraps into dry, odourless organic fertilizer within 24 hours - zero municipal burden.</p>
+        <div class="step-num">B2</div>
+        <h3>PTC Bio-Recycler</h3>
+        <p>PTC ceramic heating + aerobic aeration converts food scraps into dry pre-compost biomass within 24 hours - pending NPK testing for use as soil conditioner.</p>
       </div>
       <div class="step-card">
         <span class="step-icon">📊</span>
-        <div class="step-num">6</div>
-        <h3>Predict & Prevent</h3>
-        <p>The demand advisor uses day, weather, and academic calendar signals to calculate optimal cooking quantities - stopping waste before it starts.</p>
+        <div class="step-num">B3</div>
+        <h3>Demand Estimator</h3>
+        <p>Attendance multipliers for day, weather and academic calendar help kitchens cook closer to actual demand - reducing surplus before it starts.</p>
       </div>
     </div>
   </div>
@@ -522,33 +524,33 @@
     <div class="features-grid">
       <div class="feat-card">
         <div class="feat-icon">⚖️</div>
-        <h3>FSSAI-Grounded Compliance</h3>
-        <p>Every decision cites the exact clause - Regulation 4(2), 4(3), 4(4), 4(5) and Section 7. Legally defensible documentation auto-generated.</p>
+        <h3>Deterministic Safety Rules</h3>
+        <p>Safety verdicts come from FSSAI Surplus Food Regulations 2019 category time limits - deterministic rules, not an LLM. Every result cites the governing clause.</p>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🧠</div>
-        <h3>IBM Granite RAG Engine</h3>
-        <p>A retrieval-augmented generation pipeline built on IBM Granite synthesises answers from verified food safety knowledge bases - no hallucinations.</p>
+        <div class="feat-icon">🔍</div>
+        <h3>Keyword-Based Clause Retriever</h3>
+        <p>The Q&amp;A module retrieves relevant FSSAI and LNN clauses by keyword matching and assembles a plain-English explanation. IBM Granite integration is on the roadmap.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon">📍</div>
         <h3>Zone-Based Shelter Matching</h3>
-        <p>6+ verified Lucknow Rain Basera shelters indexed by zone, distance, capacity, and cold-storage availability for instant smart matching.</p>
+        <p>6+ sample Lucknow Rain Basera shelters indexed by zone and capacity. Confirm shelter FSSAI registration and live availability before dispatch.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon">📱</div>
-        <h3>WhatsApp Alert Generator</h3>
-        <p>One-tap copy of a fully formatted donation alert with food details, pickup location, timing, and official form-B audit reference.</p>
+        <h3>WhatsApp Advance Notice</h3>
+        <p>One-tap copy of a donation advance notice with food details, pickup location and timing. Logged against Schedule II fields for FSSAI compliance.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon">🔮</div>
-        <h3>Smart Demand Forecasting</h3>
-        <p>Predict dining turnout from day-of-week, weather, and exam schedule signals. Optimised cooking targets cut overproduction by up to 20%.</p>
+        <h3>Demand Estimator</h3>
+        <p>Attendance multipliers for day-of-week, weather and exam schedule help set cooking targets. Modelled estimate - actual savings depend on kitchen baseline.</p>
       </div>
       <div class="feat-card">
         <div class="feat-icon">💬</div>
-        <h3>Plain-English Q&A</h3>
-        <p>Ask "Can I donate rice after 3 hours?" and get a clear rule-backed answer drawn from official regulations - accessible to all staff levels.</p>
+        <h3>Plain-English Q&amp;A</h3>
+        <p>Ask "Can I donate rice after 3 hours?" and get a clause-backed answer from the embedded rule base - accessible to all staff levels.</p>
       </div>
     </div>
   </div>
@@ -559,33 +561,33 @@
 ══════════════════════════════════════ -->
 <section id="impact">
   <div class="section-inner">
-    <span class="section-label">Projected Impact</span>
+    <span class="section-label">Modelled Impact</span>
     <h2 class="section-title">The Numbers That Matter</h2>
-    <p class="section-desc">At a single 1,200-student campus running Anna-Setu for one academic year:</p>
+    <p class="section-desc">Modelled estimates - 1,200-student campus, 240 operating days/year, 20% surplus capture rate assumption. All figures are projections, not measured outcomes.</p>
     <div class="impact-grid">
       <div class="impact-card">
         <div class="big">12,000+</div>
-        <div class="label">Meals rescued &amp; redirected to shelters per year</div>
+        <div class="label">Meals potentially rescued per year (20% of surplus, 0.35 kg/meal)</div>
       </div>
       <div class="impact-card">
-        <div class="big">3.2 MT</div>
-        <div class="label">Food waste diverted from landfill annually</div>
+        <div class="big">~4.2 MT</div>
+        <div class="label">Surplus food redirected from landfill (Track A, modelled)</div>
       </div>
       <div class="impact-card">
-        <div class="big">480 kg</div>
-        <div class="label">Organic fertilizer produced per year from plate waste</div>
+        <div class="big">~480 kg</div>
+        <div class="label">Dry pre-compost biomass per year from plate waste (Track B, 15% yield, pending NPK testing)</div>
       </div>
       <div class="impact-card">
-        <div class="big">6 MT</div>
-        <div class="label">CO₂e emissions avoided (methane from landfill)</div>
+        <div class="big">~6 MT</div>
+        <div class="label">CO₂e avoided (IPCC Tier 1 landfill factor 1.9 kg/kg, modelled)</div>
       </div>
       <div class="impact-card">
         <div class="big">₹8.4L</div>
-        <div class="label">Kitchen procurement savings per year</div>
+        <div class="label">Kitchen procurement savings (modelled, 20% overproduction reduction)</div>
       </div>
       <div class="impact-card">
-        <div class="big">850 K L</div>
-        <div class="label">Embedded freshwater preserved</div>
+        <div class="big">~850 KL</div>
+        <div class="label">Embedded freshwater preserved (760 L/kg, Mekonnen &amp; Hoekstra 2011)</div>
       </div>
     </div>
   </div>
@@ -598,39 +600,23 @@
   <div class="section-inner">
     <span class="section-label">UN Sustainable Development Goals</span>
     <h2 class="section-title">Built for the Goals That Matter Most</h2>
-    <p class="section-desc">Anna-Setu directly advances 8 of the 17 United Nations SDGs through its dual-track approach to food rescue and circular waste management.</p>
+    <p class="section-desc">Anna-Setu directly targets 4 United Nations SDGs with specific, verifiable contributions. Each is linked to a primary target indicator.</p>
     <div class="sdg-grid">
-      <div class="sdg-pill sdg2">
-        <div class="sdg-num">2</div>
-        <div><strong>Zero Hunger</strong><br/><span style="font-weight:400;font-size:12px;">Redirecting surplus meals to verified shelters</span></div>
-      </div>
-      <div class="sdg-pill sdg3">
-        <div class="sdg-num">3</div>
-        <div><strong>Good Health &amp; Well-Being</strong><br/><span style="font-weight:400;font-size:12px;">FSSAI-compliant safe food redistribution</span></div>
-      </div>
       <div class="sdg-pill sdg12">
         <div class="sdg-num">12</div>
-        <div><strong>Responsible Consumption</strong><br/><span style="font-weight:400;font-size:12px;">Demand forecasting &amp; waste reduction</span></div>
+        <div><strong>Responsible Consumption</strong><br/><span style="font-weight:400;font-size:12px;">Target 12.3 - halve per capita food waste. Demand estimation reduces overproduction.</span></div>
+      </div>
+      <div class="sdg-pill sdg2">
+        <div class="sdg-num">2</div>
+        <div><strong>Zero Hunger</strong><br/><span style="font-weight:400;font-size:12px;">Target 2.1 - safe, nutritious food access. Surplus meals redirected to Rain Basera shelters.</span></div>
       </div>
       <div class="sdg-pill sdg13">
         <div class="sdg-num">13</div>
-        <div><strong>Climate Action</strong><br/><span style="font-weight:400;font-size:12px;">Methane avoidance &amp; carbon footprint reduction</span></div>
+        <div><strong>Climate Action</strong><br/><span style="font-weight:400;font-size:12px;">Target 13.2 - reduce methane from landfill food waste. Modelled GHG avoidance cited with IPCC factor.</span></div>
       </div>
       <div class="sdg-pill sdg11">
         <div class="sdg-num">11</div>
-        <div><strong>Sustainable Cities</strong><br/><span style="font-weight:400;font-size:12px;">LNN municipal by-law compliance</span></div>
-      </div>
-      <div class="sdg-pill sdg15">
-        <div class="sdg-num">15</div>
-        <div><strong>Life on Land</strong><br/><span style="font-weight:400;font-size:12px;">Organic fertilizer replaces chemical inputs</span></div>
-      </div>
-      <div class="sdg-pill sdg1">
-        <div class="sdg-num">1</div>
-        <div><strong>No Poverty</strong><br/><span style="font-weight:400;font-size:12px;">Nutritious food access for shelter residents</span></div>
-      </div>
-      <div class="sdg-pill sdg17">
-        <div class="sdg-num">17</div>
-        <div><strong>Partnerships for Goals</strong><br/><span style="font-weight:400;font-size:12px;">Campus × Shelter × City Council collaboration</span></div>
+        <div><strong>Sustainable Cities</strong><br/><span style="font-weight:400;font-size:12px;">Target 11.6 - reduce municipal waste. On-site bio-recycler diverts organic waste from city landfill.</span></div>
       </div>
     </div>
   </div>
@@ -643,18 +629,18 @@
   <div class="section-inner">
     <span class="section-label">Technology</span>
     <h2 class="section-title">Powered by AI &amp; Open Standards</h2>
-    <p class="section-desc">Anna-Setu uses production-grade AI tools, open-source frameworks, and an ESP32-based IoT hardware prototype for the bio-recycler kiosk.</p>
+    <p class="section-desc">Anna-Setu uses Python, Streamlit, and a keyword-based rule retriever. IBM Granite integration is roadmap. The IoT track is a hardware prototype concept.</p>
     <div class="tech-row">
-      <div class="tech-badge"><span class="dot"></span>IBM Granite (RAG Engine)</div>
       <div class="tech-badge"><span class="dot"></span>Python 3.11</div>
-      <div class="tech-badge"><span class="dot"></span>Streamlit 1.44</div>
-      <div class="tech-badge"><span class="dot"></span>scikit-learn (cosine similarity)</div>
+      <div class="tech-badge"><span class="dot"></span>Streamlit 1.35</div>
+      <div class="tech-badge"><span class="dot"></span>Keyword Rule Retriever</div>
+      <div class="tech-badge"><span class="dot"></span>IBM Granite (Roadmap)</div>
     </div>
     <div class="tech-row">
       <div class="tech-badge"><span class="dot"></span>FSSAI Surplus Food Regulations 2019</div>
-      <div class="tech-badge"><span class="dot"></span>Lucknow Nagar Nigam By-Laws</div>
-      <div class="tech-badge"><span class="dot"></span>ESP32 IoT Kiosk (Track B)</div>
-      <div class="tech-badge"><span class="dot"></span>PTC Bio-Recycler Hardware</div>
+      <div class="tech-badge"><span class="dot"></span>Lucknow Nagar Nigam Guidelines</div>
+      <div class="tech-badge"><span class="dot"></span>ESP32 IoT Kiosk (Concept Prototype)</div>
+      <div class="tech-badge"><span class="dot"></span>PTC Bio-Recycler (Hardware Concept)</div>
       <div class="tech-badge"><span class="dot"></span>GitHub CI/CD</div>
     </div>
   </div>
@@ -690,7 +676,7 @@
     <a href="https://github.com/pgovila/Anna-Setu-Project" target="_blank">GitHub</a>
   </span><br/>
   <span style="font-size:11px;opacity:.6;margin-top:8px;display:inline-block;">
-    © 2026 Anna-Setu Project · Content grounded in FSSAI Surplus Food Regulations (2019) &amp; Lucknow Nagar Nigam By-Laws
+    © 2026 Anna-Setu Project · Grounded in FSSAI Food Safety and Standards (Recovery and Distribution of Surplus Food) Regulations, 2019 · Impact figures are modelled projections
   </span>
 </footer>
 

@@ -775,12 +775,6 @@ def demand_advisor_flow(
 
     return metrics_md, ingredients_md, guidance_md
 
-if HAS_SPACES:
-    try:
-        demand_advisor_flow = spaces.GPU(demand_advisor_flow)
-    except Exception:
-        pass
-
 
 def evaluate_surplus_flow(
     place_facility,
@@ -886,12 +880,6 @@ def evaluate_surplus_flow(
         updated_shelter
     )
 
-if HAS_SPACES:
-    try:
-        evaluate_surplus_flow = spaces.GPU(evaluate_surplus_flow)
-    except Exception:
-        pass
-
 
 def regulatory_qa_flow(query_text, authority_filter):
     """Generative RAG QA synthesized by IBM Granite citing legal clauses."""
@@ -917,12 +905,6 @@ def regulatory_qa_flow(query_text, authority_filter):
         )
 
     return answer_md, citations_md
-
-if HAS_SPACES:
-    try:
-        regulatory_qa_flow = spaces.GPU(regulatory_qa_flow)
-    except Exception:
-        pass
 
 
 def plate_waste_sim_flow(student_id, hostel_block, waste_grams, daily_diners):

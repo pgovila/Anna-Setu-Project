@@ -1,4 +1,4 @@
-﻿# 🍛 Anna-Setu: Campus Food Rescue & Bio-Recycling Network
+# 🍛 Anna-Setu: Campus Food Rescue & Bio-Recycling Network
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pgovila-anna-setu-demo.streamlit.app)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)

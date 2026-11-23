@@ -1,7 +1,7 @@
 """
 Anna-Setu: Streamlit Interface for Campus Food Rescue & Plate-Waste Bio-Recycling Network
-Grounded in FSSAI Surplus Food Regulations (2019) & Lucknow Nagar Nigam Food Service By-Laws.
-Covers Dual Tracks: Track A (Software AI & RAG Engine) + Track B (Smart Plate-Waste Interceptor & Bio-Recycler).
+Grounded in FSSAI Food Safety and Standards (Recovery and Distribution of Surplus Food) Regulations, 2019.
+Covers Dual Tracks: Track A (Rule-based safety engine + keyword retriever) + Track B (IoT plate-waste simulator).
 """
 
 import streamlit as st
@@ -43,83 +43,120 @@ html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
     background: radial-gradient(circle at 50% 0%, #ebf7ee 0%, #f4f9f5 55%, #edf6ef 100%) !important;
 }
 
-/* ── Streamlit Top-Right Header Buttons Fix (Visible Green Icons & Text) ── */
+/* ── Streamlit Top-Right Header & Toolbar ── */
 [data-testid="stHeader"],
 header[data-testid="stHeader"],
-.stAppHeader,
-[data-testid="stToolbar"],
-[data-testid="stHeaderActionElements"] {
+.stAppHeader {
     background: transparent !important;
 }
-[data-testid="stHeader"] button,
-.stAppHeader button,
-header button,
-[data-testid="stToolbar"] button,
-[data-testid="stHeaderActionElements"] button,
-[data-testid="stHeader"] a,
-.stAppHeader a,
-header a {
+
+/* Header toolbar action buttons and main menu button: rounded white pills with green border */
+[data-testid="stToolbarActions"] button,
+.stToolbarActionButton button,
+div[data-testid="stToolbarActionButton"] button,
+[data-testid="stMainMenu"] button,
+button[data-testid="stMainMenuButton"] {
     background-color: #ffffff !important;
     background: #ffffff !important;
     border: 1.5px solid #1a7a3c !important;
     border-radius: 999px !important;
     color: #1a7a3c !important;
-    padding: 4px 14px !important;
-    height: auto !important;
+    padding: 4px 12px !important;
     min-height: 32px !important;
-    box-shadow: 0 1px 4px rgba(26,122,60,.12) !important;
+    height: 32px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    gap: 6px !important;
+    box-shadow: 0 1px 4px rgba(26,122,60,.12) !important;
+    cursor: pointer !important;
 }
-[data-testid="stHeader"] button *,
-.stAppHeader button *,
-header button *,
-[data-testid="stToolbar"] button *,
-[data-testid="stHeaderActionElements"] button * {
-    color: #1a7a3c !important;
-    fill: #1a7a3c !important;
-    stroke: #1a7a3c !important;
-    font-weight: 700 !important;
-}
-[data-testid="stHeader"] button svg,
-.stAppHeader button svg,
-header button svg,
-[data-testid="stToolbar"] button svg,
-[data-testid="stHeaderActionElements"] button svg,
-[data-testid="stHeader"] svg,
-.stAppHeader svg {
-    fill: #1a7a3c !important;
-    color: #1a7a3c !important;
-    stroke: #1a7a3c !important;
-    width: 16px !important;
-    height: 16px !important;
-}
-[data-testid="stHeader"] button svg path,
-.stAppHeader button svg path,
-header button svg path,
-[data-testid="stToolbar"] button svg path,
-[data-testid="stHeaderActionElements"] button svg path {
-    fill: #1a7a3c !important;
-    stroke: #1a7a3c !important;
-}
-[data-testid="stHeader"] button:hover,
-.stAppHeader button:hover,
-header button:hover,
-[data-testid="stToolbar"] button:hover,
-[data-testid="stHeaderActionElements"] button:hover {
+
+[data-testid="stToolbarActions"] button:hover,
+.stToolbarActionButton button:hover,
+div[data-testid="stToolbarActionButton"] button:hover,
+[data-testid="stMainMenu"] button:hover,
+button[data-testid="stMainMenuButton"]:hover {
     background-color: #e8f5e9 !important;
     background: #e8f5e9 !important;
     border-color: #0d4a22 !important;
 }
-[data-testid="stHeader"] button:hover *,
-.stAppHeader button:hover *,
-header button:hover *,
-[data-testid="stToolbar"] button:hover *,
-[data-testid="stHeaderActionElements"] button:hover * {
-    color: #0d4a22 !important;
-    fill: #0d4a22 !important;
-    stroke: #0d4a22 !important;
+
+/* Header Action Label (e.g. "Share") */
+[data-testid="stToolbarActionButtonLabel"],
+[data-testid="stToolbarActions"] span {
+    color: #1a7a3c !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+}
+
+/* Header Action Icons (DO NOT override background URL to transparent!) */
+[data-testid="stToolbarActionButtonIcon"],
+div[data-testid="stToolbarActionButtonIcon"] {
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: brightness(0) saturate(100%) invert(34%) sepia(74%) saturate(478%) hue-rotate(93deg) brightness(93%) contrast(89%) !important;
+}
+
+/* Any SVGs inside Toolbar Action Buttons */
+[data-testid="stToolbarActions"] svg,
+.stToolbarActionButton svg {
+    color: #1a7a3c !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+[data-testid="stToolbarActions"] svg path[fill="none"],
+.stToolbarActionButton svg path[fill="none"] {
+    fill: none !important;
+    stroke: none !important;
+}
+[data-testid="stToolbarActions"] svg path:not([fill="none"]),
+.stToolbarActionButton svg path:not([fill="none"]) {
+    fill: #1a7a3c !important;
+}
+[data-testid="stToolbarActions"] img,
+.stToolbarActionButton img {
+    width: 16px !important;
+    height: 16px !important;
+    display: inline-block !important;
+}
+
+/* Main Menu button sizing */
+button[data-testid="stMainMenuButton"],
+[data-testid="stMainMenu"] button {
+    width: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
+}
+
+/* Main Menu 3-dots SVG */
+[data-testid="stMainMenu"] svg,
+button[data-testid="stMainMenuButton"] svg {
+    color: #1a7a3c !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+/* Transparent bounding box inside 3-dots SVG: strictly none */
+[data-testid="stMainMenu"] svg path[fill="none"],
+button[data-testid="stMainMenuButton"] svg path[fill="none"],
+[data-testid="stHeader"] svg path[fill="none"] {
+    fill: none !important;
+    stroke: none !important;
+}
+
+/* The actual 3 dots: filled with emerald green */
+[data-testid="stMainMenu"] svg path:not([fill="none"]),
+button[data-testid="stMainMenuButton"] svg path:not([fill="none"]) {
+    fill: #1a7a3c !important;
+    stroke: none !important;
 }
 
 /* ── All layout blocks transparent so app bg shows through ── */
@@ -511,13 +548,13 @@ div.kiosk-screen .kiosk-subtext {
 }
 
 /* ── Buttons - secondary / default (Restart Tutorial and all secondary buttons) ── */
-button,
 div[data-testid="stButton"] button,
 div[data-testid="stButton"] button[kind="secondary"],
 .stButton button,
 .stButton > button,
 button[data-testid="baseButton-secondary"],
-button[kind="secondary"] {
+button[kind="secondary"],
+.restart-tutorial-container button {
     background-color: #ffffff !important;
     background: #ffffff !important;
     border: 2px solid #1a7a3c !important;
@@ -529,7 +566,6 @@ button[kind="secondary"] {
     box-shadow: 0 2px 8px rgba(26,122,60,.16) !important;
     cursor: pointer !important;
 }
-button *,
 div[data-testid="stButton"] button *,
 div[data-testid="stButton"] button[kind="secondary"] *,
 .stButton button *,
@@ -537,7 +573,8 @@ div[data-testid="stButton"] button[kind="secondary"] *,
 button[data-testid="baseButton-secondary"] *,
 button[kind="secondary"] *,
 div[data-testid="stButton"] [data-testid="stMarkdownContainer"] p,
-button[data-testid="baseButton-secondary"] p {
+button[data-testid="baseButton-secondary"] p,
+.restart-tutorial-container button * {
     color: #0d4a22 !important;
     background: transparent !important;
     font-weight: 700 !important;
@@ -545,19 +582,19 @@ button[data-testid="baseButton-secondary"] p {
     opacity: 1 !important;
     visibility: visible !important;
 }
-button:hover,
 div[data-testid="stButton"] button:hover,
 button[data-testid="baseButton-secondary"]:hover,
 button[kind="secondary"]:hover,
-.stButton > button:hover {
+.stButton > button:hover,
+.restart-tutorial-container button:hover {
     background-color: #e8f5e9 !important;
     background: #e8f5e9 !important;
     border-color: #0d4a22 !important;
     color: #0d4a22 !important;
 }
-button:hover *,
 div[data-testid="stButton"] button:hover *,
-button[data-testid="baseButton-secondary"]:hover * {
+button[data-testid="baseButton-secondary"]:hover *,
+.restart-tutorial-container button:hover * {
     color: #0d4a22 !important;
 }
 
@@ -1145,7 +1182,13 @@ with tab1:
                     st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}**")
                     st.info(f"\"{rule.get('text')}\"")
 
-            with st.expander("📑 Handover Record (FSSAI Form B)", expanded=False):
+            with st.expander("📑 Handover Record (FSSAI Schedule II fields)", expanded=False):
+                st.markdown(
+                    "_Note: This record is a decision-support tool. The mess manager remains "
+                    "accountable as the FBO under their own FSMS. Add batch number, best-before "
+                    "date and recipient FSSAI registration before filing._",
+                    unsafe_allow_html=False
+                )
                 st.code(res["audit_manifest"], language="text")
         else:
             st.markdown("""
@@ -1153,8 +1196,8 @@ with tab1:
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
     <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#1a7a3c,#2a9d50);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:22px;box-shadow:0 3px 8px rgba(26,122,60,.3);">⚡</div>
     <div>
-      <h4 style="margin:0;font-size:16px;font-weight:800;color:#0d4a22;">Real-Time AI Redistribution Engine</h4>
-      <p style="margin:0;font-size:12px;color:#4a6b51;">Active FSSAI 2019 compliance &amp; dynamic shelter routing</p>
+      <h4 style="margin:0;font-size:16px;font-weight:800;color:#0d4a22;">Rule-Based Safety Engine + Keyword Retriever</h4>
+      <p style="margin:0;font-size:12px;color:#4a6b51;">FSSAI Surplus Food Regulations 2019 - deterministic rules, keyword-matched clause retrieval</p>
     </div>
   </div>
   
@@ -1180,7 +1223,7 @@ with tab1:
   <div style="background:linear-gradient(135deg, #eaf6ec 0%, #f1f9f2 100%);border:1.5px dashed #a8cfb0;border-radius:14px;padding:16px;text-align:center;">
     <div style="font-size:24px;margin-bottom:6px;">👈</div>
     <div style="font-weight:700;color:#0d4a22;font-size:13.5px;margin-bottom:2px;">Complete Step 1 &amp; Step 2 on the left</div>
-    <div style="font-size:12px;color:#55785c;">Click <strong>"Check if This Food Can Be Donated"</strong> to run the live AI assessment.</div>
+    <div style="font-size:12px;color:#55785c;">Click <strong>"Check if This Food Can Be Donated"</strong> to run the safety check.</div>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -1243,7 +1286,11 @@ with tab2:
                 f"**Expected Students Today:** {d_res['predicted_turnout_students']} "
                 f"({d_res['turnout_rate_pct']:.1f}% attendance)\n\n"
                 f"**Cook This Many Portions:** **{d_res['recommended_cooking_target']}** "
-                f"(instead of {d_res['traditional_unoptimized_target']} - saves waste!)"
+                f"(instead of {d_res['traditional_unoptimized_target']} using a fixed 25% buffer)"
+            )
+            st.caption(
+                "Modelled estimate - 1,200-student campus. Attendance factors use day-of-week "
+                "and weather multipliers; actual savings depend on your kitchen's base buffer."
             )
             dm1, dm2, dm3 = st.columns(3)
             dm1.metric("Meals of Waste Prevented", f"{d_res['portions_prevented_from_waste']}")
@@ -1268,15 +1315,15 @@ with tab2:
   <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
     <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:22px;box-shadow:0 3px 8px rgba(217,119,6,.3);">🔮</div>
     <div>
-      <h4 style="margin:0;font-size:16px;font-weight:800;color:#92400e;">Predictive Meal Demand Forecasting</h4>
-      <p style="margin:0;font-size:12px;color:#78350f;">Optimized batch cooking targets based on weather &amp; academic calendar</p>
+      <h4 style="margin:0;font-size:16px;font-weight:800;color:#92400e;">Meal Demand Estimator</h4>
+      <p style="margin:0;font-size:12px;color:#78350f;">Attendance multipliers for day, weather &amp; academic calendar - modelled, not regression-trained</p>
     </div>
   </div>
   
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
     <div style="background:#fefce8;border:1px solid #fef08a;border-radius:14px;padding:14px 16px;">
-      <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">👥 Attendance Prediction</div>
-      <div style="font-size:12px;color:#333;line-height:1.5;">Forecasts dining hall turnout based on exams, weather, and day of week.</div>
+      <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">👥 Attendance Estimate</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Estimates dining hall turnout using fixed multipliers for exams, weather, and day of week.</div>
     </div>
     <div style="background:#fefce8;border:1px solid #fef08a;border-radius:14px;padding:14px 16px;">
       <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">🍲 Portions Target</div>
@@ -1317,7 +1364,6 @@ with tab3:
     with col_b1:
         st.markdown('<div class="step-pill">🍽️ Simulate a Student Returning Their Tray</div>', unsafe_allow_html=True)
         with st.container(border=True):
-            sim_diner_name   = st.text_input("Student ID (Optional)", value="STUDENT-2026-88")
             sim_hostel_block = st.selectbox(
                 "Hostel Block",
                 ["Block A (Boys)", "Block B (Girls)", "Block C (International)", "Day Scholar Dining"]
@@ -1345,7 +1391,7 @@ with tab3:
     🌍 <strong style="color:#ffffff !important;">Carbon footprint:</strong> <span style="color:#ffffff !important;">{sim_co2e_grams:.0f}g CO2 equivalent</span>
   </div>
   <div style="color:#ffffff !important;margin-bottom:12px;">
-    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">91% clean plates this week</span> <span style="color:#ffffff !important;">- great job!</span>
+    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">doing well this week</span> <span style="color:#ffffff !important;">- keep it up!</span>
   </div>
   <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;color:#ffffff !important;font-size:13px;border-left:3px solid #ffd54f;">
     💡 <strong style="color:#ffffff !important;">Tip:</strong> <span style="color:#ffffff !important;">Take only what you can finish. Second helpings are always available!</span>
@@ -1356,10 +1402,15 @@ with tab3:
     with col_b2:
         st.markdown('<div class="step-pill">What Happens to the Plate Waste?</div>', unsafe_allow_html=True)
 
+        # Assumptions: 15% dry-weight yield from PTC dehydrator (pre-compost biomass,
+        # pending curing and NPK testing before use as soil conditioner);
+        # GHG factor 1.9 kg CO2e/kg food waste to landfill (IPCC AR5 Tier 1);
+        # water embedded 760 L/kg (avg Indian staple crop, Mekonnen & Hoekstra 2011).
+        # All figures are modelled for a single campus - label as estimates.
         cum_daily_waste_kg = (sim_daily_diners * sim_waste_grams) / 1000.0
-        compost_yield_kg   = cum_daily_waste_kg * 0.15
-        annual_compost_kg  = compost_yield_kg * 240
-        methane_avoided_kg = cum_daily_waste_kg * 1.9
+        compost_yield_kg   = cum_daily_waste_kg * 0.15   # 15% dry-weight yield
+        annual_compost_kg  = compost_yield_kg * 240       # 240 operating days/yr
+        methane_avoided_kg = cum_daily_waste_kg * 1.9    # IPCC Tier 1 landfill factor
 
         k1, k2 = st.columns(2)
         k1.metric("Plate Waste Per Day",     f"{cum_daily_waste_kg:.1f} kg")
@@ -1369,7 +1420,14 @@ with tab3:
         k4.metric("Emissions Avoided",       f"{methane_avoided_kg:.1f} kg CO2e", delta="Zero landfill")
 
         st.write("---")
-        st.markdown("#### How Plate Waste Becomes Fertilizer - 5 Steps")
+        st.caption(
+            "Modelled estimates - 1,200-student campus, 240 operating days/year. "
+            "Compost yield is dry pre-compost biomass from PTC dehydrator; "
+            "NPK values and suitability as soil conditioner require curing and lab testing. "
+            "GHG factor: 1.9 kg CO2e/kg (IPCC AR5 Tier 1 landfill). "
+            "Water factor: 760 L/kg embedded water (Mekonnen & Hoekstra 2011)."
+        )
+        st.markdown("#### How Plate Waste Becomes Soil Conditioner - 5 Steps")
         steps_html = "".join([
             f'<div style="display:flex;gap:12px;margin-bottom:10px;">'
             f'<div style="background:#2e7d32;color:white;border-radius:50%;width:26px;height:26px;'
@@ -1379,7 +1437,7 @@ with tab3:
                 (1, "<strong>Shred:</strong> Scraps are broken into small pieces for fast decomposition."),
                 (2, "<strong>Heat:</strong> Temperature rises to 55-65°C, killing all harmful bacteria."),
                 (3, "<strong>Airflow:</strong> A fan and carbon filter keep oxygen flowing and remove odours."),
-                (4, "<strong>Harvest:</strong> In 12-24 hours, scraps become dry, nutrient-rich fertilizer."),
+                (4, "<strong>Harvest:</strong> In 12-24 hours, scraps become dry pre-compost biomass (pending curing and NPK lab testing before use as soil conditioner)."),
                 (5, "<strong>Zero Landfill:</strong> 100% processed on-site. Nothing sent to city garbage."),
             ]
         ])
@@ -1392,7 +1450,8 @@ with tab4:
     st.markdown("""
 <div class="section-card" style="background:#e8eaf6;border-left:4px solid #3949ab;">
   <strong>How to use:</strong> Type any question about food safety in plain English.
-  You get a clear answer backed by official FSSAI 2019 regulations and Lucknow city guidelines.
+  Answers are assembled from keyword-matched clauses in the embedded rule base - not generated by an LLM.
+  Safety verdicts always come from the deterministic rule engine, not this Q&amp;A module.
 </div>
 """, unsafe_allow_html=True)
 
@@ -1443,7 +1502,8 @@ with tab5:
     col_r1, col_r2 = st.columns(2, gap="large")
 
     with col_r1:
-        st.markdown("### 🇮🇳 National Food Safety Rules (FSSAI 2019)")
+        st.markdown("### 🇮🇳 National Food Safety Rules")
+        st.caption("Source: FSSAI Food Safety and Standards (Recovery and Distribution of Surplus Food) Regulations, 2019")
         with st.container(border=True):
             st.markdown("**🌡️ The Danger Zone**")
             st.markdown(
@@ -1451,7 +1511,8 @@ with tab5:
                 "Always keep food colder than 5°C (fridge) or hotter than 65°C (hot-holding equipment)."
             )
         with st.container(border=True):
-            st.markdown("**⏱️ The 2-Hour / 4-Hour Rule**")
+            st.markdown("**⏱️ Time Limits (Engineering Estimates)**")
+            st.caption("Category time limits in this app are engineering safety estimates derived from FSSAI Regulation 4 principles. Verify against the gazette text for your specific food type.")
             st.markdown("""
 | Time Since Cooking | What You Can Do |
 |---|---|
@@ -1466,29 +1527,34 @@ with tab5:
         with st.container(border=True):
             st.markdown("**⚖️ Are Donors Protected by Law?**")
             st.success(
-                "Yes. Donors who follow the rules above and donate in good faith are **legally protected** "
-                "from being blamed if something goes wrong after the food leaves their hands.", icon="✅"
+                "Yes. Donors who act in good faith and follow FSSAI Surplus Food Regulations 2019 "
+                "have protection under the Good Samaritan provisions. The mess manager remains "
+                "accountable as the FBO under their own Food Safety Management System.", icon="✅"
             )
         with st.container(border=True):
-            st.markdown("**📋 Record Keeping**")
+            st.markdown("**📋 Record Keeping (Schedule II fields)**")
             st.info(
-                "Every donation must be logged in an official register - food type, quantity, "
-                "cooking time, temperature, and signatures. Records kept for 1 year.", icon="📋"
+                "Every donation must be logged per Schedule II: donor name, distribution org, "
+                "donation date, product, batch number, manufacture date, best-before date, "
+                "quantity, food temperature, distribution area, and distribution date. "
+                "Also add recipient FSSAI registration. Records kept for 1 year.", icon="📋"
             )
 
     with col_r2:
-        st.markdown("### 🏙️ Lucknow City Council Rules (LNN)")
+        st.markdown("### 🏙️ Lucknow City Council Guidelines (LNN)")
+        st.caption("Note: LNN clauses below are engineering assumptions based on municipal solid-waste bye-laws and standard food-safety transit practice. Verify exact section numbers and penalty ranges against published LNN gazette text before citing in official filings.")
         with st.container(border=True):
-            st.markdown("**🚗 Maximum Delivery Time**")
+            st.markdown("**🚗 Maximum Delivery Time (Engineering Estimate)**")
             st.markdown(
-                "Food in transit must reach the shelter within **45 minutes** because of Lucknow traffic "
-                "and summer temperatures. Insulated containers are required for longer routes."
+                "Food in transit should reach the shelter within **45 minutes** given Lucknow "
+                "traffic and summer temperatures. Insulated containers required for longer routes. "
+                "_Source: engineering estimate based on FSSAI ambient time limits and local conditions._"
             )
         with st.container(border=True):
             st.markdown("**🚮 No Dumping in Garbage Bins**")
             st.error(
-                "It is **illegal** to throw commercial food waste into city dustbins or roadside dumps. "
-                "On-the-spot fines: **Rs.5,000 to Rs.25,000**.", icon="⚠️"
+                "Municipal solid-waste rules prohibit dumping commercial organic waste in city bins. "
+                "Penalty ranges cited are illustrative - confirm current amounts from LNN notifications.", icon="⚠️"
             )
         with st.container(border=True):
             st.markdown("**♻️ Expired Food Must Be Composted**")
