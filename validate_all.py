@@ -120,26 +120,39 @@ def validate_ecosystem():
 
     # --- SECTION 3: Deliverables & Editable Documents Checks ---
     print("\n[3] Verifying Submission Deliverables & Document Formats...")
-    deliverables = [
-        ("Official 3-Page PDF (Anna_Setu...)", "Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"),
-        ("Official 3-Page PDF (PankhuriGovila_YIRP...)", "PankhuriGovila_YIRP_Project_Brief_Timeline_and_Tracker.pdf"),
-        ("Editable Word Document (.docx)", "Anna_Setu_Project_Brief_Timeline_and_Tracker.docx"),
-        ("Editable Word Document (.docx - Named)", "PankhuriGovila_YIRP_Project_Brief_Timeline_and_Tracker.docx"),
-        ("Editable Markdown Document (.md)", "Anna_Setu_Project_Brief_Timeline_and_Tracker.md"),
-        ("Excel Project Tracker (.xlsx)", "PankhuriGovila_YIRP_Project_Tracker.xlsx"),
-        ("CSV Project Tracker Export (.csv)", "PankhuriGovila_YIRP_Project_Tracker.csv"),
-        ("FSSAI & LNN Regulatory Manual (.md)", "FOOD_REGULATIONS_AND_LNN_GUIDELINES.md"),
-        ("Institutional Approvals & MoU Templates (.md)", "INSTITUTIONAL_APPROVALS_AND_MOU_TEMPLATES.md"),
-        ("Presentation Slides Update Guide (.md)", "PRESENTATION_SLIDES_UPDATE_GUIDE.md"),
-        ("Gradio Web Interface (app.py)", "app.py"),
-        ("Streamlit 5-Tab Interactive Dashboard", "streamlit_app.py"),
-        ("Comprehensive Test Suite (test_rag.py)", "test_rag.py")
+
+    # Files that live in the repo root
+    root_deliverables = [
+        ("Gradio Web Interface (app.py)",            "app.py"),
+        ("Streamlit 5-Tab Interactive Dashboard",    "streamlit_app.py"),
+        ("Comprehensive Test Suite (test_rag.py)",   "test_rag.py"),
+        ("FSSAI & LNN Regulatory Manual (.md)",      "FOOD_REGULATIONS_AND_LNN_GUIDELINES.md"),
+        ("Institutional Approvals & MoU Templates",  "INSTITUTIONAL_APPROVALS_AND_MOU_TEMPLATES.md"),
     ]
 
-    for title, filename in deliverables:
+    # Files that live in the Innovators Mentorship subfolder
+    im_folder = "Innovators Mentorship"
+    im_deliverables = [
+        ("Official PDF (Anna_Setu...)",                   "Anna_Setu_Project_Brief_Timeline_and_Tracker.pdf"),
+        ("Official PDF (PankhuriGovila_YIRP...)",         "PankhuriGovila_YIRP_Project_Brief_Timeline_and_Tracker.pdf"),
+        ("Editable Word Document (Anna_Setu .docx)",      "Anna_Setu_Project_Brief_Timeline_and_Tracker.docx"),
+        ("Editable Word Document (PankhuriGovila .docx)", "PankhuriGovila_YIRP_Project_Brief_Timeline_and_Tracker.docx"),
+        ("Editable Markdown (.md)",                       "Anna_Setu_Project_Brief_Timeline_and_Tracker.md"),
+        ("Excel Project Tracker (.xlsx)",                 "PankhuriGovila_YIRP_Project_Tracker.xlsx"),
+        ("CSV Project Tracker Export (.csv)",             "PankhuriGovila_YIRP_Project_Tracker.csv"),
+        ("Presentation Slides Update Guide (.md)",        "PRESENTATION_SLIDES_UPDATE_GUIDE.md"),
+    ]
+
+    for title, filename in root_deliverables:
         exists = os.path.exists(filename)
         size_kb = os.path.getsize(filename) / 1024.0 if exists else 0
-        check(f"{title}", exists, f"Size: {size_kb:.1f} KB")
+        check(title, exists, f"Size: {size_kb:.1f} KB")
+
+    for title, filename in im_deliverables:
+        full_path = os.path.join(im_folder, filename)
+        exists = os.path.exists(full_path)
+        size_kb = os.path.getsize(full_path) / 1024.0 if exists else 0
+        check(title, exists, f"{full_path} | Size: {size_kb:.1f} KB")
 
     # --- SECTION 4: Compliance Audits (Zero Em-Dashes & Neutral Affiliation) ---
     print("\n[4] Verifying Text Hygiene (Zero Em-Dashes & Neutral Affiliation)...")
