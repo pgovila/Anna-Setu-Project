@@ -381,9 +381,9 @@ SLIDE_CONTENT = [
   <tr style="border-bottom:1px solid #eee;">
     <td style="padding:10px 8px;width:38px;font-size:20px;">🍛</td>
     <td style="padding:10px 8px;">
-      <strong>Tab 1 · Surplus Food Rescue</strong><br>
-      <span style="color:#555;font-size:13px;">
-        Check if leftover food is safe to donate → get the nearest shelter matched →
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 1 - Surplus Food Rescue</strong><br>
+      <span style="color:#333;font-size:13px;">
+        Check if leftover food is safe to donate, get the nearest shelter matched,
         generate a WhatsApp alert. Also predicts how much to cook so waste never starts.
       </span>
     </td>
@@ -391,9 +391,9 @@ SLIDE_CONTENT = [
   <tr style="border-bottom:1px solid #eee;">
     <td style="padding:10px 8px;font-size:20px;">♻️</td>
     <td style="padding:10px 8px;">
-      <strong>Tab 2 · Plate-Waste Recycler</strong><br>
-      <span style="color:#555;font-size:13px;">
-        Simulate the smart kiosk at the tray-return counter. See water & carbon impact
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 2 - Plate-Waste Recycler</strong><br>
+      <span style="color:#333;font-size:13px;">
+        Simulate the smart kiosk at the tray-return counter. See water and carbon impact
         of plate waste and watch it turn into fertilizer.
       </span>
     </td>
@@ -401,8 +401,8 @@ SLIDE_CONTENT = [
   <tr style="border-bottom:1px solid #eee;">
     <td style="padding:10px 8px;font-size:20px;">💬</td>
     <td style="padding:10px 8px;">
-      <strong>Tab 3 · Ask a Food Safety Question</strong><br>
-      <span style="color:#555;font-size:13px;">
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 3 - Ask a Food Safety Question</strong><br>
+      <span style="color:#333;font-size:13px;">
         Type a plain-English question and get a rule-backed answer from
         official FSSAI 2019 and Lucknow city guidelines.
       </span>
@@ -411,9 +411,9 @@ SLIDE_CONTENT = [
   <tr>
     <td style="padding:10px 8px;font-size:20px;">📖</td>
     <td style="padding:10px 8px;">
-      <strong>Tab 4 · Food Safety Rules Guide</strong><br>
-      <span style="color:#555;font-size:13px;">
-        Plain-language reference — the 2h/4h rule, danger zone temperatures,
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 4 - Food Safety Rules Guide</strong><br>
+      <span style="color:#333;font-size:13px;">
+        Plain-language reference - the 2h/4h rule, danger zone temperatures,
         donation restrictions and legal protections explained clearly.
       </span>
     </td>
