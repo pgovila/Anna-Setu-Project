@@ -999,157 +999,177 @@ try:
 
     with gr.Blocks(title="Anna-Setu: Campus Food Rescue Network", css="""
 /* ══════════════════════════════════════════════════════════
-   ANNA-SETU BRAND THEME — Gradio 4.x
-   Palette: #0d4a22 (deep) → #1a7a3c (mid) → #2a9d50 (light) → #f5a623 (gold)
+   ANNA-SETU — Gradio 4.x  |  Glass-panel design on gradient
+   Palette: #0d4a22 → #1a7a3c → #2a9d50 → #f5a623 (gold)
    Strategy:
-     - App background: deep-to-gold gradient
-     - All content blocks: white (#ffffff) surface, dark (#1a1a1a) text
-     - Hero banner: gradient with white text
-     - Labels / headings inside blocks: dark green
+     - Page bg: deep green → mid green → gold gradient (always visible)
+     - Blocks: semi-transparent glass panels (not white boxes)
+     - All text: white on gradient, dark only inside inputs/textareas
+     - Tabs: frosted-glass pill bar, active = gold
+     - Hero: opaque gradient card (stands out from page bg)
    ══════════════════════════════════════════════════════════ */
 
-/* ── 1. Page background ── */
-body, .gradio-container, gradio-app {
-    background: linear-gradient(160deg, #0d4a22 0%, #1a7a3c 40%, #2a9d50 70%, #c97a10 100%) !important;
+/* ── 1. Page background — always the logo gradient ── */
+body, .gradio-container, gradio-app, #root {
+    background: linear-gradient(145deg, #0d4a22 0%, #1a7a3c 40%, #2a9d50 72%, #c97a10 100%) !important;
     min-height: 100vh;
     font-family: 'Segoe UI', system-ui, sans-serif !important;
 }
 
-/* ── 2. All content blocks → white cards ── */
+/* ── 2. ALL text on gradient = white ── */
+body, .gradio-container, .gradio-container *,
+p, span, label, div, li, strong, em, h1, h2, h3, h4, h5 {
+    color: #ffffff !important;
+    font-family: 'Segoe UI', system-ui, sans-serif !important;
+}
+
+/* ── 3. Blocks = glass panels (NOT white boxes) ── */
 .block, .gr-block, .gr-box, .gr-padded,
-.gradio-container .block,
-div[data-testid="block"] {
-    background: #ffffff !important;
+.gradio-container .block, div[data-testid="block"] {
+    background: rgba(255,255,255,.10) !important;
+    backdrop-filter: blur(8px) !important;
     border-radius: 20px !important;
-    border: 1px solid rgba(26,122,60,.15) !important;
-    box-shadow: 0 2px 12px rgba(13,74,34,.10) !important;
+    border: 1px solid rgba(255,255,255,.18) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,.18) !important;
 }
 
-/* ── 3. ALL text inside white blocks → dark ── */
-.block *, .gr-block *, .gr-box *,
-.block p, .block span, .block li, .block label, .block strong, .block em,
-.block h1, .block h2, .block h3, .block h4,
-.prose *, .prose p, .prose span, .prose li, .prose strong,
-.prose h1, .prose h2, .prose h3, .prose h4,
-label, .svelte-1gfkn6j, .eta-bar,
-span[data-testid="block-label"],
-.output-class, .output-markdown { color: #1a1a1a !important; }
-
-/* ── 4. Widget labels specifically → dark green ── */
-.block label, .block .label-wrap span,
-span.text-sm, span.text-gray-500,
-.block .svelte-1b6s6s, .block .wrap { color: #1a5c30 !important; }
-
-/* ── 5. Headings inside blocks → deep green ── */
-.block h1, .block h2, .block h3, .block h4,
-.prose h1, .prose h2, .prose h3, .prose h4 { color: #0d4a22 !important; }
-
-/* ── 6. Hero banner (custom HTML) ── */
+/* ── 4. Hero banner — opaque gradient card ── */
 .anna-hero {
-    background: linear-gradient(135deg, #0d4a22 0%, #1a7a3c 45%, #2a9d50 75%, #f5a623 100%);
-    border-radius: 24px; padding: 28px 32px 24px; margin-bottom: 16px;
-    box-shadow: 0 4px 24px rgba(13,74,34,.40);
-    border: none !important;
+    background: linear-gradient(135deg, #0a3318 0%, #0d4a22 40%, #1a7a3c 75%, #f5a623 100%) !important;
+    border-radius: 24px; padding: 28px 32px 24px; margin-bottom: 10px;
+    box-shadow: 0 6px 32px rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.15) !important;
 }
-.anna-hero, .anna-hero h1, .anna-hero p, .anna-hero span,
 .anna-hero * { color: #ffffff !important; }
-.anna-hero .num { color: #ffffff !important; font-weight: 800; }
-.anna-hero .lbl { color: rgba(255,255,255,.88) !important; }
-
-/* ── 7. Stat chips in hero ── */
 .anna-stat {
-    background: rgba(255,255,255,.18) !important; border-radius: 16px !important;
+    background: rgba(255,255,255,.15) !important; border-radius: 16px !important;
     padding: 10px 18px; display: inline-block; text-align: center; margin: 4px;
-    border: 1px solid rgba(255,255,255,.25) !important;
+    border: 1px solid rgba(255,255,255,.22) !important;
 }
-.anna-stat .num { font-size: 20px; font-weight: 800; color: #ffffff !important; display: block; }
-.anna-stat .lbl { font-size: 10px; color: rgba(255,255,255,.88) !important; letter-spacing: .05em; }
+.anna-stat .num { font-size: 20px; font-weight: 800; color: #f5a623 !important; display: block; }
+.anna-stat .lbl { font-size: 10px; color: rgba(255,255,255,.85) !important; letter-spacing: .05em; }
 
-/* ── 8. Tabs ── */
-.tab-nav { background: rgba(255,255,255,.95) !important; border-radius: 999px !important;
+/* ── 5. Tabs — gold active, frosted inactive ── */
+.tab-nav {
+    background: rgba(0,0,0,.25) !important; border-radius: 999px !important;
     padding: 4px 6px !important; gap: 4px !important;
-    box-shadow: 0 2px 8px rgba(13,74,34,.15) !important;
-    border: 1px solid rgba(26,122,60,.2) !important; }
-.tab-nav button { color: #1a5c30 !important; font-weight: 600 !important;
-    border-radius: 999px !important; padding: 6px 16px !important;
-    background: transparent !important; }
+    border: 1px solid rgba(255,255,255,.18) !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,.2) !important;
+}
+.tab-nav button {
+    color: rgba(255,255,255,.85) !important; font-weight: 700 !important;
+    border-radius: 999px !important; padding: 7px 18px !important;
+    background: transparent !important; font-size: 13px !important;
+}
 .tab-nav button.selected {
-    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
-    color: #ffffff !important; box-shadow: 0 2px 8px rgba(26,122,60,.35) !important; }
-.tab-nav button:hover:not(.selected) { background: rgba(26,122,60,.1) !important; }
+    background: linear-gradient(135deg, #f5a623, #c97a10) !important;
+    color: #0d4a22 !important; font-weight: 800 !important;
+    box-shadow: 0 2px 10px rgba(245,166,35,.45) !important;
+}
+.tab-nav button:hover:not(.selected) {
+    background: rgba(255,255,255,.12) !important;
+    color: #ffffff !important;
+}
 
-/* ── 9. Primary buttons ── */
-button.primary, .gr-button-primary, button[variant="primary"] {
-    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
-    color: #ffffff !important; border-radius: 999px !important;
-    border: none !important; font-weight: 700 !important;
-    box-shadow: 0 3px 12px rgba(26,122,60,.35) !important; }
-button.primary:hover, .gr-button-primary:hover {
-    background: linear-gradient(135deg, #0d4a22, #1a7a3c) !important; }
-
-/* ── 10. Secondary buttons ── */
-button.secondary, .gr-button-secondary, button[variant="secondary"] {
-    background: #ffffff !important; border: 2px solid #1a7a3c !important;
-    color: #1a7a3c !important; border-radius: 999px !important; font-weight: 600 !important; }
-
-/* ── 11. Accordion headers ── */
-.label-wrap { background: #f0f9f2 !important; border-radius: 16px !important;
-    border: 1px solid rgba(26,122,60,.2) !important; }
-.label-wrap span { color: #1a7a3c !important; font-weight: 600 !important; }
-details summary { background: #f0f9f2 !important; border-radius: 16px !important;
-    color: #1a7a3c !important; font-weight: 600 !important; }
-
-/* ── 12. Textbox / inputs ── */
-input[type="text"], input[type="number"], input[type="search"],
-textarea, .gr-text-input, .gr-input {
-    background: #ffffff !important; color: #1a1a1a !important;
-    border: 1.5px solid #a8cfb0 !important; border-radius: 16px !important; }
+/* ── 6. Inputs — white bg, dark text (must be readable) ── */
+input[type="text"], input[type="number"], input[type="search"], textarea {
+    background: rgba(255,255,255,.95) !important;
+    color: #1a1a1a !important;
+    border: 1.5px solid rgba(255,255,255,.4) !important;
+    border-radius: 14px !important;
+}
 input:focus, textarea:focus {
-    border-color: #1a7a3c !important;
-    box-shadow: 0 0 0 3px rgba(26,122,60,.18) !important; outline: none !important; }
+    border-color: #f5a623 !important;
+    box-shadow: 0 0 0 3px rgba(245,166,35,.25) !important;
+    outline: none !important;
+}
+/* Input labels stay white */
+input + label, .gr-input label, .gr-textbox label { color: rgba(255,255,255,.9) !important; }
 
-/* ── 13. Dropdown / select ── */
-.gr-dropdown, select {
-    background: #ffffff !important; color: #1a1a1a !important;
-    border: 1.5px solid #a8cfb0 !important; border-radius: 16px !important; }
+/* ── 7. Select / dropdown ── */
+select { background: rgba(255,255,255,.95) !important; color: #1a1a1a !important;
+    border-radius: 14px !important; border: 1.5px solid rgba(255,255,255,.4) !important; }
 
-/* ── 14. Slider ── */
-input[type="range"] { accent-color: #1a7a3c !important; }
+/* ── 8. Primary buttons — gold ── */
+button.primary, .gr-button-primary, button[variant="primary"] {
+    background: linear-gradient(135deg, #f5a623, #c97a10) !important;
+    color: #0d4a22 !important; border-radius: 999px !important;
+    border: none !important; font-weight: 800 !important;
+    box-shadow: 0 3px 14px rgba(245,166,35,.4) !important; }
+button.primary:hover, .gr-button-primary:hover {
+    background: linear-gradient(135deg, #ffbe4f, #f5a623) !important; }
 
-/* ── 15. Blockquotes ── */
-blockquote { border-left: 4px solid #1a7a3c !important;
-    background: #f0f9f2 !important; padding: 10px 16px;
-    border-radius: 0 16px 16px 0; color: #1a1a1a !important; }
-blockquote *, blockquote p, blockquote strong { color: #1a1a1a !important; }
+/* ── 9. Secondary buttons ── */
+button.secondary, .gr-button-secondary, button[variant="secondary"] {
+    background: rgba(255,255,255,.12) !important;
+    border: 2px solid rgba(255,255,255,.4) !important;
+    color: #ffffff !important; border-radius: 999px !important; font-weight: 700 !important; }
+button.secondary:hover { background: rgba(255,255,255,.22) !important; }
 
-/* ── 16. Tables ── */
+/* ── 10. Accordion headers ── */
+.label-wrap {
+    background: rgba(255,255,255,.12) !important; border-radius: 14px !important;
+    border: 1px solid rgba(255,255,255,.2) !important;
+}
+.label-wrap span { color: #ffffff !important; font-weight: 600 !important; }
+details summary {
+    background: rgba(255,255,255,.12) !important; border-radius: 14px !important;
+    color: #ffffff !important; font-weight: 600 !important;
+}
+
+/* ── 11. Markdown headings — gold accent ── */
+.prose h3, .prose h4, .block h3, .block h4 { color: #f5a623 !important; }
+.prose h1, .prose h2, .block h1, .block h2 { color: #ffffff !important; }
+
+/* ── 12. Blockquotes ── */
+blockquote {
+    border-left: 4px solid #f5a623 !important;
+    background: rgba(255,255,255,.10) !important;
+    padding: 10px 16px; border-radius: 0 14px 14px 0; color: #ffffff !important;
+}
+blockquote * { color: #ffffff !important; }
+
+/* ── 13. Tables ── */
 table { border-collapse: collapse; width: 100%; border-radius: 12px; overflow: hidden; }
-th { background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
-    color: #ffffff !important; padding: 10px 14px; font-weight: 700; }
-td { border: 1px solid #d0e8d4; padding: 8px 12px; color: #1a1a1a !important;
-    background: #ffffff !important; }
+th { background: rgba(13,74,34,.8) !important; color: #f5a623 !important;
+    padding: 10px 14px; font-weight: 700; border-bottom: 2px solid rgba(245,166,35,.4); }
+td { border: 1px solid rgba(255,255,255,.12); padding: 8px 12px;
+    color: #ffffff !important; background: rgba(255,255,255,.06) !important; }
 
-/* ── 17. Output/status text boxes ── */
-.output-textbox, .gr-textbox, [data-testid="textbox"] textarea {
-    background: #ffffff !important; color: #1a1a1a !important;
-    border-radius: 16px !important; }
+/* ── 14. Output textboxes ── */
+.output-textbox textarea, .gr-textbox textarea,
+[data-testid="textbox"] textarea {
+    background: rgba(255,255,255,.92) !important;
+    color: #1a1a1a !important; border-radius: 14px !important;
+}
 
-/* ── 18. Info / warning / error boxes ── */
-.info, .warning, .error { border-radius: 12px !important; }
+/* ── 15. Slider ── */
+input[type="range"] { accent-color: #f5a623 !important; }
 
-/* ── 19. Scrollbar ── */
+/* ── 16. Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: rgba(255,255,255,.1); }
-::-webkit-scrollbar-thumb { background: #1a7a3c; border-radius: 999px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,.08); }
+::-webkit-scrollbar-thumb { background: #f5a623; border-radius: 999px; }
 """) as demo:
         # ── Hero Banner ──────────────────────────────────────────────────────
         _logo_img = (
             f'<img src="{LOGO_B64_HF}" '
-            'style="width:62px;height:62px;border-radius:14px;object-fit:cover;'
-            'box-shadow:0 2px 10px rgba(0,0,0,.25);" alt="Anna-Setu Logo"/>'
+            'style="width:68px;height:68px;border-radius:18px;object-fit:cover;'
+            'box-shadow:0 4px 16px rgba(0,0,0,.35);flex-shrink:0;" alt="Anna-Setu Logo"/>'
             if LOGO_B64_HF else
-            '<div style="width:62px;height:62px;border-radius:14px;background:rgba(255,255,255,.2);'
-            'display:flex;align-items:center;justify-content:center;font-size:28px;">🍽️</div>'
+            '<div style="width:68px;height:68px;border-radius:18px;'
+            'background:linear-gradient(135deg,#0d4a22,#1a7a3c);'
+            'display:flex;align-items:center;justify-content:center;'
+            'box-shadow:0 4px 16px rgba(0,0,0,.35);flex-shrink:0;">'
+            '<svg width="40" height="40" viewBox="0 0 52 52" fill="none">'
+            '<circle cx="26" cy="26" r="22" stroke="#f5a623" stroke-width="3" fill="none"/>'
+            '<path d="M14 32 Q26 14 38 32" stroke="#f5a623" stroke-width="3" fill="none" stroke-linecap="round"/>'
+            '<line x1="12" y1="32" x2="40" y2="32" stroke="#f5a623" stroke-width="2.5" stroke-linecap="round"/>'
+            '<circle cx="19" cy="27" r="2.5" fill="#f5a623"/>'
+            '<circle cx="26" cy="20" r="2.5" fill="#f5a623"/>'
+            '<circle cx="33" cy="27" r="2.5" fill="#f5a623"/>'
+            '</svg>'
+            '</div>'
         )
         gr.HTML(f"""
 <div class="anna-hero">

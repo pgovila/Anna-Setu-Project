@@ -501,12 +501,13 @@ if not st.session_state.tutorial_done:
 
     # ── render tutorial as full-screen overlay pop-up ─────────────────────────
     _icon_html = slide['icon'] if isinstance(slide['icon'], str) and slide['icon'].startswith('<') else f'<div style="font-size:52px;line-height:1;">{slide["icon"]}</div>'
-    _dots = "".join(
-        f'<div style="width:10px;height:10px;border-radius:50%;'
-        f'background:{"#1a7a3c" if i == step else "rgba(255,255,255,.4)"};'
-        f'display:inline-block;border:{"none" if i == step else "1.5px solid rgba(255,255,255,.5)"};"></div>'
-        for i in range(TUTORIAL_STEPS)
-    )
+    _dot_parts = []
+    for i in range(TUTORIAL_STEPS):
+        if i == step:
+            _dot_parts.append('<div style="width:12px;height:12px;border-radius:50%;background:#1a7a3c;display:inline-block;"></div>')
+        else:
+            _dot_parts.append('<div style="width:10px;height:10px;border-radius:50%;background:#dce8dc;display:inline-block;border:1.5px solid #a8cfb0;"></div>')
+    _dots = "".join(_dot_parts)
     with st.container():
         st.markdown(f"""
 <div style="position:fixed;inset:0;z-index:9999;
