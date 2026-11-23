@@ -25,7 +25,7 @@ LOGO_B64 = _img_to_b64("Anna Setu Transparent.png") or _img_to_b64("Anna Setu.pn
 
 st.set_page_config(
     page_title="Anna-Setu: Campus Food Rescue Network",
-    page_icon="Anna Setu.png",
+    page_icon="Anna Setu Transparent.png" if os.path.exists("Anna Setu Transparent.png") else "Anna Setu.png",
     layout="wide"
 )
 
@@ -155,21 +155,21 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
     box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
 }
 
-/* ── Tabs — pill-style, fully rounded active tab ── */
+/* ── Tabs — pill-style, fully rounded ── */
 .stTabs [data-baseweb="tab-list"] {
-    background: rgba(255,255,255,.92);
+    background: rgba(255,255,255,.95);
     border-radius: 999px;
     padding: 4px 6px;
     gap: 4px;
     border-bottom: none;
-    box-shadow: 0 2px 8px rgba(13,74,34,.12);
+    box-shadow: 0 2px 8px rgba(13,74,34,.18);
     display: inline-flex;
 }
 .stTabs [data-baseweb="tab"] {
     border-radius: 999px;
-    font-weight: 600; font-size: 13px;
+    font-weight: 700; font-size: 13px;
     padding: 7px 18px;
-    color: #1a5c30 !important;
+    color: #1a1a1a !important;
     background: transparent;
 }
 .stTabs [aria-selected="true"] {
@@ -177,8 +177,23 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
     color: #ffffff !important;
     box-shadow: 0 2px 8px rgba(26,122,60,.35) !important;
 }
+.stTabs [aria-selected="false"] {
+    color: #1a1a1a !important;
+}
 .stTabs [aria-selected="false"]:hover {
-    background: rgba(26,122,60,.10) !important;
+    background: rgba(26,122,60,.12) !important;
+    color: #1a1a1a !important;
+}
+/* Force tab text dark at all times */
+.stTabs [data-baseweb="tab"] p,
+.stTabs [data-baseweb="tab"] span,
+.stTabs [data-baseweb="tab"] div {
+    color: #1a1a1a !important;
+}
+.stTabs [aria-selected="true"] p,
+.stTabs [aria-selected="true"] span,
+.stTabs [aria-selected="true"] div {
+    color: #ffffff !important;
 }
 
 /* ── Primary button — green gradient, rounded ── */
@@ -328,7 +343,7 @@ if "tutorial_step"  not in st.session_state: st.session_state.tutorial_step  = 0
 SLIDE_CONTENT = [
     # ── Slide 0: Welcome ─────────────────────────────────────────────────────
     {
-        "icon": "🍽️",
+        "icon": f'<img src="{LOGO_B64}" style="width:72px;height:72px;border-radius:18px;object-fit:cover;" alt="Anna-Setu"/>' if LOGO_B64 else "🍽️",
         "title": "Welcome to Anna-Setu!",
         "subtitle": "Your AI-powered campus food rescue and bio-recycling assistant",
         "body": """
@@ -484,21 +499,36 @@ if not st.session_state.tutorial_done:
     step = st.session_state.tutorial_step
     slide = SLIDE_CONTENT[step]
 
-    # ── render tutorial as a styled container at the top ──────────────────────
+    # ── render tutorial as full-screen overlay pop-up ─────────────────────────
+    _icon_html = slide['icon'] if isinstance(slide['icon'], str) and slide['icon'].startswith('<') else f'<div style="font-size:52px;line-height:1;">{slide["icon"]}</div>'
+    _dots = "".join(
+        f'<div style="width:10px;height:10px;border-radius:50%;'
+        f'background:{"#1a7a3c" if i == step else "rgba(255,255,255,.4)"};'
+        f'display:inline-block;border:{"none" if i == step else "1.5px solid rgba(255,255,255,.5)"};"></div>'
+        for i in range(TUTORIAL_STEPS)
+    )
     with st.container():
         st.markdown(f"""
-<div style="background:white;border-radius:20px;padding:36px 40px 28px;
-            border:2px solid #e0ece0;box-shadow:0 8px 40px rgba(46,125,50,.15);
-            max-width:720px;margin:0 auto 24px;">
-  <div style="text-align:center;margin-bottom:20px;">
-    <div style="font-size:48px;line-height:1;">{slide['icon']}</div>
-    <h2 style="font-size:22px;font-weight:800;margin:10px 0 4px;color:#1b3a1f;">{slide['title']}</h2>
-    <p style="font-size:13px;color:#777;margin:0;">{slide['subtitle']}</p>
-  </div>
-  <hr style="border:none;border-top:1px solid #eee;margin:0 0 20px;">
-  {slide['body']}
-  <div style="display:flex;justify-content:center;gap:8px;margin-top:24px;">
-    {"".join(f'<div style="width:10px;height:10px;border-radius:50%;background:{"#2e7d32" if i == step else "#ddd"};display:inline-block;"></div>' for i in range(TUTORIAL_STEPS))}
+<div style="position:fixed;inset:0;z-index:9999;
+            background:rgba(13,74,34,.82);backdrop-filter:blur(6px);
+            display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#ffffff;border-radius:28px;padding:40px 44px 32px;
+              max-width:680px;width:100%;
+              box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;">
+    <!-- gradient header strip -->
+    <div style="position:absolute;top:0;left:0;right:0;height:6px;
+                background:linear-gradient(90deg,#0d4a22,#1a7a3c,#2a9d50,#f5a623);
+                border-radius:28px 28px 0 0;"></div>
+    <div style="text-align:center;margin-bottom:22px;">
+      {_icon_html}
+      <h2 style="font-size:22px;font-weight:800;margin:12px 0 4px;color:#0d4a22;">{slide['title']}</h2>
+      <p style="font-size:13px;color:#666;margin:0;">{slide['subtitle']}</p>
+    </div>
+    <hr style="border:none;border-top:1px solid #e8f0e8;margin:0 0 20px;">
+    {slide['body']}
+    <div style="display:flex;justify-content:center;gap:8px;margin-top:22px;">
+      {_dots}
+    </div>
   </div>
 </div>
 """, unsafe_allow_html=True)

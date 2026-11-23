@@ -1174,71 +1174,123 @@ td { border: 1px solid #d0e8d4; padding: 8px 12px; color: #1a1a1a !important;
 """)
 
         # ================================================================
-        # WELCOME TUTORIAL — open by default on first load, collapsible
+        # WELCOME POP-UP MODAL — shown on first load, dismissed via button
         # ================================================================
-        with gr.Accordion("👋 Welcome! Click here to learn how to use Anna-Setu", open=True):
-            gr.Markdown(
-                """
-<div style="text-align:center; padding:8px 0 16px;">
-  <span style="font-size:36px;">🍽️</span><br>
-  <strong style="font-size:20px;">Welcome to Anna-Setu</strong><br>
-  <span style="color:#666; font-size:13px;">Your AI-powered campus food rescue and bio-recycling assistant</span>
+        _modal_logo = (
+            f'<img src="{LOGO_B64_HF}" style="width:80px;height:80px;border-radius:20px;'
+            'object-fit:cover;margin:0 auto 14px;display:block;" alt="Anna-Setu"/>'
+            if LOGO_B64_HF else
+            '<div style="font-size:60px;text-align:center;margin-bottom:14px;">🍽️</div>'
+        )
+        gr.HTML(f"""
+<style>
+  #as-modal-overlay {{
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(13,74,34,.80); backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+  }}
+  #as-modal-box {{
+    background: #ffffff; border-radius: 28px;
+    padding: 40px 44px 32px; max-width: 660px; width: 100%;
+    box-shadow: 0 24px 80px rgba(0,0,0,.40); position: relative;
+    max-height: 90vh; overflow-y: auto;
+  }}
+  #as-modal-strip {{
+    position: absolute; top: 0; left: 0; right: 0; height: 7px;
+    background: linear-gradient(90deg, #0d4a22, #1a7a3c, #2a9d50, #f5a623);
+    border-radius: 28px 28px 0 0;
+  }}
+  .as-tab-row {{
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 14px 0;
+  }}
+  .as-tab-card {{
+    background: #f4fbf6; border: 1px solid #c8e6d0; border-radius: 14px;
+    padding: 12px 14px;
+  }}
+  .as-tab-card .tc-icon {{ font-size: 20px; margin-bottom: 4px; }}
+  .as-tab-card strong {{ color: #0d4a22; font-size: 13px; display: block; }}
+  .as-tab-card span {{ color: #4a6650; font-size: 12px; line-height: 1.5; }}
+  .as-step-row {{ display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }}
+  .as-step-num {{
+    min-width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50);
+    color: white; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }}
+  .as-step-text strong {{ color: #0d4a22; font-size: 13px; }}
+  .as-step-text span {{ color: #4a6650; font-size: 12px; line-height: 1.5; }}
+  #as-modal-btn {{
+    display: block; width: 100%; margin-top: 24px;
+    background: linear-gradient(135deg, #1a7a3c, #2a9d50);
+    color: #ffffff; font-weight: 800; font-size: 15px;
+    border: none; border-radius: 999px; padding: 13px 28px;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(26,122,60,.35);
+    transition: transform .15s, box-shadow .15s;
+  }}
+  #as-modal-btn:hover {{ transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,122,60,.45); }}
+</style>
+<div id="as-modal-overlay">
+  <div id="as-modal-box">
+    <div id="as-modal-strip"></div>
+    {_modal_logo}
+    <h2 style="text-align:center;font-size:22px;font-weight:900;color:#0d4a22;margin:0 0 4px;">
+      Welcome to Anna-Setu
+    </h2>
+    <p style="text-align:center;color:#4a6650;font-size:13px;margin:0 0 18px;">
+      Your AI-powered campus food rescue and bio-recycling network
+    </p>
+    <hr style="border:none;border-top:1px solid #e0ede0;margin:0 0 16px;">
+    <div class="as-tab-row">
+      <div class="as-tab-card">
+        <div class="tc-icon">🍛</div>
+        <strong>Tab 1 - Surplus Rescue</strong>
+        <span>Check if food is safe to donate, match a shelter, generate a WhatsApp alert.</span>
+      </div>
+      <div class="as-tab-card">
+        <div class="tc-icon">🔮</div>
+        <strong>Tab 2 - Predict Portions</strong>
+        <span>Calculate exactly how much to cook today - cut overproduction before it starts.</span>
+      </div>
+      <div class="as-tab-card">
+        <div class="tc-icon">💬</div>
+        <strong>Tab 3 - Ask a Question</strong>
+        <span>Plain-English Q&amp;A backed by official FSSAI 2019 and LNN guidelines.</span>
+      </div>
+      <div class="as-tab-card">
+        <div class="tc-icon">♻️</div>
+        <strong>Tab 4 - Plate-Waste Recycler</strong>
+        <span>Simulate the kiosk - see plate waste become fertilizer in 24 hours.</span>
+      </div>
+    </div>
+    <hr style="border:none;border-top:1px solid #e0ede0;margin:16px 0 14px;">
+    <p style="font-size:13px;font-weight:700;color:#0d4a22;margin:0 0 10px;">Quick Start - 3 Steps:</p>
+    <div class="as-step-row">
+      <div class="as-step-num">1</div>
+      <div class="as-step-text">
+        <strong>Open Tab 1 - choose Lunch as meal type</strong><br>
+        <span>The form auto-fills - no typing needed.</span>
+      </div>
+    </div>
+    <div class="as-step-row">
+      <div class="as-step-num">2</div>
+      <div class="as-step-text">
+        <strong>Click "Run Safety Check"</strong><br>
+        <span>Get a green/yellow/red verdict + nearest shelter + WhatsApp alert.</span>
+      </div>
+    </div>
+    <div class="as-step-row">
+      <div class="as-step-num">3</div>
+      <div class="as-step-text">
+        <strong>Try Tab 4 - Plate-Waste Recycler</strong><br>
+        <span>Drag the slider and see the fertilizer yield update live.</span>
+      </div>
+    </div>
+    <button id="as-modal-btn" onclick="document.getElementById('as-modal-overlay').style.display='none'">
+      🌿 Let's Go - Open the App
+    </button>
+  </div>
 </div>
 """)
-            gr.Markdown("---")
-            gr.Markdown(
-                "**Anna-Setu** (*'Food Bridge'* in Hindi) connects campus dining halls with nearby shelters "
-                "so leftover cooked food reaches people in need — safely and legally — instead of going to waste. "
-                "It also turns unavoidable plate waste into organic fertilizer on-site.\n\n"
-                "---"
-            )
-            gr.Markdown("#### 🗂️ The App Has 5 Tabs — Here's What Each One Does:")
-            with gr.Row():
-                with gr.Column():
-                    gr.Markdown(
-                        "> **🍛 Tab 1 · Surplus Food Rescue**\n\n"
-                        "The main tool. Fill in what food is left over, when it was cooked, and how it's stored. "
-                        "Anna-Setu checks if it's safe to donate under FSSAI rules, finds the nearest verified shelter, "
-                        "and drafts a ready-to-send WhatsApp alert.\n\n"
-                        "> **🔮 Tab 2 · Predict How Much Food to Cook Today**\n\n"
-                        "Tell Anna-Setu the day, weather, and academic schedule. It calculates exactly "
-                        "how many portions to cook — cutting overproduction and preventing waste before it starts."
-                    )
-                with gr.Column():
-                    gr.Markdown(
-                        "> **💬 Tab 3 · Ask a Food Safety Question**\n\n"
-                        "Type any plain-English question like *'Can I donate rice after 3 hours?'* "
-                        "and get a clear, rule-backed answer drawn from official FSSAI 2019 and Lucknow city guidelines.\n\n"
-                        "> **♻️ Tab 4 · Plate-Waste Recycler**\n\n"
-                        "Simulates the Track B smart kiosk at the tray-return counter. Move the slider to see "
-                        "how plate waste is converted into clean organic fertilizer within 24 hours — zero to landfill.\n\n"
-                        "> **📖 Tab 5 · Food Safety Rules Guide**\n\n"
-                        "A plain-language reference for FSSAI regulations and Lucknow city rules — "
-                        "temperatures, time limits, donation restrictions, and legal protections."
-                    )
-            gr.Markdown("---")
-            gr.Markdown("#### 🚀 Try This in 3 Steps to Get Started:")
-            with gr.Row():
-                gr.Markdown(
-                    "**① Open Tab 1 · Surplus Food Rescue**\n\n"
-                    "Select your dining facility and choose **Lunch** as the meal type. "
-                    "The form pre-fills with a sample food batch automatically."
-                )
-                gr.Markdown(
-                    "**② Click 🚀 Run Safety Check & Generate Shelter Alert**\n\n"
-                    "Anna-Setu shows a 🟢 green / 🟡 yellow / 🔴 red verdict, "
-                    "the matched shelter with distance, and a WhatsApp message ready to copy and send."
-                )
-                gr.Markdown(
-                    "**③ Switch to Tab 4 · Plate-Waste Recycler**\n\n"
-                    "Drag the *Food Left on Plate* slider and watch the bio-fertilizer "
-                    "yield and methane-avoided figures update instantly."
-                )
-            gr.Markdown(
-                "---\n"
-                "*💡 Collapse this guide any time by clicking the arrow at the top of this box. "
-                "Detailed food safety rules are always available in **📖 Tab 5**.*"
-            )
 
         with gr.Tabs():
             # ================================================================
