@@ -3,7 +3,7 @@ Anna-Setu: AI Campus Food Rescue & Redistribution Network
 Interactive Interface powered by IBM Granite Prompt Synthesis & RAG Compliance Pipeline
 Adheres to FSSAI Surplus Food Regulations (2019) & Lucknow Nagar Nigam Food Service Guidelines
 Covers Dual Tracks: Track A (Software AI & RAG Engine) + Track B (Smart Plate-Waste Interceptor & Bio-Recycler)
-Includes self-contained embedded RAG fallback for standalone deployment (e.g. Hugging Face Spaces)
+Includes self-contained embedded RAG fallback for standalone deployment
 """
 
 import sys
@@ -24,21 +24,7 @@ def _img_to_b64(path: str) -> str:
     mime = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg"}.get(ext, "image/png")
     return f"data:{mime};base64,{data}"
 
-LOGO_B64_HF = _img_to_b64("Anna Setu Transparent.png") or _img_to_b64("Anna Setu.png")
-
-# ZeroGPU compatibility for Hugging Face Spaces
-try:
-    # pyrefly: ignore[missing-import]
-    import spaces
-    HAS_SPACES = True
-except Exception:
-    HAS_SPACES = False
-
-if HAS_SPACES:
-    @spaces.GPU
-    def _zero_gpu_startup_check():
-        """Satisfies Hugging Face ZeroGPU runtime detection during startup."""
-        return True
+LOGO_B64 = _img_to_b64("Anna Setu Transparent.png") or _img_to_b64("Anna Setu.png")
 
 # Attempt importing modular RAG pipeline; if not found, use embedded standalone pipeline
 try:
@@ -1153,10 +1139,10 @@ input[type="range"] { accent-color: #f5a623 !important; }
 """) as demo:
         # ── Hero Banner ──────────────────────────────────────────────────────
         _logo_img = (
-            f'<img src="{LOGO_B64_HF}" '
+            f'<img src="{LOGO_B64}" '
             'style="width:68px;height:68px;border-radius:18px;object-fit:cover;'
             'box-shadow:0 4px 16px rgba(0,0,0,.35);flex-shrink:0;" alt="Anna-Setu Logo"/>'
-            if LOGO_B64_HF else
+            if LOGO_B64 else
             '<div style="width:68px;height:68px;border-radius:18px;'
             'background:linear-gradient(135deg,#0d4a22,#1a7a3c);'
             'display:flex;align-items:center;justify-content:center;'
@@ -1197,9 +1183,9 @@ input[type="range"] { accent-color: #f5a623 !important; }
         # WELCOME POP-UP MODAL - shown on first load, dismissed via button
         # ================================================================
         _modal_logo = (
-            f'<img src="{LOGO_B64_HF}" style="width:80px;height:80px;border-radius:20px;'
+            f'<img src="{LOGO_B64}" style="width:80px;height:80px;border-radius:20px;'
             'object-fit:cover;margin:0 auto 14px;display:block;" alt="Anna-Setu"/>'
-            if LOGO_B64_HF else
+            if LOGO_B64 else
             '<div style="font-size:60px;text-align:center;margin-bottom:14px;">🍽️</div>'
         )
         gr.HTML(f"""
@@ -1656,8 +1642,7 @@ input[type="range"] { accent-color: #f5a623 !important; }
 
 except ImportError:
     if __name__ == "__main__":
-        print("Note: Gradio is not installed locally. Gradio is configured for Hugging Face Spaces.")
-        print("To run locally with Streamlit, execute: streamlit run streamlit_app.py")
+        print("Note: Gradio is not installed locally. Run Streamlit with: streamlit run streamlit_app.py")
         print("Running CLI simulation...")
         res = pipeline.evaluate_surplus(
             item="Vegetable pulao and dal",

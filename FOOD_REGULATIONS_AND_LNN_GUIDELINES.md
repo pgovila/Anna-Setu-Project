@@ -329,8 +329,3 @@ To run the interactive Streamlit interface:
 streamlit run streamlit_app.py
 ```
 
-To launch the Hugging Face Gradio space interface:
-```bash
-python app.py
-```
-

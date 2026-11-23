@@ -360,6 +360,33 @@ li[role="option"][aria-selected="true"] * {
 .hero-banner h1, .hero-banner h1 *, div.hero-banner h1,
 div.hero-banner p, div.hero-banner span { color: #ffffff !important; }
 
+/* ── Student Kiosk Screen (Tab 3): Strictly White & High-Contrast Accents ── */
+.kiosk-screen,
+.kiosk-screen *,
+.kiosk-screen p,
+.kiosk-screen span,
+.kiosk-screen strong,
+.kiosk-screen div,
+div.kiosk-screen,
+div.kiosk-screen * {
+    color: #ffffff !important;
+}
+.kiosk-screen .kiosk-gold,
+div.kiosk-screen .kiosk-gold {
+    color: #ffd54f !important;
+    font-weight: 800 !important;
+}
+.kiosk-screen .kiosk-highlight,
+div.kiosk-screen .kiosk-highlight {
+    color: #a3e635 !important;
+    font-weight: 700 !important;
+}
+.kiosk-screen .kiosk-subtext,
+div.kiosk-screen .kiosk-subtext {
+    color: #d1e7dd !important;
+    font-size: 12.5px !important;
+}
+
 /* ── Hero stat chips ── */
 .hero-stats { display: flex; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
 .hero-stat {
@@ -1306,15 +1333,23 @@ with tab3:
 
         st.markdown('<div class="step-pill" style="margin-top:14px;">📺 What the Student Sees on the Kiosk Screen</div>', unsafe_allow_html=True)
         st.markdown(f"""
-<div style="background:#0d4a22;border-radius:14px;padding:20px 24px;color:white;font-size:14px;line-height:1.75;">
-  <div style="font-size:18px;font-weight:700;color:#ffd54f;margin-bottom:10px;">
-    Hey! You left <strong>{sim_waste_grams}g</strong> of food on your plate.
+<div class="kiosk-screen" style="background:linear-gradient(135deg, #0d4a22 0%, #155724 100%);border-radius:18px;padding:22px 26px;color:#ffffff !important;font-size:14.5px;line-height:1.8;box-shadow:0 6px 20px rgba(13,74,34,.35);border:1.5px solid rgba(255,255,255,.18);">
+  <div style="font-size:19px;font-weight:800;color:#ffd54f !important;margin-bottom:12px;">
+    Hey! You left <strong class="kiosk-gold" style="color:#ffd54f !important;font-weight:800;">{sim_waste_grams}g</strong> <span style="color:#ffd54f !important;">of food on your plate.</span>
   </div>
-  💧 <strong>Water wasted:</strong> ~{sim_water_liters:.1f} litres
-  <span style="color:#90caf9;font-size:12px;">(water used to grow this food)</span><br>
-  🌍 <strong>Carbon footprint:</strong> {sim_co2e_grams:.0f}g CO2 equivalent<br>
-  🏆 <strong>Your block ({sim_hostel_block}):</strong> 91% clean plates this week - great job!<br><br>
-  <span style="color:#a5d6a7;font-size:13px;">Tip: Take only what you can finish. Second helpings are always available!</span>
+  <div style="color:#ffffff !important;margin-bottom:6px;">
+    💧 <strong style="color:#ffffff !important;">Water wasted:</strong> <span style="color:#ffffff !important;">~{sim_water_liters:.1f} litres</span>
+    <span class="kiosk-subtext" style="color:#d1e7dd !important;font-size:12.5px;">(water used to grow this food)</span>
+  </div>
+  <div style="color:#ffffff !important;margin-bottom:6px;">
+    🌍 <strong style="color:#ffffff !important;">Carbon footprint:</strong> <span style="color:#ffffff !important;">{sim_co2e_grams:.0f}g CO2 equivalent</span>
+  </div>
+  <div style="color:#ffffff !important;margin-bottom:12px;">
+    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">91% clean plates this week</span> <span style="color:#ffffff !important;">- great job!</span>
+  </div>
+  <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;color:#ffffff !important;font-size:13px;border-left:3px solid #ffd54f;">
+    💡 <strong style="color:#ffffff !important;">Tip:</strong> <span style="color:#ffffff !important;">Take only what you can finish. Second helpings are always available!</span>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
