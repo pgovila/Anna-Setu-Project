@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anna-Setu — Campus Food Rescue Network</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green-deep:  #0d4a22;
+      --green-mid:   #1a7a3c;
+      --green-light: #2a9d50;
+      --gold:        #f5a623;
+      --gold-dark:   #c97a10;
+      --white:       #ffffff;
+      --off-white:   #f7faf8;
+      --text-dark:   #1a1a1a;
+      --text-muted:  #4a6650;
+      --radius-xl:   24px;
+      --radius-pill: 999px;
+      --shadow-card: 0 4px 28px rgba(13,74,34,.13);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--off-white);
+      color: var(--text-dark);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ──────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,74,34,.96);
+      backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5vw; height: 64px;
+      box-shadow: 0 2px 20px rgba(0,0,0,.25);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .nav-brand span {
+      font-size: 18px; font-weight: 800; color: var(--white);
+      letter-spacing: -.3px;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,.82); text-decoration: none;
+      font-size: 14px; font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--green-deep) !important;
+      font-weight: 700 !important;
+      padding: 7px 20px;
+      border-radius: var(--radius-pill);
+      transition: background .2s, transform .15s !important;
+    }
+    .nav-cta:hover { background: #ffbe4f !important; transform: translateY(-1px); }
+
+    /* ── HERO ─────────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(145deg, var(--green-deep) 0%, var(--green-mid) 45%, var(--green-light) 75%, #c97a10 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 100px 5vw 60px;
+      position: relative; overflow: hidden;
+    }
+    /* subtle grain overlay */
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 760px; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.25);
+      border-radius: var(--radius-pill);
+      padding: 6px 18px; font-size: 12px; font-weight: 600;
+      color: var(--gold); letter-spacing: .08em; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-logo-img {
+      width: 96px; height: 96px; border-radius: 26px;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.35);
+      display: block;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 900; color: var(--white);
+      line-height: 1.1; letter-spacing: -.03em;
+      margin-bottom: 10px;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero-sub {
+      font-size: 14px; color: rgba(255,255,255,.75);
+      font-weight: 500; letter-spacing: .04em;
+      margin-bottom: 20px;
+    }
+    .hero-desc {
+      font-size: 16px; color: rgba(255,255,255,.88);
+      max-width: 580px; margin: 0 auto 36px;
+      line-height: 1.75;
+    }
+    .hero-desc strong { color: var(--gold); }
+    .hero-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--gold);
+      color: var(--green-deep);
+      font-weight: 800; font-size: 15px;
+      padding: 14px 32px; border-radius: var(--radius-pill);
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(245,166,35,.45);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,166,35,.55); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.4);
+      color: var(--white); font-weight: 600; font-size: 15px;
+      padding: 14px 28px; border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.7); }
+    .hero-stats {
+      display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+      margin-top: 52px;
+    }
+    .hero-stat {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 18px; padding: 14px 22px; text-align: center;
+      min-width: 110px;
+    }
+    .hero-stat .n { font-size: 26px; font-weight: 900; color: var(--gold); display: block; }
+    .hero-stat .l { font-size: 10px; color: rgba(255,255,255,.75); letter-spacing: .07em; text-transform: uppercase; }
+
+    /* ── SCROLL INDICATOR ─────────────────────────────────────────── */
+    .scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(255,255,255,.5); font-size: 11px; letter-spacing: .08em;
+      text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    .scroll-hint svg { opacity: .6; }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SECTION WRAPPER ──────────────────────────────────────────── */
+    section { padding: 80px 5vw; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--green-mid), var(--green-light));
+      color: var(--white); font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 5px 16px; border-radius: var(--radius-pill);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 800; color: var(--green-deep);
+      line-height: 1.2; letter-spacing: -.02em;
+      margin-bottom: 10px;
+    }
+    .section-desc {
+      font-size: 15px; color: var(--text-muted);
+      max-width: 600px; line-height: 1.75;
+      margin-bottom: 44px;
+    }
+
+    /* ── PROBLEM STRIP ────────────────────────────────────────────── */
+    .problem-strip {
+      background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+      color: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 48px 52px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 48px; align-items: center;
+      box-shadow: var(--shadow-card);
+    }
+    .problem-strip h2 { font-size: 2rem; font-weight: 800; line-height: 1.2; color: var(--white); margin-bottom: 16px; }
+    .problem-strip p { font-size: 15px; color: rgba(255,255,255,.85); line-height: 1.75; }
+    .problem-strip strong { color: var(--gold); }
+    .problem-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .prob-num {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px; padding: 18px 20px; text-align: center;
+    }
+    .prob-num .pn { font-size: 2rem; font-weight: 900; color: var(--gold); }
+    .prob-num .pl { font-size: 12px; color: rgba(255,255,255,.75); margin-top: 4px; }
+    @media (max-width: 700px) {
+      .problem-strip { grid-template-columns: 1fr; padding: 32px 24px; gap: 28px; }
+    }
+
+    /* ── HOW IT WORKS ─────────────────────────────────────────────── */
+    #how { background: var(--white); }
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+    .step-card {
+      background: var(--off-white);
+      border: 1px solid rgba(26,122,60,.14);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px;
+      position: relative;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .step-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+      color: var(--white); font-weight: 800; font-size: 15px;
+      margin-bottom: 16px;
+    }
+    .step-icon { font-size: 32px; margin-bottom: 10px; display: block; }
+    .step-card h3 { font-size: 16px; font-weight: 700; color: var(--green-deep); margin-bottom: 8px; }
+    .step-card p  { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── FEATURES ─────────────────────────────────────────────────── */
+    #features { background: var(--off-white); }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+    .feat-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 28px 26px;
+      border: 1px solid rgba(26,122,60,.12);
+      box-shadow: 0 2px 12px rgba(13,74,34,.07);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .feat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+    .feat-icon {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--green-mid), var(--green-light));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+      box-shadow: 0 4px 14px rgba(26,122,60,.25);
+    }
+    .feat-card h3 { font-size: 16px; font-weight: 700; color: var(--green-deep); margin-bottom: 8px; }
+    .feat-card p  { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── IMPACT NUMBERS ───────────────────────────────────────────── */
+    #impact {
+      background: linear-gradient(145deg, var(--green-deep), var(--green-mid));
+    }
+    #impact .section-title { color: var(--white); }
+    #impact .section-desc  { color: rgba(255,255,255,.75); }
+    #impact .section-label { background: rgba(255,255,255,.18); }
+    .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .impact-card {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+      border-radius: 20px; padding: 28px 20px; text-align: center;
+      transition: background .25s;
+    }
+    .impact-card:hover { background: rgba(255,255,255,.18); }
+    .impact-card .big { font-size: 2.4rem; font-weight: 900; color: var(--gold); }
+    .impact-card .label { font-size: 13px; color: rgba(255,255,255,.8); margin-top: 6px; line-height: 1.4; }
+
+    /* ── SDGs ─────────────────────────────────────────────────────── */
+    #sdgs { background: var(--white); }
+    .sdg-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+    .sdg-pill {
+      display: flex; align-items: center; gap: 10px;
+      border-radius: 16px; padding: 12px 20px;
+      font-size: 13.5px; font-weight: 600;
+      border: 2px solid;
+    }
+    .sdg-pill .sdg-num {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 900; color: var(--white);
+      flex-shrink: 0;
+    }
+    .sdg1  { background: #fff4f4; border-color: #e5243b; color: #e5243b; }
+    .sdg1  .sdg-num { background: #e5243b; }
+    .sdg2  { background: #fff8ee; border-color: #dda63a; color: #9a6600; }
+    .sdg2  .sdg-num { background: #dda63a; }
+    .sdg3  { background: #f0faf2; border-color: #4c9f38; color: #2e6b1e; }
+    .sdg3  .sdg-num { background: #4c9f38; }
+    .sdg11 { background: #fff3ec; border-color: #fd9d24; color: #a05200; }
+    .sdg11 .sdg-num { background: #fd9d24; }
+    .sdg12 { background: #fff8e1; border-color: #bf8b2e; color: #7a5500; }
+    .sdg12 .sdg-num { background: #bf8b2e; }
+    .sdg13 { background: #f0faf5; border-color: #3f7e44; color: #224423; }
+    .sdg13 .sdg-num { background: #3f7e44; }
+    .sdg15 { background: #f1f9ee; border-color: #56c02b; color: #2d6600; }
+    .sdg15 .sdg-num { background: #56c02b; }
+    .sdg17 { background: #f0f4ff; border-color: #19486a; color: #19486a; }
+    .sdg17 .sdg-num { background: #19486a; }
+
+    /* ── TECH ─────────────────────────────────────────────────────── */
+    #tech { background: var(--off-white); }
+    .tech-row {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .tech-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--white); border: 1.5px solid rgba(26,122,60,.2);
+      border-radius: var(--radius-pill);
+      padding: 7px 16px; font-size: 13px; font-weight: 600;
+      color: var(--green-deep);
+      box-shadow: 0 1px 4px rgba(13,74,34,.07);
+    }
+    .tech-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green-mid);
+    }
+
+    /* ── CTA SECTION ──────────────────────────────────────────────── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, #c97a10 100%);
+      border-radius: 32px;
+      padding: 60px 48px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+      margin: 0 5vw 80px;
+    }
+    .cta-section h2 { font-size: 2rem; font-weight: 800; color: var(--white); margin-bottom: 14px; }
+    .cta-section p  { font-size: 15px; color: rgba(255,255,255,.85); max-width: 520px; margin: 0 auto 32px; line-height: 1.7; }
+    .cta-section .btn-primary { font-size: 16px; padding: 16px 40px; }
+    @media (max-width: 600px) {
+      .cta-section { padding: 40px 24px; border-radius: 20px; margin: 0 4vw 60px; }
+      .cta-section h2 { font-size: 1.5rem; }
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────────── */
+    footer {
+      background: var(--green-deep);
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      padding: 28px 5vw;
+      font-size: 13px; line-height: 1.8;
+    }
+    footer strong { color: var(--gold); }
+    footer a { color: rgba(255,255,255,.65); text-decoration: underline; }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────────── */
+    @media (max-width: 540px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2.2rem; }
+      .hero-desc { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAV
+══════════════════════════════════════ -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">🍽️</div>
+    <span>Anna-Setu</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#how">How it Works</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#sdgs">SDGs</a></li>
+    <li><a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="nav-cta">Try the App →</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><circle cx="6" cy="6" r="5"/></svg>
+      1M1B · IBM SkillsBuild · AICTE Virtual Internship 2025
+    </div>
+    <img src="Anna Setu.png" alt="Anna-Setu Logo" class="hero-logo-img" />
+    <h1>The <em>Food Bridge</em><br/>Every Campus Needs</h1>
+    <p class="hero-sub">Anna-Setu (अन्न सेतु) — Hindi for "Food Bridge"</p>
+    <p class="hero-desc">
+      Every day, campus dining halls cook <strong>thousands of extra portions</strong> that go to landfill while
+      <strong>millions go hungry</strong>. Anna-Setu is an AI-powered platform that
+      checks food safety in seconds, matches surplus to the nearest shelter, and turns plate waste
+      into fertilizer — <strong>zero to landfill</strong>.
+    </p>
+    <div class="hero-buttons">
+      <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="btn-primary">
+        🚀 Be Part of the Change — Try the App
+      </a>
+      <a href="#problem" class="btn-secondary">Learn More ↓</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="n">40%</span><span class="l">Food cooked goes uneaten</span></div>
+      <div class="hero-stat"><span class="n">6+</span><span class="l">Verified shelters covered</span></div>
+      <div class="hero-stat"><span class="n">45 min</span><span class="l">Max safe delivery window</span></div>
+      <div class="hero-stat"><span class="n">24h</span><span class="l">Waste → Fertilizer</span></div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="white"><path d="M10 13.5l-5-5 1.4-1.4L10 10.7l3.6-3.6L15 8.5z"/></svg>
+    Scroll
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PROBLEM
+══════════════════════════════════════ -->
+<section id="problem" style="background: var(--off-white);">
+  <div class="section-inner">
+    <div class="problem-strip">
+      <div>
+        <span class="section-label" style="background:rgba(255,255,255,.18);">The Problem</span>
+        <h2>India wastes ₹92,000 crore of food every year —<br/>campuses are a silent contributor.</h2>
+        <p>
+          Institutional kitchens over-produce by <strong>20–40%</strong> using fixed static buffers.
+          Food that could nourish people instead becomes methane-emitting landfill or municipal waste —
+          violating both <strong>FSSAI regulations</strong> and <strong>Lucknow Nagar Nigam by-laws</strong>.
+          No scalable, legally-grounded digital tool existed to fix this — until now.
+        </p>
+      </div>
+      <div class="problem-numbers">
+        <div class="prob-num">
+          <div class="pn">₹92K Cr</div>
+          <div class="pl">Food wasted annually in India</div>
+        </div>
+        <div class="prob-num">
+          <div class="pn">19 Cr</div>
+          <div class="pl">People undernourished in India</div>
+        </div>
+        <div class="prob-num">
+          <div class="pn">8%</div>
+          <div class="pl">Global GHG from food waste</div>
+        </div>
+        <div class="prob-num">
+          <div class="pn">0</div>
+          <div class="pl">Digital campus tools before Anna-Setu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════ -->
+<section id="how">
+  <div class="section-inner">
+    <span class="section-label">How it Works</span>
+    <h2 class="section-title">From Surplus to Shelter in 3 Steps</h2>
+    <p class="section-desc">Anna-Setu runs two parallel tracks — Track A for digital AI compliance and Track B for physical plate-waste hardware.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-icon">📋</span>
+        <div class="step-num">1</div>
+        <h3>Log the Surplus</h3>
+        <p>Kitchen staff enter what food is left over, when it was cooked, and how it's stored. Takes under 60 seconds.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-icon">🤖</span>
+        <div class="step-num">2</div>
+        <h3>AI Safety Check</h3>
+        <p>The RAG compliance engine cross-checks FSSAI Regulation 4(2) and LNN Section 14 and returns a 🟢 / 🟡 / 🔴 verdict in real time.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-icon">🏠</span>
+        <div class="step-num">3</div>
+        <h3>Match & Alert Shelter</h3>
+        <p>The nearest verified Rain Basera shelter is auto-matched by zone and capacity. A WhatsApp-ready alert is generated instantly.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-icon">♻️</span>
+        <div class="step-num">4</div>
+        <h3>Recycle Plate Waste</h3>
+        <p>Track B: a smart IoT kiosk at the tray-return counter weighs plate scraps, nudges diners, and feeds the on-site bio-recycler.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-icon">🌱</span>
+        <div class="step-num">5</div>
+        <h3>Fertilizer in 24h</h3>
+        <p>PTC ceramic heating + aerobic aeration converts food scraps into dry, odourless organic fertilizer within 24 hours — zero municipal burden.</p>
+      </div>
+      <div class="step-card">
+        <span class="step-icon">📊</span>
+        <div class="step-num">6</div>
+        <h3>Predict & Prevent</h3>
+        <p>The demand advisor uses day, weather, and academic calendar signals to calculate optimal cooking quantities — stopping waste before it starts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FEATURES
+══════════════════════════════════════ -->
+<section id="features">
+  <div class="section-inner">
+    <span class="section-label">Platform Features</span>
+    <h2 class="section-title">Everything in One Place</h2>
+    <p class="section-desc">Available on both Streamlit and Hugging Face — designed for dining hall staff, wardens, and sustainability officers.</p>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon">⚖️</div>
+        <h3>FSSAI-Grounded Compliance</h3>
+        <p>Every decision cites the exact clause — Regulation 4(2), 4(3), 4(4), 4(5) and Section 7. Legally defensible documentation auto-generated.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🧠</div>
+        <h3>IBM Granite RAG Engine</h3>
+        <p>A retrieval-augmented generation pipeline built on IBM Granite synthesises answers from verified food safety knowledge bases — no hallucinations.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📍</div>
+        <h3>Zone-Based Shelter Matching</h3>
+        <p>6+ verified Lucknow Rain Basera shelters indexed by zone, distance, capacity, and cold-storage availability for instant smart matching.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <h3>WhatsApp Alert Generator</h3>
+        <p>One-tap copy of a fully formatted donation alert with food details, pickup location, timing, and official form-B audit reference.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">🔮</div>
+        <h3>Smart Demand Forecasting</h3>
+        <p>Predict dining turnout from day-of-week, weather, and exam schedule signals. Optimised cooking targets cut overproduction by up to 20%.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon">💬</div>
+        <h3>Plain-English Q&A</h3>
+        <p>Ask "Can I donate rice after 3 hours?" and get a clear rule-backed answer drawn from official regulations — accessible to all staff levels.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     IMPACT
+══════════════════════════════════════ -->
+<section id="impact">
+  <div class="section-inner">
+    <span class="section-label">Projected Impact</span>
+    <h2 class="section-title">The Numbers That Matter</h2>
+    <p class="section-desc">At a single 1,200-student campus running Anna-Setu for one academic year:</p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="big">12,000+</div>
+        <div class="label">Meals rescued &amp; redirected to shelters per year</div>
+      </div>
+      <div class="impact-card">
+        <div class="big">3.2 MT</div>
+        <div class="label">Food waste diverted from landfill annually</div>
+      </div>
+      <div class="impact-card">
+        <div class="big">480 kg</div>
+        <div class="label">Organic fertilizer produced per year from plate waste</div>
+      </div>
+      <div class="impact-card">
+        <div class="big">6 MT</div>
+        <div class="label">CO₂e emissions avoided (methane from landfill)</div>
+      </div>
+      <div class="impact-card">
+        <div class="big">₹8.4L</div>
+        <div class="label">Kitchen procurement savings per year</div>
+      </div>
+      <div class="impact-card">
+        <div class="big">850 K L</div>
+        <div class="label">Embedded freshwater preserved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     SDGs
+══════════════════════════════════════ -->
+<section id="sdgs">
+  <div class="section-inner">
+    <span class="section-label">UN Sustainable Development Goals</span>
+    <h2 class="section-title">Built for the Goals That Matter Most</h2>
+    <p class="section-desc">Anna-Setu directly advances 8 of the 17 United Nations SDGs through its dual-track approach to food rescue and circular waste management.</p>
+    <div class="sdg-grid">
+      <div class="sdg-pill sdg2">
+        <div class="sdg-num">2</div>
+        <div><strong>Zero Hunger</strong><br/><span style="font-weight:400;font-size:12px;">Redirecting surplus meals to verified shelters</span></div>
+      </div>
+      <div class="sdg-pill sdg3">
+        <div class="sdg-num">3</div>
+        <div><strong>Good Health &amp; Well-Being</strong><br/><span style="font-weight:400;font-size:12px;">FSSAI-compliant safe food redistribution</span></div>
+      </div>
+      <div class="sdg-pill sdg12">
+        <div class="sdg-num">12</div>
+        <div><strong>Responsible Consumption</strong><br/><span style="font-weight:400;font-size:12px;">Demand forecasting &amp; waste reduction</span></div>
+      </div>
+      <div class="sdg-pill sdg13">
+        <div class="sdg-num">13</div>
+        <div><strong>Climate Action</strong><br/><span style="font-weight:400;font-size:12px;">Methane avoidance &amp; carbon footprint reduction</span></div>
+      </div>
+      <div class="sdg-pill sdg11">
+        <div class="sdg-num">11</div>
+        <div><strong>Sustainable Cities</strong><br/><span style="font-weight:400;font-size:12px;">LNN municipal by-law compliance</span></div>
+      </div>
+      <div class="sdg-pill sdg15">
+        <div class="sdg-num">15</div>
+        <div><strong>Life on Land</strong><br/><span style="font-weight:400;font-size:12px;">Organic fertilizer replaces chemical inputs</span></div>
+      </div>
+      <div class="sdg-pill sdg1">
+        <div class="sdg-num">1</div>
+        <div><strong>No Poverty</strong><br/><span style="font-weight:400;font-size:12px;">Nutritious food access for shelter residents</span></div>
+      </div>
+      <div class="sdg-pill sdg17">
+        <div class="sdg-num">17</div>
+        <div><strong>Partnerships for Goals</strong><br/><span style="font-weight:400;font-size:12px;">Campus × Shelter × City Council collaboration</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     TECH STACK
+══════════════════════════════════════ -->
+<section id="tech">
+  <div class="section-inner">
+    <span class="section-label">Technology</span>
+    <h2 class="section-title">Powered by AI &amp; Open Standards</h2>
+    <p class="section-desc">Anna-Setu uses production-grade AI tools, open-source frameworks, and an ESP32-based IoT hardware prototype for the bio-recycler kiosk.</p>
+    <div class="tech-row">
+      <div class="tech-badge"><span class="dot"></span>IBM Granite (RAG Engine)</div>
+      <div class="tech-badge"><span class="dot"></span>Python 3.11</div>
+      <div class="tech-badge"><span class="dot"></span>Streamlit 1.44</div>
+      <div class="tech-badge"><span class="dot"></span>Gradio 4.x</div>
+      <div class="tech-badge"><span class="dot"></span>Hugging Face Spaces</div>
+      <div class="tech-badge"><span class="dot"></span>scikit-learn (cosine similarity)</div>
+    </div>
+    <div class="tech-row">
+      <div class="tech-badge"><span class="dot"></span>FSSAI Surplus Food Regulations 2019</div>
+      <div class="tech-badge"><span class="dot"></span>Lucknow Nagar Nigam By-Laws</div>
+      <div class="tech-badge"><span class="dot"></span>ESP32 IoT Kiosk (Track B)</div>
+      <div class="tech-badge"><span class="dot"></span>PTC Bio-Recycler Hardware</div>
+      <div class="tech-badge"><span class="dot"></span>GitHub + HF CI/CD</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     CTA
+══════════════════════════════════════ -->
+<div>
+  <div class="cta-section">
+    <h2>Ready to Bridge the Gap?</h2>
+    <p>
+      Every time you use Anna-Setu, a meal that would have gone to waste reaches someone who needs it.
+      Join the network — it takes less than 2 minutes to run your first food safety check.
+    </p>
+    <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank" class="btn-primary">
+      🍽️ Be Part of the Change — Open the App
+    </a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <strong>Anna-Setu</strong> — Campus Food Rescue &amp; Bio-Recycling Network<br/>
+  Built by <strong>Pankhuri Govila</strong> · 1M1B AI for Sustainability Virtual Internship 2025 · IBM SkillsBuild · AICTE<br/>
+  <span style="margin-top:6px;display:inline-block;">
+    <a href="https://huggingface.co/spaces/pgovila/Anna-Setu-Demo" target="_blank">Hugging Face App</a>
+    &nbsp;·&nbsp;
+    <a href="https://github.com/pgovila/Anna-Setu-Project" target="_blank">GitHub</a>
+  </span><br/>
+  <span style="font-size:11px;opacity:.6;margin-top:8px;display:inline-block;">
+    © 2025 Anna-Setu Project · Content grounded in FSSAI Surplus Food Regulations (2019) &amp; Lucknow Nagar Nigam By-Laws
+  </span>
+</footer>
+
+<script>
+  // ── Smooth active nav link highlight ────────────────────────────
+  const sections = document.querySelectorAll('section[id], .hero');
+  const navLinks  = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.style.color = '');
+        const id = e.target.id;
+        const active = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if (active) active.style.color = '#f5a623';
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // ── Animate numbers in impact section ───────────────────────────
+  function animateCount(el) {
+    const text   = el.textContent;
+    const match  = text.match(/^([\D]*)(\d[\d,.]*)([\D]*)$/);
+    if (!match) return;
+    const [, pre, numStr, suf] = match;
+    const target = parseFloat(numStr.replace(/,/g, ''));
+    const isFloat = numStr.includes('.');
+    const decimals = isFloat ? (numStr.split('.')[1] || '').length : 0;
+    const duration = 1600;
+    const start = performance.now();
+
+    function step(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased    = 1 - Math.pow(1 - progress, 3);
+      const current  = target * eased;
+      let display    = isFloat ? current.toFixed(decimals) : Math.round(current).toLocaleString('en-IN');
+      el.textContent = pre + display + suf;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const impactObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.big').forEach(animateCount);
+        impactObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('#impact').forEach(s => impactObs.observe(s));
+
+  // ── Fade-in cards on scroll ─────────────────────────────────────
+  const cards = document.querySelectorAll('.step-card, .feat-card, .impact-card, .sdg-pill, .tech-badge');
+  cards.forEach(c => {
+    c.style.opacity = '0';
+    c.style.transform = 'translateY(18px)';
+    c.style.transition = 'opacity .5s ease, transform .5s ease';
+  });
+
+  const cardObs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }, 60 * (Array.from(cards).indexOf(e.target) % 6));
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  cards.forEach(c => cardObs.observe(c));
+</script>
+</body>
+</html>
