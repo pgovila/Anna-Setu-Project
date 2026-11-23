@@ -33,44 +33,32 @@ st.set_page_config(
 st.markdown("""
 <style>
 /* ═══════════════════════════════════════════════════════
-   ANNA-SETU BRAND PALETTE — extracted from Anna Setu.png
-   Deep Green : #1a7a3c   Mid Green  : #2a9d50
-   Gold/Amber : #f5a623   Orange     : #e8891a
-   App BG     : gradient  Surface    : white
+   ANNA-SETU BRAND PALETTE
+   Deep Green #1a7a3c · Mid Green #2a9d50 · Gold #f5a623
+   BG: clean off-white · Surface: white · Text: #1a1a1a
    ═══════════════════════════════════════════════════════ */
 
 /* ── Font & base ── */
 html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 
-/* ── Full-page gradient background matching logo palette ── */
+/* ── App background — clean off-white (not gradient) ── */
 .stApp,
-[data-testid="stAppViewContainer"] {
-    background: linear-gradient(160deg, #0d4a22 0%, #1a7a3c 35%, #2a9d50 65%, #c97a10 100%) !important;
-    min-height: 100vh;
-}
-[data-testid="stMain"],
-[data-testid="stVerticalBlock"] > div:first-child {
-    background: transparent !important;
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"] {
+    background: #f4f9f5 !important;
 }
 
-/* ── Force dark text on all widget labels (they sit on white surfaces) ── */
-.stTextInput label, .stSelectbox label, .stNumberInput label,
-.stSlider label, .stTextArea label,
-[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p,
+/* ── All text dark by default ── */
+.stApp, .stApp *, [data-testid="stAppViewContainer"] *,
 [data-testid="stMarkdownContainer"] p,
 [data-testid="stMarkdownContainer"] li,
 [data-testid="stMarkdownContainer"] span,
+.stTextInput label, .stSelectbox label, .stNumberInput label,
+.stSlider label, .stTextArea label,
+[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p,
 .stMarkdown p, .stMarkdown li {
     color: #1a1a1a !important;
     font-family: 'Segoe UI', system-ui, sans-serif;
-}
-
-/* ── Top-level markdown that sits directly on the gradient stays white ── */
-[data-testid="stAppViewContainer"] > section > div > div > div > div
-> [data-testid="stVerticalBlock"] > div
-> [data-testid="stVerticalBlock"] > div
-> [data-testid="stMarkdownContainer"] > p {
-    color: #ffffff !important;
 }
 
 /* ── Fix text boxes — white bg, dark text, fully rounded ── */
@@ -155,46 +143,46 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
     box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
 }
 
-/* ── Tabs — pill-style, fully rounded ── */
+/* ── Tabs — pill-style on white tray ── */
 .stTabs [data-baseweb="tab-list"] {
-    background: rgba(255,255,255,.95);
-    border-radius: 999px;
-    padding: 4px 6px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 6px 8px;
     gap: 4px;
-    border-bottom: none;
-    box-shadow: 0 2px 8px rgba(13,74,34,.18);
-    display: inline-flex;
+    border: 1px solid #d4e8d8;
+    box-shadow: 0 2px 10px rgba(26,122,60,.10);
+    display: flex;
+    flex-wrap: wrap;
 }
 .stTabs [data-baseweb="tab"] {
-    border-radius: 999px;
-    font-weight: 700; font-size: 13px;
-    padding: 7px 18px;
+    border-radius: 10px;
+    font-weight: 600; font-size: 13px;
+    padding: 7px 16px;
     color: #1a1a1a !important;
     background: transparent;
+    border: none !important;
+    outline: none !important;
 }
+/* Remove red/default underline Streamlit adds */
+.stTabs [data-baseweb="tab"]::after,
+.stTabs [data-baseweb="tab"]::before { display: none !important; }
+.stTabs [data-baseweb="tab-highlight"] { display: none !important; }
+.stTabs [data-baseweb="tab-border"]    { display: none !important; }
 .stTabs [aria-selected="true"] {
     background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
     color: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(26,122,60,.35) !important;
+    box-shadow: 0 2px 8px rgba(26,122,60,.30) !important;
 }
-.stTabs [aria-selected="false"] {
-    color: #1a1a1a !important;
-}
+.stTabs [aria-selected="false"] { color: #2a2a2a !important; }
 .stTabs [aria-selected="false"]:hover {
-    background: rgba(26,122,60,.12) !important;
-    color: #1a1a1a !important;
+    background: #e8f5e9 !important; color: #1a7a3c !important;
 }
-/* Force tab text dark at all times */
 .stTabs [data-baseweb="tab"] p,
 .stTabs [data-baseweb="tab"] span,
-.stTabs [data-baseweb="tab"] div {
-    color: #1a1a1a !important;
-}
+.stTabs [data-baseweb="tab"] div { color: inherit !important; }
 .stTabs [aria-selected="true"] p,
 .stTabs [aria-selected="true"] span,
-.stTabs [aria-selected="true"] div {
-    color: #ffffff !important;
-}
+.stTabs [aria-selected="true"] div { color: #ffffff !important; }
 
 /* ── Primary button — green gradient, rounded ── */
 .stButton > button[kind="primary"] {
@@ -215,15 +203,17 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 /* ── Secondary / default button ── */
 .stButton > button[kind="secondary"],
 .stButton > button:not([kind="primary"]) {
-    background: rgba(255,255,255,.92) !important;
+    background: #ffffff !important;
     border: 2px solid #1a7a3c !important;
     color: #1a7a3c !important;
     border-radius: 999px !important;
     font-weight: 600 !important;
+    box-shadow: 0 1px 4px rgba(26,122,60,.15) !important;
 }
 .stButton > button[kind="secondary"]:hover,
 .stButton > button:not([kind="primary"]):hover {
-    background: #e0f2e6 !important;
+    background: #e8f5e9 !important;
+    transform: translateY(-1px);
 }
 
 /* ── Metric cards — white rounded rectangles ── */
