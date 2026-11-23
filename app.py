@@ -1,10 +1,24 @@
 """
-Anna-Setu: AI Campus Food Rescue & Redistribution Network
-Interactive Interface powered by IBM Granite Prompt Synthesis & RAG Compliance Pipeline
-Adheres to FSSAI Surplus Food Regulations (2019) & Lucknow Nagar Nigam Food Service Guidelines
-Covers Dual Tracks: Track A (Software AI & RAG Engine) + Track B (Smart Plate-Waste Interceptor & Bio-Recycler)
-Includes self-contained embedded RAG fallback for standalone deployment
+Anna-Setu: Campus Food Rescue Network
+=======================================================================
+NOTE FOR REVIEWERS / JUDGES
+=======================================================================
+This file (app.py) is a LEGACY Gradio prototype kept for reference only.
+The live deployed application runs on Streamlit.
+
+  Run the app:   streamlit run streamlit_app.py
+  Landing page:  index.html
+
+The Streamlit app (streamlit_app.py) is the canonical, deployed source
+for Anna-Setu. It uses the same RAG compliance engine (rag/) as this file.
+Gradio is NOT listed in requirements.txt; this file will not launch unless
+Gradio is manually installed. The Streamlit version covers all features.
+=======================================================================
 """
+print(
+    "\n[app.py] This is the legacy Gradio prototype. "
+    "Run: streamlit run streamlit_app.py\n"
+)
 
 import sys
 import re

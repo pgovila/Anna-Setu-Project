@@ -249,12 +249,12 @@ class FoodComplianceEngine:
                 f"occur within {remaining_mins} minutes upon delivery. Immediate transit dispatch required."
             )
             lnn_action = (
-                f"Clear via Campus Security Gate Pass under LNN Health Sec 21. Ensure covered transit "
-                f"within {transit_minutes} min corridor window under LNN Transit Protocol Sec 14."
+                f"Clear via Campus Security Gate Pass. Ensure covered transit "
+                f"within {transit_minutes} min corridor window (engineering estimate based on FSSAI ambient limits)."
             )
             compliance_note = (
                 f"Within FSSAI 4-hour ambient holding limit ({elapsed_minutes}m elapsed). "
-                f"Urgent consumption mandated before {safe_until_str} per FSSAI Reg 4(2) and LNN Sec 14."
+                f"Urgent consumption mandated before {safe_until_str} per FSSAI Surplus Food Reg 4(2)."
             )
 
         else:
@@ -266,11 +266,11 @@ class FoodComplianceEngine:
                 f"food safety parameters with a healthy {remaining_mins}-minute safety buffer."
             )
             lnn_action = (
-                f"Standard dispatch approved. Issue Gate Pass under LNN Health Sec 21 to {shelter_name}. "
+                f"Standard dispatch approved. Issue Campus Gate Pass to {shelter_name}. "
                 f"Transit corridor window: {transit_minutes} mins."
             )
             compliance_note = (
-                f"Compliant with FSSAI Surplus Reg 4(2) & 4(3) temperature-holding standards. "
+                f"Compliant with FSSAI Surplus Food Reg 4(2) & 4(3) temperature-holding standards. "
                 f"Safe consumption window active until {safe_until_str}."
             )
 

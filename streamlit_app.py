@@ -877,7 +877,7 @@ if not st.session_state.tutorial_done:
     # sits centred on that gradient as a white pop-up panel.
     _modal_html = (
         '<div style="max-width:680px;margin:40px auto 0;'
-        'background:#ffffff;border-radius:28px;padding:40px 44px 28px;'
+        'background:#ffffff;border-radius:28px;padding:40px 44px 24px;'
         'box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;">'
         '<div style="position:absolute;top:0;left:0;right:0;height:7px;'
         'background:linear-gradient(90deg,#0d4a22,#1a7a3c,#2a9d50,#f5a623);'
@@ -900,34 +900,34 @@ if not st.session_state.tutorial_done:
     )
     st.markdown(_modal_html, unsafe_allow_html=True)
 
-    # ── Spacer so buttons don't sit flush against card ─────────────────────
-    st.markdown('<div style="height:16px;"></div>', unsafe_allow_html=True)
+    # ── Navigation buttons: narrow centred columns matching card width ─────
+    # Use a 3-col layout with dead margins so buttons stay clustered below card
+    _gap, _btn_area, _gap2 = st.columns([1, 4, 1])
+    with _btn_area:
+        btn_cols = st.columns([2, 1, 1, 2])
 
-    # ── Navigation buttons - rendered in normal page flow below the card ───
-    btn_cols = st.columns([1, 1, 1, 1])
-
-    with btn_cols[0]:
-        if st.button("⏭️ Skip Tutorial", use_container_width=True):
-            st.session_state.tutorial_done = True
-            st.rerun()
-
-    with btn_cols[1]:
-        if step > 0:
-            if st.button("← Previous", use_container_width=True):
-                st.session_state.tutorial_step -= 1
-                st.rerun()
-
-    with btn_cols[2]:
-        if step < TUTORIAL_STEPS - 1:
-            if st.button("Next →", type="primary", use_container_width=True):
-                st.session_state.tutorial_step += 1
-                st.rerun()
-
-    with btn_cols[3]:
-        if step == TUTORIAL_STEPS - 1:
-            if st.button("✅ Let's Go!", type="primary", use_container_width=True):
+        with btn_cols[0]:
+            if st.button("⏭️ Skip Tutorial", use_container_width=True):
                 st.session_state.tutorial_done = True
                 st.rerun()
+
+        with btn_cols[1]:
+            if step > 0:
+                if st.button("← Prev", use_container_width=True):
+                    st.session_state.tutorial_step -= 1
+                    st.rerun()
+
+        with btn_cols[2]:
+            if step < TUTORIAL_STEPS - 1:
+                if st.button("Next →", type="primary", use_container_width=True):
+                    st.session_state.tutorial_step += 1
+                    st.rerun()
+
+        with btn_cols[3]:
+            if step == TUTORIAL_STEPS - 1:
+                if st.button("✅ Let's Go!", type="primary", use_container_width=True):
+                    st.session_state.tutorial_done = True
+                    st.rerun()
 
     st.stop()   # don't render app tabs while tutorial is showing
 
@@ -948,7 +948,7 @@ st.markdown(f"""
     </div>
   </div>
   <div class="hero-stats">
-    <div class="hero-stat"><span class="num">6+</span><span class="lbl">VERIFIED SHELTERS</span></div>
+    <div class="hero-stat"><span class="num">6+</span><span class="lbl">SAMPLE SHELTERS</span></div>
     <div class="hero-stat"><span class="num">10</span><span class="lbl">FSSAI RULES EMBEDDED</span></div>
     <div class="hero-stat"><span class="num">45 min</span><span class="lbl">MAX DELIVERY TIME</span></div>
     <div class="hero-stat"><span class="num">24h</span><span class="lbl">WASTE → FERTILIZER</span></div>
@@ -1073,8 +1073,9 @@ with tab1:
             with c_s2:
                 temp_input = st.number_input(
                     "Food Temperature (°C) - Optional",
-                    min_value=0.0, max_value=100.0, value=0.0, step=0.5,
-                    help="Measure with a thermometer. Leave as 0 if you haven't measured."
+                    min_value=0.0, max_value=100.0, value=None, step=0.5,
+                    placeholder="Leave blank if not measured",
+                    help="Measure with a thermometer. Leave blank if you have not measured."
                 )
             # Input validation
             _time_error = None
@@ -1091,7 +1092,7 @@ with tab1:
             except ValueError:
                 _time_error = "Enter times in HH:MM format, e.g. 13:30 for 1:30 PM."
             storage_key_check = STORAGE_DICT[storage_choice]
-            if storage_key_check in ("hot_holding", "refrigerated") and float(temp_input) == 0.0:
+            if storage_key_check in ("hot_holding", "refrigerated") and (temp_input is None or temp_input == 0.0):
                 _temp_warning = (
                     f"You selected {'hot-holding' if storage_key_check == 'hot_holding' else 'refrigerated'} storage. "
                     "Please measure and enter the actual food temperature for an accurate verdict."
@@ -1106,7 +1107,7 @@ with tab1:
         category_key   = CATEGORY_DICT[category_choice]
         storage_key    = STORAGE_DICT[storage_choice]
         origin_zone_id = ZONE_DICT[origin_zone_choice]
-        temp_c_val     = float(temp_input) if temp_input > 0.0 else None
+        temp_c_val     = float(temp_input) if (temp_input is not None and temp_input > 0.0) else None
 
         sync_data = pipeline.sync_ai_pipeline_configurations(
             origin_zone=origin_zone_id, item=item_input,
@@ -1115,10 +1116,24 @@ with tab1:
             storage_condition=storage_key, measured_temp_celsius=temp_c_val
         )
         with st.container(border=True):
-            st.text_area("Food Safety Rule That Applies",
-                         value=sync_data["retrieved_safety_rule"], height=65, key="rag_rule_box")
-            st.text_area("Nearest Shelter Match",
-                         value=sync_data["ai_matched_shelter"], height=65, key="shelter_dest_box")
+            _rule_text = sync_data["retrieved_safety_rule"]
+            _shelter_text = sync_data["ai_matched_shelter"]
+            st.markdown(
+                f'<div style="background:#f0f7f2;border:1.5px solid #a8cfb0;border-radius:10px;'
+                f'padding:10px 14px;font-size:13px;color:#1a1a1a;margin-bottom:10px;">'
+                f'<strong style="color:#1a7a3c;">📜 Safety Rule:</strong> {_rule_text}</div>',
+                unsafe_allow_html=True
+            )
+            st.markdown(
+                f'<div style="background:#f0f7f2;border:1.5px solid #a8cfb0;border-radius:10px;'
+                f'padding:10px 14px;font-size:13px;color:#1a1a1a;">'
+                f'<strong style="color:#1a7a3c;">🏠 Nearest Shelter (illustrative sample data):</strong> {_shelter_text}</div>',
+                unsafe_allow_html=True
+            )
+            st.caption(
+                "⚠️ Preview does not include transit time. "
+                "The final verdict (below) adds estimated delivery time and may differ."
+            )
 
         run_button = st.button(
             "✅ Check if This Food Can Be Donated",
@@ -1435,19 +1450,20 @@ with tab3:
         methane_avoided_kg = cum_daily_waste_kg * 1.9    # IPCC Tier 1 landfill factor
 
         k1, k2 = st.columns(2)
-        k1.metric("Plate Waste Per Day",     f"{cum_daily_waste_kg:.1f} kg")
-        k2.metric("Fertilizer Made Per Day", f"{compost_yield_kg:.1f} kg",        delta="From this waste")
+        k1.metric("Plate Waste Per Day",               f"{cum_daily_waste_kg:.1f} kg")
+        k2.metric("Dry Biomass Made Per Day",          f"{compost_yield_kg:.1f} kg",        delta="From this waste")
         k3, k4 = st.columns(2)
-        k3.metric("Fertilizer Per Year",     f"{annual_compost_kg:,.0f} kg",      delta="For campus gardens")
-        k4.metric("Emissions Avoided",       f"{methane_avoided_kg:.1f} kg CO2e", delta="Zero landfill")
+        k3.metric("Dry Biomass Per Year (Modelled)",   f"{annual_compost_kg:,.0f} kg",      delta="Pending NPK testing")
+        k4.metric("Emissions Avoided (Modelled)",      f"{methane_avoided_kg:.1f} kg CO2e", delta="Zero landfill")
 
         st.write("---")
         st.caption(
-            "Modelled estimates - 1,200-student campus, 240 operating days/year. "
-            "Compost yield is dry pre-compost biomass from PTC dehydrator; "
+            f"Modelled estimates - {int(sim_daily_diners)}-diner hall, 240 operating days/year. "
+            "Output is dry pre-compost biomass from PTC dehydrator; "
             "NPK values and suitability as soil conditioner require curing and lab testing. "
-            "GHG factor: 1.9 kg CO2e/kg (IPCC AR5 Tier 1 landfill). "
-            "Water factor: 760 L/kg embedded water (Mekonnen & Hoekstra 2011)."
+            "GHG factor: 1.9 kg CO2e/kg food waste avoided to landfill (IPCC AR5 Tier 1). "
+            "Water factor: 760 L/kg embedded water (Mekonnen & Hoekstra 2011). "
+            "Kiosk screen uses 2.3 kg CO2e/kg (lifecycle production estimate, different boundary)."
         )
         st.markdown("#### How Plate Waste Becomes Soil Conditioner - 5 Steps")
         steps_html = "".join([
@@ -1464,6 +1480,26 @@ with tab3:
             ]
         ])
         st.markdown(f'<div style="background:white;border-radius:12px;padding:16px 18px;border:1px solid #e0e8e0;">{steps_html}</div>', unsafe_allow_html=True)
+
+        st.markdown('<div class="step-pill" style="margin-top:18px;">📡 Simulate an ESP32 Kiosk Weigh-In</div>', unsafe_allow_html=True)
+        st.caption("This shows the JSON payload an ESP32-based kiosk would send to the server when a student places their tray.")
+        if st.button("🔌 Generate Sample ESP32 Payload", key="btn_esp32"):
+            import json as _json
+            _ts = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+            _payload = {
+                "kiosk_id": f"KIOSK-{sim_hostel_block.replace(' ', '-').upper()[:8]}",
+                "timestamp": _ts,
+                "weight_grams": sim_waste_grams,
+                "hostel_block": sim_hostel_block,
+                "event": "tray_return",
+                "metrics": {
+                    "water_litres": round(sim_water_liters, 1),
+                    "co2e_grams": round(sim_co2e_grams, 0),
+                    "dry_biomass_grams": round(sim_waste_grams * 0.15, 1)
+                }
+            }
+            st.code(_json.dumps(_payload, indent=2), language="json")
+            st.caption("In a live deployment, this payload would be sent via HTTPS POST to the Anna-Setu API server (api_server.py).")
 
 # =============================================================================
 # TAB 4 - ASK A FOOD SAFETY QUESTION
