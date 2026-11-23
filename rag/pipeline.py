@@ -112,7 +112,7 @@ class AnnaSetuRAGPipeline:
         zone_label = best_shelter.get('zone_name', f"Zone {best_shelter.get('zone_id')}")
         display_str = (
             f"{best_shelter['name']} ({zone_label} - "
-            f"{best_distance_km:.1f} km away | Route Transit: {best_transit} mins | Bed Capacity: {best_shelter.get('capacity_servings', 100)})"
+            f"{best_distance_km:.1f} km away | Route Transit: {best_transit} mins | Meal capacity: {best_shelter.get('capacity_servings', 100)} servings)"
         )
 
         return {

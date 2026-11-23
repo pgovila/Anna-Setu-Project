@@ -102,21 +102,35 @@ api_server.py             ← Flask API server for kiosk POST payloads
 
 ## 📊 Impact Assumptions — Reconciled
 
-All figures are **modelled estimates** for a single campus scenario.
+**Reference scenario:** 850-diner hall, 175 g plate waste/diner, 10% kiosk capture rate, 240 operating days/year. All figures are **modelled estimates**.
 
-| Metric | Value | Basis | Where shown |
+| Metric | Arithmetic | Value | Note |
 |---|---|---|---|
-| Plate waste per diner | 175 g/meal (slider default) | Typical campus study estimate | Track B simulator |
-| Dry biomass yield | 15% of wet weight | PTC dehydrator spec (project estimate) | Track B |
-| Annual dry biomass (850 diners) | ≈ 19 kg/day × 240 days ≈ 4,590 kg | 850 × 0.175 kg × 0.15 × 240 | Track B at default |
-| Annual dry biomass (1,200 diners) | ≈ 5,355 kg/yr | 1,200 × 0.175 kg × 0.15 × 240 — legacy default | Track B (old footnote) |
-| Landing page "480 kg compost" | 3.2 MT × 0.15 = 480 kg | Track A rescued food estimate, different input | index.html Track A |
-| GHG avoided (Track B) | 1.9 kg CO₂e/kg food waste | IPCC AR5 Tier 1 landfill methane | Track B results |
-| GHG (kiosk screen) | 2.3 kg CO₂e/kg food | Lifecycle production estimate (different boundary) | Kiosk display |
-| Water per meal | 266 L | Mekonnen & Hoekstra 2011, avg Indian staple | Plan tab |
-| Water per kg food waste | 760 L/kg | Mekonnen & Hoekstra 2011 | Track B |
+| Plate waste/diner | 175 g default | 175 g/meal | Slider default |
+| Dry biomass yield | 15% of wet weight | PTC estimate | Pending NPK testing |
+| Track B captured/day | 850 x 0.175 kg x 10% | 14.9 kg/day wet | 10% kiosk capture |
+| Track B dry biomass/day | 14.9 x 0.15 | 2.2 kg/day | |
+| Track B dry biomass/year | 2.2 x 240 | ~535 kg/yr | Landing page tile |
+| Track B 100% capture (app default) | 850 x 0.175 x 0.15 x 240 | 5,355 kg/yr | App at 850 diners |
+| Track A meals rescued/yr | 12,000 meals modelled | — | 20% of daily surplus |
+| Track A kg rescued/yr | 12,000 x 0.35 kg | 4.2 MT/yr | Landing page tile |
+| GHG avoided (Track A) | 4,200 kg x ~1.9 | ~8 MT CO2e | Factor unverified exactly |
+| GHG factor | ~1.9 kg CO2e/kg | Approx landfill estimate | Not confirmed IPCC AR5 Tier 1 |
+| Water per meal (Plan tab) | 0.35 kg x 760 L/kg | 266 L/meal | Same factor as per-kg |
+| Water per kg (Track B) | 760 L/kg | 760 L/kg | Mekonnen & Hoekstra 2011 |
+| Water total (Track A) | 4,200 MT x 760 L/kg | ~3,200 KL/yr | Landing page tile |
+| Kiosk CO2e factor | 2.3 kg CO2e/kg food | Lifecycle estimate | Different from landfill 1.9 |
 
-> **Why 480 kg vs 5,355 kg?** Different inputs: 480 kg is Track A (donated food converted, ~3.2 MT/yr rescued × 15% biomass yield). 5,355 kg is Track B at the 1,200-diner default (plate waste × 15%). They measure different food streams, not the same number.
+> **Key corrections from previous version:** 480 kg was removed (3.2 MT x 0.15 implies ~76 diners, inconsistent). 850 KL water was wrong; corrected to ~3,200 KL. ~6 MT CO2e was wrong for 4.2 MT x 1.9; corrected to ~8 MT. 266 L/meal and 760 L/kg are the same factor (0.35 kg x 760 = 266).
+
+---
+
+## 🧪 Running Tests
+
+```bash
+python test_rag.py        # RAG pipeline unit tests
+python validate_all.py    # Full validation suite
+```
 
 ---
 

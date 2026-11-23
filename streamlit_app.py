@@ -650,12 +650,12 @@ DEMO_SCENARIOS = {
     "yellow": {
         "label": "🟡 Urgent Window (Act Now)",
         "meal": "Lunch",
-        "category_idx": 0,   # cooked_grains_curry
+        "category_idx": 0,   # cooked_grains_curry — urgent when elapsed+transit > 150 min
         "storage_idx": 0,
-        "time_prep": "12:00", "time_assess": "13:50",
+        "time_prep": "12:00", "time_assess": "14:15",  # 135 min elapsed + 20 transit = 155 > 150 urgent threshold
         "item": "Vegetable Pulao, Dal Tadka",
         "servings": 40,
-        "help": "High-moisture food cooked ~2h ago at room temperature - urgent donation window.",
+        "help": "High-moisture food cooked ~2h 15m ago at room temperature - in the urgent dispatch window (elapsed+transit > 2.5h).",
     },
     "green": {
         "label": "🟢 Safe to Donate",
@@ -697,7 +697,7 @@ SLIDE_CONTENT = [
 <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;">
   <div style="background:#e8f5e9;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
     <div style="font-size:22px;font-weight:800;color:#2e7d32;">6+</div>
-    <div style="font-size:12px;color:#555;">Shelters Nearby</div>
+    <div style="font-size:12px;color:#555;">Sample Shelters</div>
   </div>
   <div style="background:#fff8e1;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
     <div style="font-size:22px;font-weight:800;color:#f9a825;">10</div>
@@ -705,7 +705,7 @@ SLIDE_CONTENT = [
   </div>
   <div style="background:#f3e5f5;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
     <div style="font-size:22px;font-weight:800;color:#6a1b9a;">24h</div>
-    <div style="font-size:12px;color:#555;">Waste Becomes Fertilizer</div>
+    <div style="font-size:12px;color:#555;">Waste to Soil Conditioner</div>
   </div>
 </div>
 """,
@@ -743,7 +743,7 @@ SLIDE_CONTENT = [
       <strong style="color:#1a1a1a;font-size:14px;">Tab 3 - Plate-Waste Recycler</strong><br>
       <span style="color:#333;font-size:13px;">
         See how much water and carbon is wasted when students leave food on their plates.
-        Watch how the kiosk turns those scraps into fertilizer.
+        Watch how the kiosk turns those scraps into dry soil conditioner.
       </span>
     </td>
   </tr>
@@ -811,7 +811,7 @@ SLIDE_CONTENT = [
     <div>
       <strong style="font-size:14px;color:#1a1a1a;">Switch to Tab 3 - Plate-Waste Recycler</strong><br>
       <span style="color:#333;font-size:13px;">
-        Move the <em>Food Left on Plate</em> slider and see the fertilizer output
+        Move the <em>Food Left on Plate</em> slider and see the dry biomass output
         and water savings update instantly.
       </span>
     </div>
@@ -951,7 +951,7 @@ st.markdown(f"""
     <div class="hero-stat"><span class="num">6+</span><span class="lbl">SAMPLE SHELTERS</span></div>
     <div class="hero-stat"><span class="num">10</span><span class="lbl">FSSAI RULES EMBEDDED</span></div>
     <div class="hero-stat"><span class="num">45 min</span><span class="lbl">MAX DELIVERY TIME</span></div>
-    <div class="hero-stat"><span class="num">24h</span><span class="lbl">WASTE → FERTILIZER</span></div>
+    <div class="hero-stat"><span class="num">24h</span><span class="lbl">WASTE → SOIL CONDITIONER</span></div>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -1107,7 +1107,7 @@ with tab1:
         category_key   = CATEGORY_DICT[category_choice]
         storage_key    = STORAGE_DICT[storage_choice]
         origin_zone_id = ZONE_DICT[origin_zone_choice]
-        temp_c_val     = float(temp_input) if (temp_input is not None and temp_input > 0.0) else None
+        temp_c_val     = float(temp_input) if (temp_input is not None) else None
 
         sync_data = pipeline.sync_ai_pipeline_configurations(
             origin_zone=origin_zone_id, item=item_input,
@@ -1159,30 +1159,29 @@ with tab1:
                 timeline  = eval_data["timeline"]
                 status    = eval_data["status"]
 
-                # ── Verdict banner - shown first, largest element ──────────
+                # ── Verdict banner (badge already contains emoji — no separate icon) ──
                 safe_until = timeline.get("safe_pickup_by", "N/A")
+                _remaining = timeline.get("max_allowed_minutes", 240) - timeline.get("total_exposure_minutes", 0)
                 if status == "COMPLIANT_SAFE":
                     st.markdown(f"""
 <div style="background:#1b5e20;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
-  <div style="font-size:28px;margin-bottom:4px;">🟢</div>
   <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
-  <div style="font-size:14px;color:#a5d6a7;margin-top:6px;">Safe until <strong style="color:#ffffff;">{safe_until}</strong></div>
+  <div style="font-size:14px;color:#a5d6a7;margin-top:6px;">Safe until <strong style="color:#ffffff;">{safe_until}</strong> &nbsp;·&nbsp; <strong style="color:#ffffff;">{_remaining} min remaining</strong></div>
   <div style="font-size:13px;color:#c8e6c9;margin-top:8px;">{eval_data['reason']}</div>
 </div>""", unsafe_allow_html=True)
                 elif status == "COMPLIANT_URGENT":
                     st.markdown(f"""
 <div style="background:#e65100;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
-  <div style="font-size:28px;margin-bottom:4px;">🟡</div>
   <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
-  <div style="font-size:14px;color:#ffe0b2;margin-top:6px;">Safe until <strong style="color:#ffffff;">{safe_until}</strong> - act now</div>
+  <div style="font-size:14px;color:#ffe0b2;margin-top:6px;">Act now — safe until <strong style="color:#ffffff;">{safe_until}</strong> &nbsp;·&nbsp; <strong style="color:#ffffff;">{_remaining} min remaining</strong></div>
   <div style="font-size:13px;color:#ffccbc;margin-top:8px;">{eval_data['reason']}</div>
 </div>""", unsafe_allow_html=True)
                 else:
+                    _reject_shelter = "No shelter match — food cannot be donated"
                     st.markdown(f"""
 <div style="background:#b71c1c;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
-  <div style="font-size:28px;margin-bottom:4px;">🔴</div>
   <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
-  <div style="font-size:14px;color:#ffcdd2;margin-top:6px;">Cannot be donated</div>
+  <div style="font-size:14px;color:#ffcdd2;margin-top:6px;">{_reject_shelter}</div>
   <div style="font-size:13px;color:#ef9a9a;margin-top:8px;">{eval_data['reason']}</div>
 </div>""", unsafe_allow_html=True)
 
@@ -1194,7 +1193,8 @@ with tab1:
                 m1.metric("Time Since Cooking",  f"{timeline['elapsed_minutes']} min")
                 m2.metric("Delivery Time",       f"{timeline['transit_minutes']} min")
                 m3.metric("Total Time Out",      f"{timeline['total_exposure_minutes']} min")
-                m4.metric("Safe Until",          f"{safe_until}")
+                m4.metric("Remaining Window",    f"{_remaining} min",
+                          help=f"Limit {timeline.get('max_allowed_minutes',240)} min − {timeline['total_exposure_minutes']} min used = {_remaining} min left")
 
                 # ── WhatsApp alert in expander ─────────────────────────────
                 with st.expander("📱 WhatsApp Advance Notice - tap to copy", expanded=True):
@@ -1340,8 +1340,8 @@ with tab2:
             dm2.metric("Money Saved",               f"Rs.{d_res['cost_savings_inr']:,.2f}")
             dm3.metric("Water Saved",               f"{_prevented * 266:,.0f} L")
             st.caption(
-                "Water factor: 266 L per meal (Mekonnen & Hoekstra 2011, avg Indian staple crop footprint). "
-                "Track B uses 760 L/kg food waste — a different system boundary (per kg of food, not per meal serving)."
+                "Water factor: 266 L per meal = 0.35 kg/meal × 760 L/kg (Mekonnen & Hoekstra 2011). "
+                "Track B uses the same 760 L/kg applied to kg of food waste — same factor, different input unit."
             )
             st.info(
                 "ℹ️ **Note:** 'Meals prevented' counts overproduction avoided at the cooking stage. "
@@ -1352,18 +1352,18 @@ with tab2:
             st.markdown("#### Ingredients to Buy / Prepare (kg)")
             ing = d_res["ingredient_breakdown_kg"]
             _buf_factor = 1 + _buf
-            _save_factor = _buf / _buf_factor  # fraction saved vs buffer baseline
+            # Saved = buffer overhead removed = With App × buf (not buf/buf_factor)
             rows = [
-                {"Ingredient": "Rice & Grains",  "Without App (kg)": round(ing['rice_or_grains_kg']*_buf_factor,1),   "With App (kg)": round(ing['rice_or_grains_kg'],1),   "Saved (kg)": round(ing['rice_or_grains_kg']*_save_factor,1)},
-                {"Ingredient": "Lentils / Dal",  "Without App (kg)": round(ing['dal_or_lentils_kg']*_buf_factor,1),   "With App (kg)": round(ing['dal_or_lentils_kg'],1),   "Saved (kg)": round(ing['dal_or_lentils_kg']*_save_factor,1)},
-                {"Ingredient": "Vegetables",      "Without App (kg)": round(ing['vegetables_kg']*_buf_factor,1),        "With App (kg)": round(ing['vegetables_kg'],1),        "Saved (kg)": round(ing['vegetables_kg']*_save_factor,1)},
-                {"Ingredient": "Cooking Oil",     "Without App (kg)": round(ing['cooking_oil_kg']*_buf_factor,1),       "With App (kg)": round(ing['cooking_oil_kg'],1),       "Saved (kg)": round(ing['cooking_oil_kg']*_save_factor,1)},
-                {"Ingredient": "Dairy / Paneer",  "Without App (kg)": round(ing['dairy_or_paneer_kg']*_buf_factor,1),   "With App (kg)": round(ing['dairy_or_paneer_kg'],1),   "Saved (kg)": round(ing['dairy_or_paneer_kg']*_save_factor,1)},
-                {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*_buf_factor,1),            "With App (kg)": round(ing['spices_kg'],1),            "Saved (kg)": round(ing['spices_kg']*_save_factor,1)},
+                {"Ingredient": "Rice & Grains",  "Without App (kg)": round(ing['rice_or_grains_kg']*_buf_factor,1),   "With App (kg)": round(ing['rice_or_grains_kg'],1),   "Saved (kg)": round(ing['rice_or_grains_kg']*_buf,1)},
+                {"Ingredient": "Lentils / Dal",  "Without App (kg)": round(ing['dal_or_lentils_kg']*_buf_factor,1),   "With App (kg)": round(ing['dal_or_lentils_kg'],1),   "Saved (kg)": round(ing['dal_or_lentils_kg']*_buf,1)},
+                {"Ingredient": "Vegetables",      "Without App (kg)": round(ing['vegetables_kg']*_buf_factor,1),        "With App (kg)": round(ing['vegetables_kg'],1),        "Saved (kg)": round(ing['vegetables_kg']*_buf,1)},
+                {"Ingredient": "Cooking Oil",     "Without App (kg)": round(ing['cooking_oil_kg']*_buf_factor,1),       "With App (kg)": round(ing['cooking_oil_kg'],1),       "Saved (kg)": round(ing['cooking_oil_kg']*_buf,1)},
+                {"Ingredient": "Dairy / Paneer",  "Without App (kg)": round(ing['dairy_or_paneer_kg']*_buf_factor,1),   "With App (kg)": round(ing['dairy_or_paneer_kg'],1),   "Saved (kg)": round(ing['dairy_or_paneer_kg']*_buf,1)},
+                {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*_buf_factor,1),            "With App (kg)": round(ing['spices_kg'],1),            "Saved (kg)": round(ing['spices_kg']*_buf,1)},
             ]
-            # Totals row
+            # Totals row — no markdown in dataframe cells
             rows.append({
-                "Ingredient": "**TOTAL**",
+                "Ingredient": "TOTAL",
                 "Without App (kg)": round(sum(r["Without App (kg)"] for r in rows), 1),
                 "With App (kg)":    round(sum(r["With App (kg)"]    for r in rows), 1),
                 "Saved (kg)":       round(sum(r["Saved (kg)"]       for r in rows), 1),
@@ -1467,7 +1467,7 @@ with tab3:
     🌍 <strong style="color:#ffffff !important;">Carbon footprint:</strong> <span style="color:#ffffff !important;">{sim_co2e_grams:.0f}g CO2 equivalent</span>
   </div>
   <div style="color:#ffffff !important;margin-bottom:12px;">
-    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">doing well this week</span> <span style="color:#ffffff !important;">- keep it up!</span>
+    🏆 <strong style="color:#ffffff !important;">Your block ({sim_hostel_block}):</strong> <span class="kiosk-highlight" style="color:#a3e635 !important;font-weight:700;">[sample message]</span>
   </div>
   <div style="background:rgba(255,255,255,.12);border-radius:10px;padding:12px 16px;color:#ffffff !important;font-size:13px;border-left:3px solid #ffd54f;">
     💡 <strong style="color:#ffffff !important;">Tip:</strong> <span style="color:#ffffff !important;">Take only what you can finish. Second helpings are always available!</span>
@@ -1512,7 +1512,7 @@ with tab3:
             f'<div style="font-size:13px;color:#333;">{txt}</div></div>'
             for n, txt in [
                 (1, "<strong>Shred:</strong> Scraps are broken into small pieces for fast decomposition."),
-                (2, "<strong>Heat:</strong> Temperature rises to 55-65°C, killing all harmful bacteria."),
+                (2, "<strong>Heat:</strong> Temperature rises to 55-65°C, reducing pathogens significantly."),
                 (3, "<strong>Airflow:</strong> A fan and carbon filter keep oxygen flowing and remove odours."),
                 (4, "<strong>Harvest:</strong> In 12-24 hours, scraps become dry pre-compost biomass (pending curing and NPK lab testing before use as soil conditioner)."),
                 (5, "<strong>Zero Landfill:</strong> 100% processed on-site. Nothing sent to city garbage."),
@@ -1592,7 +1592,7 @@ with tab4:
 with tab5:
     st.markdown("""
 <div class="section-card" style="background:#f1f8f1;border-left:4px solid #2e7d32;">
-  Anna-Setu follows two official sets of rules. Here is what they mean in plain language.
+  Anna-Setu draws on two sets of rules. Here is what they mean in plain language.
 </div>
 """, unsafe_allow_html=True)
 
@@ -1624,9 +1624,9 @@ with tab5:
         with st.container(border=True):
             st.markdown("**⚖️ Are Donors Protected by Law?**")
             st.success(
-                "Yes. Donors who act in good faith and follow FSSAI Surplus Food Regulations 2019 "
-                "have protection under the Good Samaritan provisions. The mess manager remains "
-                "accountable as the FBO under their own Food Safety Management System.", icon="✅"
+                "The FSSAI Surplus Food Regulations 2019 aim to protect donors acting in good faith. "
+                "Confirm the exact protection with the published gazette text before relying on it legally. "
+                "The mess manager remains accountable as the FBO under their own Food Safety Management System.", icon="✅"
             )
         with st.container(border=True):
             st.markdown("**📋 Record Keeping (Schedule II fields)**")
@@ -1638,7 +1638,7 @@ with tab5:
             )
 
     with col_r2:
-        st.markdown("### 🏙️ Lucknow City Council Guidelines (LNN)")
+        st.markdown("### 🏙️ Lucknow Nagar Nigam (LNN) Guidelines")
         st.caption("Note: LNN clauses below are engineering assumptions based on municipal solid-waste bye-laws and standard food-safety transit practice. Verify exact section numbers and penalty ranges against published LNN gazette text before citing in official filings.")
         with st.container(border=True):
             st.markdown("**🚗 Maximum Delivery Time (Engineering Estimate)**")

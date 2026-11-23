@@ -433,9 +433,9 @@
         <span class="section-label" style="background:rgba(255,255,255,.18);">The Problem</span>
         <h2>India's food loss problem starts in institutional kitchens -<br/>campuses are a silent contributor.</h2>
         <p>
-          Institutional kitchens over-produce by <strong>20-40%</strong> using fixed static buffers.
+          Institutional kitchens over-produce by <strong>20-40%</strong> using fixed static buffers (source needed - adjust with your campus data).
           Food that could nourish people instead becomes methane-emitting landfill or municipal waste.
-          FSSAI Surplus Food Regulations 2019 require safe redistribution, but no campus-ready digital tool existed to implement them.
+          FSSAI Surplus Food Regulations 2019 require safe redistribution, but none of the campus-ready digital tools we could find implement them end-to-end.
         </p>
       </div>
       <div class="problem-numbers">
@@ -444,8 +444,8 @@
           <div class="pl">People undernourished in India (FAO 2023)</div>
         </div>
         <div class="prob-num">
-          <div class="pn">40%</div>
-          <div class="pl">Food produced that is lost or wasted in India (UNEP)</div>
+          <div class="pn">~40%</div>
+          <div class="pl">Food lost or wasted post-harvest in India (est. - verify with FSSAI/ICAR)</div>
         </div>
         <div class="prob-num">
           <div class="pn">8-10%</div>
@@ -453,7 +453,7 @@
         </div>
         <div class="prob-num">
           <div class="pn">2019</div>
-          <div class="pl">FSSAI Surplus Food Regulations - no campus tool existed</div>
+          <div class="pl">FSSAI Surplus Food Regulations - no campus tool we could find implements them</div>
         </div>
       </div>
     </div>
@@ -563,31 +563,36 @@
   <div class="section-inner">
     <span class="section-label">Modelled Impact</span>
     <h2 class="section-title">The Numbers That Matter</h2>
-    <p class="section-desc">Modelled estimates - 1,200-student campus, 240 operating days/year, 20% surplus capture rate assumption. All figures are projections, not measured outcomes.</p>
+    <!-- Impact numbers: single reference scenario — 850 diners, 175 g plate waste, 10% kiosk capture,
+         Track A: 12,000 meals/yr rescued × 0.35 kg/meal = 4.2 MT; GHG = 4.2 MT × 1.9 = ~8 MT (not 6)
+         but 1.9 kg/kg factor is unverified against IPCC AR5 exactly — labelled "approx" below.
+         Track B: 850 × 0.175 kg × 10% capture × 240 days = 3.57 MT wet; × 0.15 = ~535 kg dry biomass/yr.
+         Water: 4.2 MT × 760 L/kg = 3,192 KL (Track A rescued food embedded water). -->
+    <p class="section-desc">Modelled estimates - 850-diner hall, 240 operating days/year, 10% plate-waste kiosk capture assumption. All figures are projections, not measured outcomes. GHG factor ~1.9 kg CO₂e/kg is unverified against IPCC AR5 Tier 1 exactly - treat as approximate.</p>
     <div class="impact-grid">
       <div class="impact-card">
         <div class="big">12,000+</div>
-        <div class="label">Meals potentially rescued per year (20% of surplus, 0.35 kg/meal)</div>
+        <div class="label">Meals potentially rescued per year (Track A, 20% of surplus, 0.35 kg/meal, modelled)</div>
       </div>
       <div class="impact-card">
         <div class="big">~4.2 MT</div>
-        <div class="label">Surplus food redirected from landfill (Track A, modelled)</div>
+        <div class="label">Surplus food redirected from landfill (Track A, 12,000 meals × 0.35 kg)</div>
       </div>
       <div class="impact-card">
-        <div class="big">~480 kg</div>
-        <div class="label">Dry pre-compost biomass per year from plate waste (Track B, 15% yield, pending NPK testing)</div>
+        <div class="big">~535 kg</div>
+        <div class="label">Dry pre-compost biomass per year (Track B, 850 diners × 10% capture × 15% yield × 240 days, pending NPK testing)</div>
       </div>
       <div class="impact-card">
-        <div class="big">~6 MT</div>
-        <div class="label">CO₂e avoided (IPCC Tier 1 landfill factor 1.9 kg/kg, modelled)</div>
+        <div class="big">~8 MT</div>
+        <div class="label">CO₂e avoided approx (Track A rescued food × ~1.9 kg CO₂e/kg - factor unverified, treat as estimate)</div>
       </div>
       <div class="impact-card">
         <div class="big">₹8.4L</div>
         <div class="label">Kitchen procurement savings (modelled, 20% overproduction reduction)</div>
       </div>
       <div class="impact-card">
-        <div class="big">~850 KL</div>
-        <div class="label">Embedded freshwater preserved (760 L/kg, Mekonnen &amp; Hoekstra 2011)</div>
+        <div class="big">~3,200 KL</div>
+        <div class="label">Embedded freshwater preserved (Track A: 4.2 MT × 760 L/kg, Mekonnen &amp; Hoekstra 2011)</div>
       </div>
     </div>
   </div>
@@ -641,7 +646,7 @@
       <div class="tech-badge"><span class="dot"></span>Lucknow Nagar Nigam Guidelines</div>
       <div class="tech-badge"><span class="dot"></span>ESP32 IoT Kiosk (Concept Prototype)</div>
       <div class="tech-badge"><span class="dot"></span>PTC Bio-Recycler (Hardware Concept)</div>
-      <div class="tech-badge"><span class="dot"></span>GitHub CI/CD</div>
+      <div class="tech-badge"><span class="dot"></span>validate_all.py + test_rag.py</div>
     </div>
   </div>
 </section>
