@@ -522,15 +522,15 @@ if not st.session_state.tutorial_done:
             )
     _dots_html = "".join(_dot_parts)
 
-    # Assemble the complete modal HTML as a single Python string — no line breaks
-    # between injected fragments so the markdown parser sees one block element.
+    # Assemble the modal card as a normal page element (NOT position:fixed).
+    # Using fixed positioning hides Streamlit buttons behind the overlay.
+    # The page background CSS already shows the green gradient — the card
+    # sits centred on that gradient as a white pop-up panel.
     _modal_html = (
-        '<div style="position:fixed;inset:0;z-index:9999;'
-        'background:rgba(13,74,34,.82);backdrop-filter:blur(6px);'
-        'display:flex;align-items:center;justify-content:center;padding:20px;">'
-        '<div style="background:#ffffff;border-radius:28px;padding:40px 44px 32px;'
-        'max-width:680px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;">'
-        '<div style="position:absolute;top:0;left:0;right:0;height:6px;'
+        '<div style="max-width:680px;margin:40px auto 0;'
+        'background:#ffffff;border-radius:28px;padding:40px 44px 28px;'
+        'box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;">'
+        '<div style="position:absolute;top:0;left:0;right:0;height:7px;'
         'background:linear-gradient(90deg,#0d4a22,#1a7a3c,#2a9d50,#f5a623);'
         'border-radius:28px 28px 0 0;"></div>'
         '<div style="text-align:center;margin-bottom:22px;">'
@@ -544,43 +544,41 @@ if not st.session_state.tutorial_done:
         '</div>'
         '<hr style="border:none;border-top:1px solid #e8f0e8;margin:0 0 20px;">'
         + slide['body']
-        + '<div style="display:flex;justify-content:center;gap:6px;margin-top:22px;align-items:center;">'
+        + '<div style="display:flex;justify-content:center;gap:6px;margin-top:20px;align-items:center;">'
         + _dots_html
         + '</div>'
         '</div>'
-        '</div>'
     )
-    with st.container():
-        st.markdown(_modal_html, unsafe_allow_html=True)
+    st.markdown(_modal_html, unsafe_allow_html=True)
 
-        # ── navigation buttons ─────────────────────────────────────────────────
-        btn_cols = st.columns([1, 1, 1, 1])
+    # ── Spacer so buttons don't sit flush against card ─────────────────────
+    st.markdown('<div style="height:16px;"></div>', unsafe_allow_html=True)
 
-        with btn_cols[0]:
-            if st.button("⏭️ Skip Tutorial", use_container_width=True):
-                st.session_state.tutorial_done = True
+    # ── Navigation buttons — rendered in normal page flow below the card ───
+    btn_cols = st.columns([1, 1, 1, 1])
+
+    with btn_cols[0]:
+        if st.button("⏭️ Skip Tutorial", use_container_width=True):
+            st.session_state.tutorial_done = True
+            st.rerun()
+
+    with btn_cols[1]:
+        if step > 0:
+            if st.button("← Previous", use_container_width=True):
+                st.session_state.tutorial_step -= 1
                 st.rerun()
 
-        with btn_cols[1]:
-            prev_disabled = step == 0
-            if not prev_disabled:
-                if st.button("← Previous", use_container_width=True):
-                    st.session_state.tutorial_step -= 1
-                    st.rerun()
-            else:
-                st.markdown("<div style='height:38px'></div>", unsafe_allow_html=True)
+    with btn_cols[2]:
+        if step < TUTORIAL_STEPS - 1:
+            if st.button("Next →", type="primary", use_container_width=True):
+                st.session_state.tutorial_step += 1
+                st.rerun()
 
-        with btn_cols[2]:
-            if step < TUTORIAL_STEPS - 1:
-                if st.button("Next →", type="primary", use_container_width=True):
-                    st.session_state.tutorial_step += 1
-                    st.rerun()
-
-        with btn_cols[3]:
-            if step == TUTORIAL_STEPS - 1:
-                if st.button("✅ Let's Go!", type="primary", use_container_width=True):
-                    st.session_state.tutorial_done = True
-                    st.rerun()
+    with btn_cols[3]:
+        if step == TUTORIAL_STEPS - 1:
+            if st.button("✅ Let's Go!", type="primary", use_container_width=True):
+                st.session_state.tutorial_done = True
+                st.rerun()
 
     st.stop()   # don't render app tabs while tutorial is showing
 
