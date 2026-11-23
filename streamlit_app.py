@@ -425,7 +425,7 @@ SLIDE_CONTENT = [
     {
         "icon": "🚀",
         "title": "Try It in 3 Steps",
-        "subtitle": "Takes less than 2 minutes — no setup needed",
+        "subtitle": "Takes less than 2 minutes - no setup needed",
         "body": """
 <div style="display:flex;flex-direction:column;gap:14px;">
   <div style="display:flex;align-items:flex-start;gap:14px;">
@@ -433,10 +433,10 @@ SLIDE_CONTENT = [
                 display:flex;align-items:center;justify-content:center;
                 font-weight:800;font-size:15px;flex-shrink:0;">1</div>
     <div>
-      <strong style="font-size:14px;">Open Tab 1 → "Check if Surplus Food Can Be Donated"</strong><br>
-      <span style="color:#555;font-size:13px;">
-        Select your dining facility and choose <strong>Lunch</strong> as the meal type.
-        The form automatically pre-fills with a sample batch — no typing needed.
+      <strong style="font-size:14px;color:#1a1a1a;">Open Tab 1 - Check if Surplus Food Can Be Donated</strong><br>
+      <span style="color:#333;font-size:13px;">
+        Select your dining facility and choose <strong style="color:#1a1a1a;">Lunch</strong> as the meal type.
+        The form automatically pre-fills with a sample batch - no typing needed.
       </span>
     </div>
   </div>
@@ -445,11 +445,11 @@ SLIDE_CONTENT = [
                 display:flex;align-items:center;justify-content:center;
                 font-weight:800;font-size:15px;flex-shrink:0;">2</div>
     <div>
-      <strong style="font-size:14px;">Click 🚀 "Run Safety Check & Generate Shelter Alert"</strong><br>
-      <span style="color:#555;font-size:13px;">
-        Anna-Setu shows a <span style="color:green;font-weight:600;">🟢 Safe</span> /
-        <span style="color:orange;font-weight:600;">🟡 Urgent</span> /
-        <span style="color:red;font-weight:600;">🔴 Rejected</span> verdict,
+      <strong style="font-size:14px;color:#1a1a1a;">Click "Run Safety Check and Generate Shelter Alert"</strong><br>
+      <span style="color:#333;font-size:13px;">
+        Anna-Setu shows a <span style="color:#2e7d32;font-weight:600;">🟢 Safe</span> /
+        <span style="color:#e65100;font-weight:600;">🟡 Urgent</span> /
+        <span style="color:#c62828;font-weight:600;">🔴 Rejected</span> verdict,
         the nearest shelter with distance, and a WhatsApp message ready to copy and send.
       </span>
     </div>
@@ -459,8 +459,8 @@ SLIDE_CONTENT = [
                 display:flex;align-items:center;justify-content:center;
                 font-weight:800;font-size:15px;flex-shrink:0;">3</div>
     <div>
-      <strong style="font-size:14px;">Switch to Tab 2 · Plate-Waste Recycler</strong><br>
-      <span style="color:#555;font-size:13px;">
+      <strong style="font-size:14px;color:#1a1a1a;">Switch to Tab 2 - Plate-Waste Recycler</strong><br>
+      <span style="color:#333;font-size:13px;">
         Drag the <em>Food Left on Plate</em> slider and watch the daily bio-fertilizer
         yield and methane emissions avoided update in real time.
       </span>
@@ -475,20 +475,20 @@ SLIDE_CONTENT = [
         "title": "You're All Set!",
         "subtitle": "Anna-Setu is ready to help rescue food and reduce waste",
         "body": """
-<p style="font-size:15px;line-height:1.75;color:#333;margin:0 0 20px;">
+<p style="font-size:15px;line-height:1.75;color:#1a1a1a;margin:0 0 20px;">
   You now know everything you need to use Anna-Setu effectively.<br><br>
-  Click <strong>"Let's Go!"</strong> below to open the app.
-  The <strong>📖 Food Safety Rules Guide</strong> (Tab 4) is always there
+  Click <strong style="color:#1a1a1a;">"Let's Go!"</strong> below to open the app.
+  The <strong style="color:#1a1a1a;">Food Safety Rules Guide</strong> (Tab 4) is always there
   if you need a quick reference on what food can and cannot be donated.
 </p>
 <div style="background:#e8f5e9;border-radius:12px;padding:16px 20px;">
-  <p style="margin:0;font-size:13px;color:#2e7d32;font-weight:600;">
-    💡 Quick Tips
+  <p style="margin:0;font-size:13px;color:#1a7a3c;font-weight:700;">
+    Quick Tips
   </p>
-  <ul style="margin:8px 0 0;padding-left:18px;font-size:13px;color:#444;line-height:1.8;">
-    <li>The <strong>meal type dropdown</strong> pre-fills all fields automatically — just pick Breakfast / Lunch / Dinner.</li>
-    <li>The <strong>AI Safety Check section</strong> updates live as you type — you don't need to press a button to see it.</li>
-    <li>All verdicts cite the exact FSSAI regulation they come from — click <em>"Food Safety Rules That Apply"</em> to read them.</li>
+  <ul style="margin:8px 0 0;padding-left:18px;font-size:13px;color:#1a1a1a;line-height:1.8;">
+    <li>The <strong style="color:#1a1a1a;">meal type dropdown</strong> pre-fills all fields automatically - just pick Breakfast / Lunch / Dinner.</li>
+    <li>The <strong style="color:#1a1a1a;">AI Safety Check section</strong> updates live as you type - no button needed.</li>
+    <li>All verdicts cite the exact FSSAI regulation - click <em>Food Safety Rules That Apply</em> to read them.</li>
   </ul>
 </div>
 """,
