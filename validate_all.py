@@ -11,7 +11,12 @@ Validates the entire dual-track project ecosystem for 1M1B & AICTE submission:
 
 import os
 import sys
+import io
 from datetime import datetime
+
+# Force UTF-8 output on Windows so box-drawing and emoji characters don't crash
+if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf-8-sig"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 def validate_ecosystem():
     print("=" * 80)
@@ -26,15 +31,13 @@ def validate_ecosystem():
     def check(title, condition, details=""):
         nonlocal total_checks, passed_checks
         total_checks += 1
+        status = "PASS" if condition else "FAIL"
         if condition:
             passed_checks += 1
-            print(f"  [PASS] {title}")
-            if details:
-                print(f"         └─ {details}")
-        else:
-            print(f"  [FAIL] {title}")
-            if details:
-                print(f"         └─ ERROR: {details}")
+        print(f"  [{status}] {title}")
+        if details:
+            prefix = "       " if condition else "       ERROR:"
+            print(f"         +-- {prefix} {details}")
 
     # --- SECTION 1: Software & RAG Pipeline Checks ---
     print("[1] Verifying Track A Software & RAG Pipeline Subsystem...")

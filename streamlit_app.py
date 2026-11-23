@@ -650,7 +650,7 @@ DEMO_SCENARIOS = {
     "yellow": {
         "label": "🟡 Urgent Window (Act Now)",
         "meal": "Lunch",
-        "category_idx": 0,   # cooked_grains_curry — urgent when elapsed+transit > 150 min
+        "category_idx": 0,   # cooked_grains_curry - urgent when elapsed+transit > 150 min
         "storage_idx": 0,
         "time_prep": "12:00", "time_assess": "14:15",  # 135 min elapsed + 20 transit = 155 > 150 urgent threshold
         "item": "Vegetable Pulao, Dal Tadka",
@@ -1159,7 +1159,7 @@ with tab1:
                 timeline  = eval_data["timeline"]
                 status    = eval_data["status"]
 
-                # ── Verdict banner (badge already contains emoji — no separate icon) ──
+                # ── Verdict banner (badge already contains emoji - no separate icon) ──
                 safe_until = timeline.get("safe_pickup_by", "N/A")
                 _remaining = timeline.get("max_allowed_minutes", 240) - timeline.get("total_exposure_minutes", 0)
                 if status == "COMPLIANT_SAFE":
@@ -1173,11 +1173,11 @@ with tab1:
                     st.markdown(f"""
 <div style="background:#e65100;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
   <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
-  <div style="font-size:14px;color:#ffe0b2;margin-top:6px;">Act now — safe until <strong style="color:#ffffff;">{safe_until}</strong> &nbsp;·&nbsp; <strong style="color:#ffffff;">{_remaining} min remaining</strong></div>
+  <div style="font-size:14px;color:#ffe0b2;margin-top:6px;">Act now - safe until <strong style="color:#ffffff;">{safe_until}</strong> &nbsp;·&nbsp; <strong style="color:#ffffff;">{_remaining} min remaining</strong></div>
   <div style="font-size:13px;color:#ffccbc;margin-top:8px;">{eval_data['reason']}</div>
 </div>""", unsafe_allow_html=True)
                 else:
-                    _reject_shelter = "No shelter match — food cannot be donated"
+                    _reject_shelter = "No shelter match - food cannot be donated"
                     st.markdown(f"""
 <div style="background:#b71c1c;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
   <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
@@ -1331,7 +1331,7 @@ with tab2:
             st.caption(
                 f"Modelled estimate. 'Without App' baseline = expected students × (1 + {baseline_buffer_pct}%). "
                 "Attendance uses fixed day-of-week and weather multipliers, not regression-trained data. "
-                "Actual savings depend on your kitchen's real baseline — adjust the buffer slider above."
+                "Actual savings depend on your kitchen's real baseline - adjust the buffer slider above."
             )
             dm1, dm2, dm3 = st.columns(3)
             dm1.metric("Meals of Waste Prevented",
@@ -1341,12 +1341,12 @@ with tab2:
             dm3.metric("Water Saved",               f"{_prevented * 266:,.0f} L")
             st.caption(
                 "Water factor: 266 L per meal = 0.35 kg/meal × 760 L/kg (Mekonnen & Hoekstra 2011). "
-                "Track B uses the same 760 L/kg applied to kg of food waste — same factor, different input unit."
+                "Track B uses the same 760 L/kg applied to kg of food waste - same factor, different input unit."
             )
             st.info(
                 "ℹ️ **Note:** 'Meals prevented' counts overproduction avoided at the cooking stage. "
                 "'Meals rescued' (Track A) counts already-cooked surplus redirected to shelters. "
-                "These are measured at different points in the food chain — no double counting."
+                "These are measured at different points in the food chain - no double counting."
             )
             st.write("---")
             st.markdown("#### Ingredients to Buy / Prepare (kg)")
@@ -1361,7 +1361,7 @@ with tab2:
                 {"Ingredient": "Dairy / Paneer",  "Without App (kg)": round(ing['dairy_or_paneer_kg']*_buf_factor,1),   "With App (kg)": round(ing['dairy_or_paneer_kg'],1),   "Saved (kg)": round(ing['dairy_or_paneer_kg']*_buf,1)},
                 {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*_buf_factor,1),            "With App (kg)": round(ing['spices_kg'],1),            "Saved (kg)": round(ing['spices_kg']*_buf,1)},
             ]
-            # Totals row — no markdown in dataframe cells
+            # Totals row - no markdown in dataframe cells
             rows.append({
                 "Ingredient": "TOTAL",
                 "Without App (kg)": round(sum(r["Without App (kg)"] for r in rows), 1),
