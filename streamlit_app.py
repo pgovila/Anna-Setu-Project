@@ -40,7 +40,86 @@ html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
 [data-testid="stAppViewContainer"],
 [data-testid="stMain"],
 [data-testid="stAppViewBlockContainer"] {
-    background: #f4f9f5 !important;
+    background: radial-gradient(circle at 50% 0%, #ebf7ee 0%, #f4f9f5 55%, #edf6ef 100%) !important;
+}
+
+/* ── Streamlit Top-Right Header Buttons Fix (Visible Green Icons & Text) ── */
+[data-testid="stHeader"],
+header[data-testid="stHeader"],
+.stAppHeader,
+[data-testid="stToolbar"],
+[data-testid="stHeaderActionElements"] {
+    background: transparent !important;
+}
+[data-testid="stHeader"] button,
+.stAppHeader button,
+header button,
+[data-testid="stToolbar"] button,
+[data-testid="stHeaderActionElements"] button,
+[data-testid="stHeader"] a,
+.stAppHeader a,
+header a {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    border: 1.5px solid #1a7a3c !important;
+    border-radius: 999px !important;
+    color: #1a7a3c !important;
+    padding: 4px 14px !important;
+    height: auto !important;
+    min-height: 32px !important;
+    box-shadow: 0 1px 4px rgba(26,122,60,.12) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+[data-testid="stHeader"] button *,
+.stAppHeader button *,
+header button *,
+[data-testid="stToolbar"] button *,
+[data-testid="stHeaderActionElements"] button * {
+    color: #1a7a3c !important;
+    fill: #1a7a3c !important;
+    stroke: #1a7a3c !important;
+    font-weight: 700 !important;
+}
+[data-testid="stHeader"] button svg,
+.stAppHeader button svg,
+header button svg,
+[data-testid="stToolbar"] button svg,
+[data-testid="stHeaderActionElements"] button svg,
+[data-testid="stHeader"] svg,
+.stAppHeader svg {
+    fill: #1a7a3c !important;
+    color: #1a7a3c !important;
+    stroke: #1a7a3c !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+[data-testid="stHeader"] button svg path,
+.stAppHeader button svg path,
+header button svg path,
+[data-testid="stToolbar"] button svg path,
+[data-testid="stHeaderActionElements"] button svg path {
+    fill: #1a7a3c !important;
+    stroke: #1a7a3c !important;
+}
+[data-testid="stHeader"] button:hover,
+.stAppHeader button:hover,
+header button:hover,
+[data-testid="stToolbar"] button:hover,
+[data-testid="stHeaderActionElements"] button:hover {
+    background-color: #e8f5e9 !important;
+    background: #e8f5e9 !important;
+    border-color: #0d4a22 !important;
+}
+[data-testid="stHeader"] button:hover *,
+.stAppHeader button:hover *,
+header button:hover *,
+[data-testid="stToolbar"] button:hover *,
+[data-testid="stHeaderActionElements"] button:hover * {
+    color: #0d4a22 !important;
+    fill: #0d4a22 !important;
+    stroke: #0d4a22 !important;
 }
 
 /* ── All layout blocks transparent so app bg shows through ── */
@@ -53,7 +132,7 @@ div[data-testid="stForm"] > div {
     background-color: transparent !important;
 }
 
-/* ── Bordered containers - white card ── */
+/* ── Bordered containers - polished white card ── */
 [data-testid="stVerticalBlockBorderWrapper"],
 [data-testid="stVerticalBlockBorderWrapper"] > div,
 [data-testid="stVerticalBlockBorderWrapper"] > div > div,
@@ -63,9 +142,11 @@ div[data-testid="stForm"] > div {
     color: #1a1a1a !important;
 }
 [data-testid="stVerticalBlockBorderWrapper"] {
-    border: 1.5px solid rgba(26,122,60,.22) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 2px 8px rgba(13,74,34,.08) !important;
+    border: 1.5px solid #d0ebd6 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 20px rgba(13,74,34,.06), 0 1px 3px rgba(0,0,0,.02) !important;
+    padding: 22px 24px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 /* ── Widget labels dark ── */
@@ -304,51 +385,103 @@ div.hero-banner p, div.hero-banner span { color: #ffffff !important; }
 /* ── Step pills ── */
 .step-pill {
     display: inline-block;
-    background: linear-gradient(90deg, #1a7a3c, #2a9d50);
+    background: linear-gradient(135deg, #13602f 0%, #1a7a3c 50%, #2a9d50 100%);
     color: #ffffff !important;
-    border-radius: 999px; padding: 5px 18px;
-    font-size: 12px; font-weight: 700; margin-bottom: 10px;
-    box-shadow: 0 2px 6px rgba(26,122,60,.30);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 10px rgba(26,122,60,.28);
+    letter-spacing: 0.2px;
 }
 
-/* ── Tabs ── */
-.stTabs [data-baseweb="tab-list"] {
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 6px 8px;
-    gap: 4px;
-    border: 1px solid #d4e8d8;
-    box-shadow: 0 2px 10px rgba(26,122,60,.10);
-    display: flex;
-    flex-wrap: wrap;
+/* ── Modern Pill Navigation Tabs with Rounded Active Tab Edges ── */
+.stTabs {
+    margin-top: 10px !important;
+    margin-bottom: 24px !important;
 }
-.stTabs [data-baseweb="tab"] {
-    border-radius: 10px;
-    font-weight: 600; font-size: 13px;
-    padding: 7px 16px;
-    color: #1a1a1a !important;
-    background: transparent;
+.stTabs [data-baseweb="tab-list"] {
+    background: #ffffff !important;
+    border-radius: 999px !important;
+    padding: 6px 8px !important;
+    gap: 6px !important;
+    border: 1.5px solid #cce5d2 !important;
+    box-shadow: 0 4px 16px rgba(13,74,34,.07) !important;
+    display: inline-flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+}
+.stTabs [data-baseweb="tab"],
+.stTabs [role="tab"],
+.stTabs button[role="tab"],
+.stTabs div[role="tab"] {
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    padding: 8px 18px !important;
+    color: #235431 !important;
+    background: transparent !important;
     border: none !important;
     outline: none !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer !important;
 }
 .stTabs [data-baseweb="tab"]::after,
-.stTabs [data-baseweb="tab"]::before { display: none !important; }
+.stTabs [data-baseweb="tab"]::before,
+.stTabs button[role="tab"]::after,
+.stTabs button[role="tab"]::before {
+    display: none !important;
+}
 .stTabs [data-baseweb="tab-highlight"],
-.stTabs [data-baseweb="tab-border"] { display: none !important; }
-.stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
+.stTabs [data-baseweb="tab-border"] {
+    display: none !important;
+}
+
+/* Active Tab: Smooth rounded pill with emerald green gradient and bold orange text */
+.stTabs [aria-selected="true"],
+.stTabs [data-baseweb="tab"][aria-selected="true"],
+.stTabs button[role="tab"][aria-selected="true"],
+.stTabs div[role="tab"][aria-selected="true"] {
+    background: linear-gradient(135deg, #1a7a3c 0%, #2a9d50 100%) !important;
     color: #f5a623 !important;
     font-weight: 800 !important;
-    box-shadow: 0 2px 10px rgba(26,122,60,.35) !important;
+    border-radius: 999px !important;
+    -webkit-border-radius: 999px !important;
+    box-shadow: 0 4px 14px rgba(26,122,60,.35) !important;
+    padding: 8px 20px !important;
+    border: none !important;
 }
-.stTabs [aria-selected="false"] { color: #2a2a2a !important; }
-.stTabs [aria-selected="false"]:hover { background: #e8f5e9 !important; color: #1a7a3c !important; }
+.stTabs [aria-selected="false"],
+.stTabs [data-baseweb="tab"][aria-selected="false"],
+.stTabs button[role="tab"][aria-selected="false"] {
+    color: #235431 !important;
+    background: transparent !important;
+    border-radius: 999px !important;
+}
+.stTabs [aria-selected="false"]:hover,
+.stTabs [data-baseweb="tab"][aria-selected="false"]:hover,
+.stTabs button[role="tab"][aria-selected="false"]:hover {
+    background: #e8f5e9 !important;
+    color: #1a7a3c !important;
+    border-radius: 999px !important;
+}
 .stTabs [data-baseweb="tab"] p,
 .stTabs [data-baseweb="tab"] span,
-.stTabs [data-baseweb="tab"] div { color: inherit !important; }
+.stTabs [data-baseweb="tab"] div,
+.stTabs button[role="tab"] p,
+.stTabs button[role="tab"] span,
+.stTabs button[role="tab"] div {
+    color: inherit !important;
+    font-size: inherit !important;
+}
 .stTabs [aria-selected="true"] p,
 .stTabs [aria-selected="true"] span,
-.stTabs [aria-selected="true"] div { color: #f5a623 !important; font-weight: 800 !important; }
+.stTabs [aria-selected="true"] div {
+    color: #f5a623 !important;
+    font-weight: 800 !important;
+}
 
 /* ── Buttons - secondary / default (Restart Tutorial and all secondary buttons) ── */
 button,
@@ -822,14 +955,20 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # small "restart tutorial" link
-restart_col, _ = st.columns([1.8, 4.2])
+restart_col, helper_col = st.columns([2.2, 3.8])
 with restart_col:
     st.markdown('<div class="restart-tutorial-container">', unsafe_allow_html=True)
-    if st.button("📖 Restart Tutorial", key="btn_restart_tutorial", help="See the step-by-step guide again", type="secondary"):
+    if st.button("📖 Restart Interactive Tutorial", key="btn_restart_tutorial", help="See the step-by-step interactive walkthrough again", type="secondary"):
         st.session_state.tutorial_done = False
         st.session_state.tutorial_step = 0
         st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
+with helper_col:
+    st.markdown("""
+<div style="display:flex;align-items:center;height:100%;padding-top:6px;font-size:12.5px;color:#2e5939;">
+  <span>💡 <strong>Quick Tip:</strong> Select a meal type below to auto-fill details or query safety rules in real time.</span>
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -983,13 +1122,39 @@ with tab1:
                 st.code(res["audit_manifest"], language="text")
         else:
             st.markdown("""
-<div class="section-card" style="text-align:center;padding:40px 24px;color:#777;">
-  <div style="font-size:40px;margin-bottom:12px;">👈</div>
-  <strong>Fill in the form on the left</strong><br>
-  <span style="font-size:13px;">
-    Then click <strong>Check if This Food Can Be Donated</strong>
-    to get the verdict, shelter match, and alert message.
-  </span>
+<div class="section-card" style="padding:26px 24px;border:1.5px solid #cce5d2;border-radius:20px;box-shadow:0 6px 24px rgba(13,74,34,.06);background:#ffffff;">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#1a7a3c,#2a9d50);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:22px;box-shadow:0 3px 8px rgba(26,122,60,.3);">⚡</div>
+    <div>
+      <h4 style="margin:0;font-size:16px;font-weight:800;color:#0d4a22;">Real-Time AI Redistribution Engine</h4>
+      <p style="margin:0;font-size:12px;color:#4a6b51;">Active FSSAI 2019 compliance &amp; dynamic shelter routing</p>
+    </div>
+  </div>
+  
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">🛡️ Safety Verdict</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Calculates microbial safety window and maximum transit exposure.</div>
+    </div>
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">📍 Proximity Routing</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Matches the nearest verified NGO shelter within a 45-minute drive window.</div>
+    </div>
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">📱 WhatsApp Alert</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Auto-compiles verified donor message with gate pickup directions.</div>
+    </div>
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">📑 Form B Manifest</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Generates official FSSAI Surplus Food donation regulatory register.</div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg, #eaf6ec 0%, #f1f9f2 100%);border:1.5px dashed #a8cfb0;border-radius:14px;padding:16px;text-align:center;">
+    <div style="font-size:24px;margin-bottom:6px;">👈</div>
+    <div style="font-weight:700;color:#0d4a22;font-size:13.5px;margin-bottom:2px;">Complete Step 1 &amp; Step 2 on the left</div>
+    <div style="font-size:12px;color:#55785c;">Click <strong>"Check if This Food Can Be Donated"</strong> to run the live AI assessment.</div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -1072,10 +1237,39 @@ with tab2:
             st.info(f"**Kitchen Instruction:** {d_res['recommendation_summary']}")
         else:
             st.markdown("""
-<div class="section-card" style="text-align:center;padding:40px 24px;color:#777;">
-  <div style="font-size:40px;margin-bottom:12px;">👈</div>
-  <strong>Enter today's details on the left</strong><br>
-  <span style="font-size:13px;">Then click <strong>Show Me How Much to Cook</strong>.</span>
+<div class="section-card" style="padding:26px 24px;border:1.5px solid #f0dfb4;border-radius:20px;box-shadow:0 6px 24px rgba(249,168,37,.06);background:#ffffff;">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:22px;box-shadow:0 3px 8px rgba(217,119,6,.3);">🔮</div>
+    <div>
+      <h4 style="margin:0;font-size:16px;font-weight:800;color:#92400e;">Predictive Meal Demand Forecasting</h4>
+      <p style="margin:0;font-size:12px;color:#78350f;">Optimized batch cooking targets based on weather &amp; academic calendar</p>
+    </div>
+  </div>
+  
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+    <div style="background:#fefce8;border:1px solid #fef08a;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">👥 Attendance Prediction</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Forecasts dining hall turnout based on exams, weather, and day of week.</div>
+    </div>
+    <div style="background:#fefce8;border:1px solid #fef08a;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">🍲 Portions Target</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Calculates exact portions to cook to prevent overproduction surplus.</div>
+    </div>
+    <div style="background:#fefce8;border:1px solid #fef08a;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">💰 Cost &amp; Water Savings</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Computes rupee budget savings and agricultural water saved.</div>
+    </div>
+    <div style="background:#fefce8;border:1px solid #fef08a;border-radius:14px;padding:14px 16px;">
+      <div style="font-size:13px;font-weight:700;color:#854d0e;margin-bottom:4px;">📊 Ingredient Breakdown</div>
+      <div style="font-size:12px;color:#333;line-height:1.5;">Generates precise kg procurement requisitions across 6 food categories.</div>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);border:1.5px dashed #ca8a04;border-radius:14px;padding:16px;text-align:center;">
+    <div style="font-size:24px;margin-bottom:6px;">👈</div>
+    <div style="font-weight:700;color:#713f12;font-size:13.5px;margin-bottom:2px;">Enter dining parameters on the left</div>
+    <div style="font-size:12px;color:#854d0e;">Click <strong>"Show Me How Much to Cook"</strong> to run predictive analytics.</div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
 
