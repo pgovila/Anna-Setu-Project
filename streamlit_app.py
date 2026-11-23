@@ -500,39 +500,58 @@ if not st.session_state.tutorial_done:
     slide = SLIDE_CONTENT[step]
 
     # ── render tutorial as full-screen overlay pop-up ─────────────────────────
-    _icon_html = slide['icon'] if isinstance(slide['icon'], str) and slide['icon'].startswith('<') else f'<div style="font-size:52px;line-height:1;">{slide["icon"]}</div>'
+    # Build every part as plain Python strings to avoid Streamlit's markdown
+    # parser treating injected <div> fragments as fenced code blocks.
+    _icon_html = (
+        slide['icon']
+        if isinstance(slide['icon'], str) and slide['icon'].startswith('<')
+        else '<div style="font-size:52px;line-height:1;">' + str(slide['icon']) + '</div>'
+    )
     _dot_parts = []
     for i in range(TUTORIAL_STEPS):
         if i == step:
-            _dot_parts.append('<div style="width:12px;height:12px;border-radius:50%;background:#1a7a3c;display:inline-block;"></div>')
+            _dot_parts.append(
+                '<span style="display:inline-block;width:12px;height:12px;'
+                'border-radius:50%;background:#1a7a3c;margin:0 3px;"></span>'
+            )
         else:
-            _dot_parts.append('<div style="width:10px;height:10px;border-radius:50%;background:#dce8dc;display:inline-block;border:1.5px solid #a8cfb0;"></div>')
-    _dots = "".join(_dot_parts)
+            _dot_parts.append(
+                '<span style="display:inline-block;width:10px;height:10px;'
+                'border-radius:50%;background:#dce8dc;'
+                'border:1.5px solid #a8cfb0;margin:0 3px;"></span>'
+            )
+    _dots_html = "".join(_dot_parts)
+
+    # Assemble the complete modal HTML as a single Python string — no line breaks
+    # between injected fragments so the markdown parser sees one block element.
+    _modal_html = (
+        '<div style="position:fixed;inset:0;z-index:9999;'
+        'background:rgba(13,74,34,.82);backdrop-filter:blur(6px);'
+        'display:flex;align-items:center;justify-content:center;padding:20px;">'
+        '<div style="background:#ffffff;border-radius:28px;padding:40px 44px 32px;'
+        'max-width:680px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;">'
+        '<div style="position:absolute;top:0;left:0;right:0;height:6px;'
+        'background:linear-gradient(90deg,#0d4a22,#1a7a3c,#2a9d50,#f5a623);'
+        'border-radius:28px 28px 0 0;"></div>'
+        '<div style="text-align:center;margin-bottom:22px;">'
+        + _icon_html
+        + '<h2 style="font-size:22px;font-weight:800;margin:12px 0 4px;color:#0d4a22;">'
+        + slide['title']
+        + '</h2>'
+        '<p style="font-size:13px;color:#666;margin:0;">'
+        + slide['subtitle']
+        + '</p>'
+        '</div>'
+        '<hr style="border:none;border-top:1px solid #e8f0e8;margin:0 0 20px;">'
+        + slide['body']
+        + '<div style="display:flex;justify-content:center;gap:6px;margin-top:22px;align-items:center;">'
+        + _dots_html
+        + '</div>'
+        '</div>'
+        '</div>'
+    )
     with st.container():
-        st.markdown(f"""
-<div style="position:fixed;inset:0;z-index:9999;
-            background:rgba(13,74,34,.82);backdrop-filter:blur(6px);
-            display:flex;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#ffffff;border-radius:28px;padding:40px 44px 32px;
-              max-width:680px;width:100%;
-              box-shadow:0 24px 80px rgba(0,0,0,.35);position:relative;">
-    <!-- gradient header strip -->
-    <div style="position:absolute;top:0;left:0;right:0;height:6px;
-                background:linear-gradient(90deg,#0d4a22,#1a7a3c,#2a9d50,#f5a623);
-                border-radius:28px 28px 0 0;"></div>
-    <div style="text-align:center;margin-bottom:22px;">
-      {_icon_html}
-      <h2 style="font-size:22px;font-weight:800;margin:12px 0 4px;color:#0d4a22;">{slide['title']}</h2>
-      <p style="font-size:13px;color:#666;margin:0;">{slide['subtitle']}</p>
-    </div>
-    <hr style="border:none;border-top:1px solid #e8f0e8;margin:0 0 20px;">
-    {slide['body']}
-    <div style="display:flex;justify-content:center;gap:8px;margin-top:22px;">
-      {_dots}
-    </div>
-  </div>
-</div>
-""", unsafe_allow_html=True)
+        st.markdown(_modal_html, unsafe_allow_html=True)
 
         # ── navigation buttons ─────────────────────────────────────────────────
         btn_cols = st.columns([1, 1, 1, 1])
