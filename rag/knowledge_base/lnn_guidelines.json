@@ -21,11 +21,11 @@
     },
     {
       "id": "LNN-BYLAW-SEC-14",
-      "clause": "LNN Traffic & Transit Protocol Section 14 - Intra-City Corridor Transit Windows",
+      "clause": "LNN Transit Protocol (project-authored engineering summary - verify against LNN gazette)",
       "title": "Municipal Transit Buffer Ceiling and Hot Season Precautions",
-      "text": "Due to Lucknow's urban congestion across arterial corridors (Hazratganj, Polytechic Chauraha, Charbagh, Awadh Chauraha) and elevated ambient temperatures exceeding 38°C during peak summer months (April to July), surplus cooked meals in ambient transit must not spend more than 45 minutes in transit between campus dining halls and receiving shelters. Any transit projected to exceed 45 minutes must utilize insulated food carrier boxes or thermal insulated blankets.",
+      "text": "Due to Lucknow's urban congestion across arterial corridors (Hazratganj, Polytechnic Chauraha, Charbagh, Awadh Chauraha) and elevated ambient temperatures exceeding 38°C during peak summer months (April to July), surplus cooked meals in ambient transit must not spend more than 45 minutes in transit between campus dining halls and receiving shelters. Any transit projected to exceed 45 minutes must utilise insulated food carrier boxes or thermal insulated blankets. NOTE: This clause is a project-authored engineering summary based on FSSAI ambient holding limits and local traffic conditions. Exact section numbers and penalty amounts should be verified against the published LNN gazette before citation in official filings.",
       "category": "transit_protocol",
-      "keywords": ["transit", "traffic", "45 minutes", "corridor", "summer", "temperature", "insulated boxes", "zones"]
+      "keywords": ["transit", "traffic", "45 minutes", "corridor", "summer", "temperature", "insulated boxes", "zones", "project-authored"]
     },
     {
       "id": "LNN-BYLAW-SEC-18",

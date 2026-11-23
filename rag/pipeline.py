@@ -77,9 +77,11 @@ class AnnaSetuRAGPipeline:
             has_cold = s.get("cold_storage_available", False)
 
             # Zone proximity calculation
+            # Transit values aligned with compliance_engine LUCKNOW_ZONE_TRANSIT matrix
+            # (same-zone intra-corridor = 20 min, adjacent = 25-35 min, distant = 35+ min)
             if s_zone == origin_zone:
                 zone_score = 50.0
-                transit = 15
+                transit = 20   # matches LUCKNOW_ZONE_TRANSIT (x,x) = 20
                 distance_km = 2.1
             elif abs(s_zone - origin_zone) in (1, 3):
                 zone_score = 30.0
@@ -162,18 +164,18 @@ class AnnaSetuRAGPipeline:
 
         if eval_res["status"] == "NON_COMPLIANT_REJECTED":
             if "prohibited" in eval_res["reason"].lower():
-                compliance_rule_str = f"{rule_tag} PROHIBITED ITEM: Raw salads/cut perishables strictly banned under FSSAI Reg 4(4). Landfill dump banned (LNN Sec 10)."
+                compliance_rule_str = f"{rule_tag} PROHIBITED ITEM: Raw salads/cut perishables strictly banned under FSSAI Surplus Food Reg 4(4). Divert to bio-compost (not landfill)."
             else:
-                compliance_rule_str = f"{rule_tag} HOLDING LIMIT EXCEEDED: Elapsed ({timeline['elapsed_minutes']}m) > limit ({timeline['max_allowed_minutes']}m). Divert to bio-compost (LNN Sec 18)."
+                compliance_rule_str = f"{rule_tag} HOLDING LIMIT EXCEEDED: Elapsed ({timeline['elapsed_minutes']}m) + transit ({timeline['transit_minutes']}m) > limit ({timeline['max_allowed_minutes']}m). Divert to bio-compost."
         elif eval_res["status"] == "COMPLIANT_URGENT":
-            compliance_rule_str = f"{rule_tag} URGENT DISPATCH: Within 4-hour limit ({timeline['elapsed_minutes']}m elapsed). Must consume before {timeline['safe_pickup_by']} IST per FSSAI Reg 4(2) & LNN Sec 14."
+            compliance_rule_str = f"{rule_tag} URGENT DISPATCH: Within 4-hour limit ({timeline['elapsed_minutes']}m elapsed + {timeline['transit_minutes']}m transit). Must consume before {timeline['safe_pickup_by']} IST per FSSAI Surplus Food Reg 4(2)."
         else:
             if storage_condition == "hot_holding":
-                compliance_rule_str = f"{rule_tag} Active Hot-Holding (>=65°C) verified per FSSAI Reg 4(3). Safe window active until {timeline['safe_pickup_by']} IST."
+                compliance_rule_str = f"{rule_tag} Active Hot-Holding (>=65°C) verified per FSSAI Surplus Food Reg 4(3). Safe window active until {timeline['safe_pickup_by']} IST."
             elif storage_condition == "refrigerated":
-                compliance_rule_str = f"{rule_tag} Active Cold-Chain (<=5°C) verified per FSSAI Reg 4(3). Safe window active until {timeline['safe_pickup_by']} IST (24h)."
+                compliance_rule_str = f"{rule_tag} Active Cold-Chain (<=5°C) verified per FSSAI Surplus Food Reg 4(3). Safe window active until {timeline['safe_pickup_by']} IST (24h)."
             else:
-                compliance_rule_str = f"{rule_tag} Within 4-hour ambient holding limit per FSSAI Reg 4(2) & LNN Sec 14. Safe redistribution active until {timeline['safe_pickup_by']} IST."
+                compliance_rule_str = f"{rule_tag} Within 4-hour ambient holding limit per FSSAI Surplus Food Reg 4(2). Safe redistribution active until {timeline['safe_pickup_by']} IST."
 
         return {
             "retrieved_safety_rule": compliance_rule_str,

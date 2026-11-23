@@ -1301,51 +1301,90 @@ with tab2:
                 )
             base_rate_input = st.slider(
                 "Usual Attendance Rate (%)", min_value=50, max_value=100, value=85, step=1,
-                help="On a normal day, what % of registered students come to eat?"
+                help="Set this from your dining hall swipe logs or registration data."
+            )
+            st.caption("Attendance rate hint: check your canteen swipe-card log for the last 4 weeks.")
+            baseline_buffer_pct = st.slider(
+                "Your Kitchen's Current Overproduction Buffer (%)",
+                min_value=0, max_value=50, value=25, step=5,
+                help="How much extra do you currently cook beyond expected attendance? Default 25% is a common campus mess buffer."
             )
         btn_demand = st.button("🔮 Show Me How Much to Cook", type="primary", use_container_width=True)
 
     with col_d2:
         st.markdown("### Today's Cooking Plan")
         if btn_demand:
+            _buf = baseline_buffer_pct / 100.0
             d_res = pipeline.predict_meal_demand(
                 enrolled_students=int(enrolled_input), meal_type=meal_input,
                 day_of_week=day_input, academic_calendar=cal_input,
                 weather=weather_input, base_turnout_rate=float(base_rate_input) / 100.0
             )
+            _traditional = int(d_res['predicted_turnout_students'] * (1 + _buf))
+            _prevented = max(0, _traditional - d_res['recommended_cooking_target'])
             st.success(
                 f"**Expected Students Today:** {d_res['predicted_turnout_students']} "
                 f"({d_res['turnout_rate_pct']:.1f}% attendance)\n\n"
                 f"**Cook This Many Portions:** **{d_res['recommended_cooking_target']}** "
-                f"(instead of {d_res['traditional_unoptimized_target']} using a fixed 25% buffer)"
+                f"(instead of {_traditional} using your {baseline_buffer_pct}% buffer)"
             )
             st.caption(
-                "Modelled estimate - 1,200-student campus. Attendance factors use day-of-week "
-                "and weather multipliers; actual savings depend on your kitchen's base buffer."
+                f"Modelled estimate. 'Without App' baseline = expected students × (1 + {baseline_buffer_pct}%). "
+                "Attendance uses fixed day-of-week and weather multipliers, not regression-trained data. "
+                "Actual savings depend on your kitchen's real baseline — adjust the buffer slider above."
             )
             dm1, dm2, dm3 = st.columns(3)
-            dm1.metric("Meals of Waste Prevented", f"{d_res['portions_prevented_from_waste']}")
+            dm1.metric("Meals of Waste Prevented",
+                       f"{_prevented}",
+                       help=f"vs. your {baseline_buffer_pct}% buffer baseline")
             dm2.metric("Money Saved",               f"Rs.{d_res['cost_savings_inr']:,.2f}")
-            dm3.metric("Water Saved",               f"{d_res['portions_prevented_from_waste'] * 266:,.0f} L")
-            st.caption("Water factor: 266 L per meal (Mekonnen & Hoekstra 2011, avg Indian staple). Modelled estimate.")
+            dm3.metric("Water Saved",               f"{_prevented * 266:,.0f} L")
+            st.caption(
+                "Water factor: 266 L per meal (Mekonnen & Hoekstra 2011, avg Indian staple crop footprint). "
+                "Track B uses 760 L/kg food waste — a different system boundary (per kg of food, not per meal serving)."
+            )
+            st.info(
+                "ℹ️ **Note:** 'Meals prevented' counts overproduction avoided at the cooking stage. "
+                "'Meals rescued' (Track A) counts already-cooked surplus redirected to shelters. "
+                "These are measured at different points in the food chain — no double counting."
+            )
             st.write("---")
             st.markdown("#### Ingredients to Buy / Prepare (kg)")
             ing = d_res["ingredient_breakdown_kg"]
-            df_ing = pd.DataFrame([
-                {"Ingredient": "Rice & Grains",  "Without App (kg)": round(ing['rice_or_grains_kg']*1.25,1),   "With App (kg)": ing['rice_or_grains_kg'],   "Saved (kg)": round(ing['rice_or_grains_kg']*0.20,1)},
-                {"Ingredient": "Lentils / Dal",  "Without App (kg)": round(ing['dal_or_lentils_kg']*1.25,1),   "With App (kg)": ing['dal_or_lentils_kg'],   "Saved (kg)": round(ing['dal_or_lentils_kg']*0.20,1)},
-                {"Ingredient": "Vegetables",      "Without App (kg)": round(ing['vegetables_kg']*1.25,1),        "With App (kg)": ing['vegetables_kg'],        "Saved (kg)": round(ing['vegetables_kg']*0.20,1)},
-                {"Ingredient": "Cooking Oil",     "Without App (kg)": round(ing['cooking_oil_kg']*1.25,1),       "With App (kg)": ing['cooking_oil_kg'],       "Saved (kg)": round(ing['cooking_oil_kg']*0.20,1)},
-                {"Ingredient": "Dairy / Paneer",  "Without App (kg)": round(ing['dairy_or_paneer_kg']*1.25,1),   "With App (kg)": ing['dairy_or_paneer_kg'],   "Saved (kg)": round(ing['dairy_or_paneer_kg']*0.20,1)},
-                {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*1.25,1),            "With App (kg)": ing['spices_kg'],            "Saved (kg)": round(ing['spices_kg']*0.20,1)},
-            ])
+            _buf_factor = 1 + _buf
+            _save_factor = _buf / _buf_factor  # fraction saved vs buffer baseline
+            rows = [
+                {"Ingredient": "Rice & Grains",  "Without App (kg)": round(ing['rice_or_grains_kg']*_buf_factor,1),   "With App (kg)": round(ing['rice_or_grains_kg'],1),   "Saved (kg)": round(ing['rice_or_grains_kg']*_save_factor,1)},
+                {"Ingredient": "Lentils / Dal",  "Without App (kg)": round(ing['dal_or_lentils_kg']*_buf_factor,1),   "With App (kg)": round(ing['dal_or_lentils_kg'],1),   "Saved (kg)": round(ing['dal_or_lentils_kg']*_save_factor,1)},
+                {"Ingredient": "Vegetables",      "Without App (kg)": round(ing['vegetables_kg']*_buf_factor,1),        "With App (kg)": round(ing['vegetables_kg'],1),        "Saved (kg)": round(ing['vegetables_kg']*_save_factor,1)},
+                {"Ingredient": "Cooking Oil",     "Without App (kg)": round(ing['cooking_oil_kg']*_buf_factor,1),       "With App (kg)": round(ing['cooking_oil_kg'],1),       "Saved (kg)": round(ing['cooking_oil_kg']*_save_factor,1)},
+                {"Ingredient": "Dairy / Paneer",  "Without App (kg)": round(ing['dairy_or_paneer_kg']*_buf_factor,1),   "With App (kg)": round(ing['dairy_or_paneer_kg'],1),   "Saved (kg)": round(ing['dairy_or_paneer_kg']*_save_factor,1)},
+                {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*_buf_factor,1),            "With App (kg)": round(ing['spices_kg'],1),            "Saved (kg)": round(ing['spices_kg']*_save_factor,1)},
+            ]
+            # Totals row
+            rows.append({
+                "Ingredient": "**TOTAL**",
+                "Without App (kg)": round(sum(r["Without App (kg)"] for r in rows), 1),
+                "With App (kg)":    round(sum(r["With App (kg)"]    for r in rows), 1),
+                "Saved (kg)":       round(sum(r["Saved (kg)"]       for r in rows), 1),
+            })
+            df_ing = pd.DataFrame(rows)
             st.dataframe(df_ing, use_container_width=True, hide_index=True)
             st.caption(
-                "Modelled estimates only. 'Without App' column assumes a fixed 25% overproduction buffer; "
-                "'Saved' column is exactly 20% of the optimised target. "
-                "Actual savings depend on your kitchen's real baseline."
+                f"'Without App' assumes your {baseline_buffer_pct}% overproduction buffer. "
+                "'Saved' = Without App minus With App. Modelled estimates only."
             )
-            st.info(f"**Kitchen Instruction:** {d_res['recommendation_summary']}")
+            # Prominent kitchen instruction card
+            st.markdown(f"""
+<div style="background:#1b5e20;border-radius:14px;padding:18px 22px;margin-top:12px;">
+  <div style="font-size:13px;font-weight:700;color:#a5d6a7;margin-bottom:4px;">
+    👨‍🍳 KITCHEN INSTRUCTION FOR TODAY
+  </div>
+  <div style="font-size:17px;font-weight:800;color:#ffffff;line-height:1.5;">
+    {d_res['recommendation_summary']}
+  </div>
+</div>
+""", unsafe_allow_html=True)
         else:
             st.markdown("""
 <div class="section-card" style="padding:26px 24px;border:1.5px solid #f0dfb4;border-radius:20px;box-shadow:0 6px 24px rgba(249,168,37,.06);background:#ffffff;">
