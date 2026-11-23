@@ -48,18 +48,25 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
     background: #f4f9f5 !important;
 }
 
-/* ── All text dark by default ── */
-.stApp, .stApp *, [data-testid="stAppViewContainer"] *,
+/* ── All text dark by default — targeted, NOT .stApp * (too broad) ── */
 [data-testid="stMarkdownContainer"] p,
 [data-testid="stMarkdownContainer"] li,
 [data-testid="stMarkdownContainer"] span,
+[data-testid="stMarkdownContainer"] strong,
 .stTextInput label, .stSelectbox label, .stNumberInput label,
 .stSlider label, .stTextArea label,
 [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] p,
-.stMarkdown p, .stMarkdown li {
+.stMarkdown p, .stMarkdown li, .stMarkdown strong {
     color: #1a1a1a !important;
     font-family: 'Segoe UI', system-ui, sans-serif;
 }
+
+/* ── Hero text — explicit white, highest specificity ── */
+.hero-banner h1,
+.hero-banner h1 *,
+div.hero-banner h1 { color: #ffffff !important; }
+div.hero-banner p,
+div.hero-banner span { color: #ffffff !important; }
 
 /* ── Fix text boxes — white bg, dark text, fully rounded ── */
 .stTextArea textarea,
@@ -168,21 +175,24 @@ html, body { font-family: 'Segoe UI', system-ui, sans-serif; }
 .stTabs [data-baseweb="tab"]::before { display: none !important; }
 .stTabs [data-baseweb="tab-highlight"] { display: none !important; }
 .stTabs [data-baseweb="tab-border"]    { display: none !important; }
+/* Active tab: green box, bold orange text */
 .stTabs [aria-selected="true"] {
     background: linear-gradient(135deg, #1a7a3c, #2a9d50) !important;
-    color: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(26,122,60,.30) !important;
+    color: #f5a623 !important;
+    font-weight: 800 !important;
+    box-shadow: 0 2px 10px rgba(26,122,60,.35) !important;
 }
-.stTabs [aria-selected="false"] { color: #2a2a2a !important; }
+.stTabs [aria-selected="false"] { color: #2a2a2a !important; font-weight: 600 !important; }
 .stTabs [aria-selected="false"]:hover {
     background: #e8f5e9 !important; color: #1a7a3c !important;
 }
+/* Propagate colour to all children of tab button */
 .stTabs [data-baseweb="tab"] p,
 .stTabs [data-baseweb="tab"] span,
 .stTabs [data-baseweb="tab"] div { color: inherit !important; }
 .stTabs [aria-selected="true"] p,
 .stTabs [aria-selected="true"] span,
-.stTabs [aria-selected="true"] div { color: #ffffff !important; }
+.stTabs [aria-selected="true"] div { color: #f5a623 !important; font-weight: 800 !important; }
 
 /* ── Primary button — green gradient, rounded ── */
 .stButton > button[kind="primary"] {
@@ -600,7 +610,7 @@ st.markdown(f"""
 # small "restart tutorial" link
 restart_col, _ = st.columns([1, 5])
 with restart_col:
-    if st.button("📖 Restart Tutorial", help="See the step-by-step guide again"):
+    if st.button("📖 Restart Tutorial", help="See the step-by-step guide again", type="secondary"):
         st.session_state.tutorial_done = False
         st.session_state.tutorial_step = 0
         st.rerun()
@@ -890,7 +900,7 @@ with tab2:
 
         st.markdown('<div class="step-pill" style="margin-top:14px;">📺 Kiosk Screen — What the Diner Sees</div>', unsafe_allow_html=True)
         st.markdown(f"""
-<div style="background:#1a1f2e;border-radius:14px;padding:20px 24px;color:white;font-size:14px;line-height:1.75;">
+<div style="background:#0d4a22;border-radius:14px;padding:20px 24px;color:white;font-size:14px;line-height:1.75;">
   <div style="font-size:18px;font-weight:700;color:#ffd54f;margin-bottom:10px;">
     ⚠️ Hey! You left <strong>{sim_waste_grams}g</strong> of food on your plate.
   </div>
