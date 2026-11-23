@@ -35,6 +35,10 @@ st.markdown("""
 /* ── Font & base ── */
 html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
 
+/* ── Force light color-scheme so browser never applies dark-mode UA styles ── */
+:root { color-scheme: light !important; }
+html { color-scheme: light !important; }
+
 /* ── App background ── */
 .stApp,
 [data-testid="stAppViewContainer"],
@@ -43,120 +47,11 @@ html, body, [class*="css"] { font-family: 'Segoe UI', system-ui, sans-serif; }
     background: radial-gradient(circle at 50% 0%, #ebf7ee 0%, #f4f9f5 55%, #edf6ef 100%) !important;
 }
 
-/* ── Streamlit Top-Right Header & Toolbar ── */
+/* ── Streamlit Top-Right Header & Toolbar: transparent, let Streamlit handle icons ── */
 [data-testid="stHeader"],
 header[data-testid="stHeader"],
 .stAppHeader {
     background: transparent !important;
-}
-
-/* Header toolbar action buttons and main menu button: rounded white pills with green border */
-[data-testid="stToolbarActions"] button,
-.stToolbarActionButton button,
-div[data-testid="stToolbarActionButton"] button,
-[data-testid="stMainMenu"] button,
-button[data-testid="stMainMenuButton"] {
-    background-color: #ffffff !important;
-    background: #ffffff !important;
-    border: 1.5px solid #1a7a3c !important;
-    border-radius: 999px !important;
-    color: #1a7a3c !important;
-    padding: 4px 12px !important;
-    min-height: 32px !important;
-    height: 32px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 6px !important;
-    box-shadow: 0 1px 4px rgba(26,122,60,.12) !important;
-    cursor: pointer !important;
-}
-
-[data-testid="stToolbarActions"] button:hover,
-.stToolbarActionButton button:hover,
-div[data-testid="stToolbarActionButton"] button:hover,
-[data-testid="stMainMenu"] button:hover,
-button[data-testid="stMainMenuButton"]:hover {
-    background-color: #e8f5e9 !important;
-    background: #e8f5e9 !important;
-    border-color: #0d4a22 !important;
-}
-
-/* Header Action Label (e.g. "Share") */
-[data-testid="stToolbarActionButtonLabel"],
-[data-testid="stToolbarActions"] span {
-    color: #1a7a3c !important;
-    font-weight: 700 !important;
-    font-size: 13px !important;
-    display: inline-block !important;
-    line-height: 1 !important;
-}
-
-/* Header Action Icons (DO NOT override background URL to transparent!) */
-[data-testid="stToolbarActionButtonIcon"],
-div[data-testid="stToolbarActionButtonIcon"] {
-    display: inline-block !important;
-    width: 16px !important;
-    height: 16px !important;
-    min-width: 16px !important;
-    min-height: 16px !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    filter: brightness(0) saturate(100%) invert(34%) sepia(74%) saturate(478%) hue-rotate(93deg) brightness(93%) contrast(89%) !important;
-}
-
-/* Any SVGs inside Toolbar Action Buttons */
-[data-testid="stToolbarActions"] svg,
-.stToolbarActionButton svg {
-    color: #1a7a3c !important;
-    width: 16px !important;
-    height: 16px !important;
-}
-[data-testid="stToolbarActions"] svg path[fill="none"],
-.stToolbarActionButton svg path[fill="none"] {
-    fill: none !important;
-    stroke: none !important;
-}
-[data-testid="stToolbarActions"] svg path:not([fill="none"]),
-.stToolbarActionButton svg path:not([fill="none"]) {
-    fill: #1a7a3c !important;
-}
-[data-testid="stToolbarActions"] img,
-.stToolbarActionButton img {
-    width: 16px !important;
-    height: 16px !important;
-    display: inline-block !important;
-}
-
-/* Main Menu button sizing */
-button[data-testid="stMainMenuButton"],
-[data-testid="stMainMenu"] button {
-    width: 32px !important;
-    min-width: 32px !important;
-    padding: 0 !important;
-}
-
-/* Main Menu 3-dots SVG */
-[data-testid="stMainMenu"] svg,
-button[data-testid="stMainMenuButton"] svg {
-    color: #1a7a3c !important;
-    width: 18px !important;
-    height: 18px !important;
-}
-
-/* Transparent bounding box inside 3-dots SVG: strictly none */
-[data-testid="stMainMenu"] svg path[fill="none"],
-button[data-testid="stMainMenuButton"] svg path[fill="none"],
-[data-testid="stHeader"] svg path[fill="none"] {
-    fill: none !important;
-    stroke: none !important;
-}
-
-/* The actual 3 dots: filled with emerald green */
-[data-testid="stMainMenu"] svg path:not([fill="none"]),
-button[data-testid="stMainMenuButton"] svg path:not([fill="none"]) {
-    fill: #1a7a3c !important;
-    stroke: none !important;
 }
 
 /* ── All layout blocks transparent so app bg shows through ── */
@@ -199,6 +94,11 @@ div[data-testid="stForm"] > div {
 }
 
 /* ── ELIMINATE ALL BLACK BOXES ACROSS THE ENTIRE APP ── */
+/* Force light appearance on every BaseUI/Streamlit input control */
+div[data-baseweb],
+div[data-baseweb] * {
+    color-scheme: light !important;
+}
 div[data-baseweb="select"],
 div[data-baseweb="select"] > div,
 div[data-baseweb="select"] > div > div,
@@ -238,10 +138,7 @@ div[data-baseweb="select"] svg path {
     color: #1a7a3c !important;
 }
 
-/* ── RESTART TUTORIAL PILL & BUTTON: STRICTLY PLAIN WHITE WITH CLEAR GREEN TEXT ── */
-.restart-tutorial-container,
-.restart-tutorial-container div,
-.restart-tutorial-container [data-testid="stButton"],
+/* ── RESTART TUTORIAL BUTTON: white bg, green text, pill shape ── */
 .restart-tutorial-container button,
 .restart-tutorial-container button[kind="secondary"],
 .restart-tutorial-container button[data-testid="baseButton-secondary"] {
@@ -254,13 +151,12 @@ div[data-baseweb="select"] svg path {
     font-size: 14px !important;
     box-shadow: 0 2px 10px rgba(26,122,60,.2) !important;
 }
-.restart-tutorial-container button *,
-.restart-tutorial-container [data-testid="stMarkdownContainer"] p,
 .restart-tutorial-container button p,
 .restart-tutorial-container button span,
 .restart-tutorial-container button div {
     color: #0d4a22 !important;
     background: transparent !important;
+    background-color: transparent !important;
     font-weight: 800 !important;
     font-size: 14px !important;
     opacity: 1 !important;
@@ -272,7 +168,8 @@ div[data-baseweb="select"] svg path {
     border-color: #0d4a22 !important;
     color: #0d4a22 !important;
 }
-.restart-tutorial-container button:hover * {
+.restart-tutorial-container button:hover p,
+.restart-tutorial-container button:hover span {
     color: #0d4a22 !important;
 }
 
@@ -566,17 +463,21 @@ button[kind="secondary"],
     box-shadow: 0 2px 8px rgba(26,122,60,.16) !important;
     cursor: pointer !important;
 }
-div[data-testid="stButton"] button *,
-div[data-testid="stButton"] button[kind="secondary"] *,
-.stButton button *,
-.stButton > button *,
-button[data-testid="baseButton-secondary"] *,
-button[kind="secondary"] *,
-div[data-testid="stButton"] [data-testid="stMarkdownContainer"] p,
+/* Explicitly target the inner <p> that Streamlit renders inside every button */
+div[data-testid="stButton"] button p,
+div[data-testid="stButton"] button span,
+div[data-testid="stButton"] button div,
+.stButton > button p,
+.stButton > button span,
+.stButton > button div,
 button[data-testid="baseButton-secondary"] p,
-.restart-tutorial-container button * {
+button[data-testid="baseButton-secondary"] span,
+.restart-tutorial-container button p,
+.restart-tutorial-container button span,
+.restart-tutorial-container button div {
     color: #0d4a22 !important;
     background: transparent !important;
+    background-color: transparent !important;
     font-weight: 700 !important;
     font-size: 13.5px !important;
     opacity: 1 !important;
@@ -592,9 +493,12 @@ button[kind="secondary"]:hover,
     border-color: #0d4a22 !important;
     color: #0d4a22 !important;
 }
-div[data-testid="stButton"] button:hover *,
-button[data-testid="baseButton-secondary"]:hover *,
-.restart-tutorial-container button:hover * {
+div[data-testid="stButton"] button:hover p,
+div[data-testid="stButton"] button:hover span,
+button[data-testid="baseButton-secondary"]:hover p,
+button[data-testid="baseButton-secondary"]:hover span,
+.restart-tutorial-container button:hover p,
+.restart-tutorial-container button:hover span {
     color: #0d4a22 !important;
 }
 
@@ -731,6 +635,40 @@ MEAL_PRESETS = {
     "Other":            {"time_prep": "11:00", "time_assess": "12:30", "item": "Mixed Institutional Buffet Catering Spread",     "servings": 60, "category_idx": 0, "storage_idx": 0},
 }
 
+# Demo scenarios for the 3 quick-load buttons
+DEMO_SCENARIOS = {
+    "red": {
+        "label": "🔴 Plate Waste (Rejected)",
+        "meal": "Lunch",
+        "category_idx": 5,   # plate_waste - prohibited
+        "storage_idx": 0,
+        "time_prep": "12:00", "time_assess": "13:00",
+        "item": "Mixed plate scraps from diners' trays",
+        "servings": 20,
+        "help": "Plate waste - always rejected regardless of time.",
+    },
+    "yellow": {
+        "label": "🟡 Urgent Window (Act Now)",
+        "meal": "Lunch",
+        "category_idx": 0,   # cooked_grains_curry
+        "storage_idx": 0,
+        "time_prep": "12:00", "time_assess": "13:50",
+        "item": "Vegetable Pulao, Dal Tadka",
+        "servings": 40,
+        "help": "High-moisture food cooked ~2h ago at room temperature - urgent donation window.",
+    },
+    "green": {
+        "label": "🟢 Safe to Donate",
+        "meal": "Dinner",
+        "category_idx": 1,   # dry_staples_roti
+        "storage_idx": 0,
+        "time_prep": "19:30", "time_assess": "20:15",
+        "item": "Rotis and Dry Sabzi",
+        "servings": 60,
+        "help": "Dry staples, only 45 min old - well within safe window.",
+    },
+}
+
 SHELTER_LIST = ["Auto-Match Closest Verified Shelter (Recommended)"] + pipeline.get_shelter_names()
 
 # =============================================================================
@@ -754,7 +692,7 @@ SLIDE_CONTENT = [
   Anna-Setu helps your team donate that leftover food to nearby shelters -
   <strong>safely and quickly.</strong><br><br>
   Food that cannot be donated is turned into
-  <strong>clean compost fertilizer</strong> in 24 hours - nothing goes to landfill.
+  <strong>dry soil conditioner</strong> in 24 hours via a PTC bio-recycler - nothing goes to landfill.
 </p>
 <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;">
   <div style="background:#e8f5e9;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
@@ -1053,11 +991,23 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 with tab1:
     st.markdown("""
 <div class="section-card" style="background:#f1f8f1;border-left:4px solid #2e7d32;">
-  <strong>How to use:</strong> Fill in the details of what food is left over below.
-  The app tells you if it is safe to donate, finds the nearest shelter,
-  and writes a WhatsApp message you can send in one tap.
+  <strong>How to use:</strong> Fill in the details of what food is left over, or tap a demo scenario below.
+  The app applies FSSAI safety rules, matches the nearest sample shelter, and generates a WhatsApp advance notice.
 </div>
 """, unsafe_allow_html=True)
+
+    # ── Demo scenario loader ──────────────────────────────────────────────────
+    if "demo_key" not in st.session_state:
+        st.session_state.demo_key = None
+
+    st.markdown('<div class="step-pill" style="background:linear-gradient(90deg,#555,#777);">🎬 Load a Demo Scenario</div>', unsafe_allow_html=True)
+    demo_cols = st.columns(3)
+    for idx, (key, sc) in enumerate(DEMO_SCENARIOS.items()):
+        with demo_cols[idx]:
+            if st.button(sc["label"], key=f"demo_{key}", help=sc["help"], use_container_width=True):
+                st.session_state.demo_key = key
+
+    active = DEMO_SCENARIOS.get(st.session_state.demo_key)
 
     col_input, col_output = st.columns([1, 1], gap="large")
 
@@ -1078,38 +1028,47 @@ with tab1:
         with st.container(border=True):
             c_m1, c_m2 = st.columns(2)
             with c_m1:
+                _meal_options = ["Lunch", "Dinner", "Breakfast", "Snacks / High Tea", "Other"]
+                _meal_default = active["meal"] if active else "Lunch"
                 meal_type_choice = st.selectbox(
-                    "Meal Type",
-                    ["Lunch", "Dinner", "Breakfast", "Snacks / High Tea", "Other"],
-                    index=0
+                    "Meal Type", _meal_options,
+                    index=_meal_options.index(_meal_default)
                 )
             preset = MEAL_PRESETS.get(meal_type_choice, MEAL_PRESETS["Lunch"])
+            _servings_default = active["servings"] if active else preset["servings"]
             with c_m2:
                 servings_input = st.number_input(
                     "Number of Servings Left",
-                    min_value=1, max_value=2000, value=preset["servings"], step=5
+                    min_value=1, max_value=2000, value=_servings_default, step=5
                 )
-            item_input = st.text_input("Food Items (describe briefly)", value=preset["item"])
+            item_input = st.text_input(
+                "Food Items (describe briefly)",
+                value=active["item"] if active else preset["item"]
+            )
             category_choice = st.selectbox(
                 "Food Type",
-                [o[0] for o in CATEGORY_OPTIONS], index=preset["category_idx"]
+                [o[0] for o in CATEGORY_OPTIONS],
+                index=active["category_idx"] if active else preset["category_idx"]
             )
             c_t1, c_t2 = st.columns(2)
             with c_t1:
                 time_prep_input = st.text_input(
-                    "Time Food Was Cooked (HH:MM)", value=preset["time_prep"],
+                    "Time Food Was Cooked (HH:MM)",
+                    value=active["time_prep"] if active else preset["time_prep"],
                     help="24-hour format, e.g. 13:30 means 1:30 PM"
                 )
             with c_t2:
                 time_assess_input = st.text_input(
-                    "Current Time (HH:MM)", value=preset["time_assess"],
+                    "Current Time (HH:MM)",
+                    value=active["time_assess"] if active else preset["time_assess"],
                     help="What time is it right now?"
                 )
             c_s1, c_s2 = st.columns(2)
             with c_s1:
                 storage_choice = st.selectbox(
                     "How is the food stored right now?",
-                    [o[0] for o in STORAGE_OPTIONS], index=preset["storage_idx"]
+                    [o[0] for o in STORAGE_OPTIONS],
+                    index=active["storage_idx"] if active else preset["storage_idx"]
                 )
             with c_s2:
                 temp_input = st.number_input(
@@ -1117,6 +1076,30 @@ with tab1:
                     min_value=0.0, max_value=100.0, value=0.0, step=0.5,
                     help="Measure with a thermometer. Leave as 0 if you haven't measured."
                 )
+            # Input validation
+            _time_error = None
+            _temp_warning = None
+            try:
+                _tp = datetime.strptime(time_prep_input.strip(), "%H:%M")
+                _ta = datetime.strptime(time_assess_input.strip(), "%H:%M")
+                if _ta < _tp:
+                    _time_error = (
+                        "Current time is earlier than cooking time. "
+                        "If the food was cooked yesterday, that case is not yet supported - "
+                        "enter today's times only."
+                    )
+            except ValueError:
+                _time_error = "Enter times in HH:MM format, e.g. 13:30 for 1:30 PM."
+            storage_key_check = STORAGE_DICT[storage_choice]
+            if storage_key_check in ("hot_holding", "refrigerated") and float(temp_input) == 0.0:
+                _temp_warning = (
+                    f"You selected {'hot-holding' if storage_key_check == 'hot_holding' else 'refrigerated'} storage. "
+                    "Please measure and enter the actual food temperature for an accurate verdict."
+                )
+            if _time_error:
+                st.error(f"⏰ {_time_error}", icon="⚠️")
+            if _temp_warning:
+                st.warning(f"🌡️ {_temp_warning}", icon="🌡️")
 
         # Live safety preview
         st.markdown('<div class="step-pill">🔍 Step 3 - Live Safety Preview</div>', unsafe_allow_html=True)
@@ -1145,85 +1128,118 @@ with tab1:
     with col_output:
         st.markdown("### Results")
         if run_button:
-            res = pipeline.evaluate_surplus(
-                item=item_input, servings=int(servings_input), category_key=category_key,
-                time_prepared=time_prep_input, assessment_time=time_assess_input,
-                storage_condition=storage_key, origin_zone=origin_zone_id,
-                shelter_display_name=sync_data["ai_matched_shelter"],
-                pickup_location=pickup_loc_input, facility_place=facility_input,
-                meal_type=meal_type_choice, measured_temp_celsius=temp_c_val
-            )
-            eval_data = res["evaluation"]
-            timeline  = eval_data["timeline"]
-            status    = eval_data["status"]
-
-            if status == "COMPLIANT_SAFE":
-                st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-            elif status == "COMPLIANT_URGENT":
-                st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+            # Block submission if time inputs are invalid
+            if _time_error:
+                st.error("Fix the time inputs on the left before running the check.", icon="⚠️")
             else:
-                st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-
-            if eval_data.get("temp_summary"):
-                st.warning(f"🌡️ **Temperature:** {eval_data['temp_summary']}")
-
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Time Since Cooking",  f"{timeline['elapsed_minutes']} min")
-            m2.metric("Delivery Time",       f"{timeline['transit_minutes']} min")
-            m3.metric("Total Time Out",      f"{timeline['total_exposure_minutes']} min")
-            m4.metric("Safe Until",          f"{timeline['safe_pickup_by']}")
-
-            st.write("---")
-            st.markdown("#### 📱 WhatsApp Alert - Ready to Copy and Send")
-            st.code(res["broadcast_message"], language="markdown")
-
-            with st.expander("📜 Food Safety Rules That Apply", expanded=True):
-                for rule in eval_data.get("retrieved_rules", []):
-                    st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}**")
-                    st.info(f"\"{rule.get('text')}\"")
-
-            with st.expander("📑 Handover Record (FSSAI Schedule II fields)", expanded=False):
-                st.markdown(
-                    "_Note: This record is a decision-support tool. The mess manager remains "
-                    "accountable as the FBO under their own FSMS. Add batch number, best-before "
-                    "date and recipient FSSAI registration before filing._",
-                    unsafe_allow_html=False
+                res = pipeline.evaluate_surplus(
+                    item=item_input, servings=int(servings_input), category_key=category_key,
+                    time_prepared=time_prep_input, assessment_time=time_assess_input,
+                    storage_condition=storage_key, origin_zone=origin_zone_id,
+                    shelter_display_name=sync_data["ai_matched_shelter"],
+                    pickup_location=pickup_loc_input, facility_place=facility_input,
+                    meal_type=meal_type_choice, measured_temp_celsius=temp_c_val
                 )
-                st.code(res["audit_manifest"], language="text")
+                eval_data = res["evaluation"]
+                timeline  = eval_data["timeline"]
+                status    = eval_data["status"]
+
+                # ── Verdict banner - shown first, largest element ──────────
+                safe_until = timeline.get("safe_pickup_by", "N/A")
+                if status == "COMPLIANT_SAFE":
+                    st.markdown(f"""
+<div style="background:#1b5e20;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
+  <div style="font-size:28px;margin-bottom:4px;">🟢</div>
+  <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
+  <div style="font-size:14px;color:#a5d6a7;margin-top:6px;">Safe until <strong style="color:#ffffff;">{safe_until}</strong></div>
+  <div style="font-size:13px;color:#c8e6c9;margin-top:8px;">{eval_data['reason']}</div>
+</div>""", unsafe_allow_html=True)
+                elif status == "COMPLIANT_URGENT":
+                    st.markdown(f"""
+<div style="background:#e65100;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
+  <div style="font-size:28px;margin-bottom:4px;">🟡</div>
+  <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
+  <div style="font-size:14px;color:#ffe0b2;margin-top:6px;">Safe until <strong style="color:#ffffff;">{safe_until}</strong> - act now</div>
+  <div style="font-size:13px;color:#ffccbc;margin-top:8px;">{eval_data['reason']}</div>
+</div>""", unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+<div style="background:#b71c1c;border-radius:16px;padding:20px 24px;margin-bottom:16px;text-align:center;">
+  <div style="font-size:28px;margin-bottom:4px;">🔴</div>
+  <div style="font-size:22px;font-weight:800;color:#ffffff;">{eval_data['badge']}</div>
+  <div style="font-size:14px;color:#ffcdd2;margin-top:6px;">Cannot be donated</div>
+  <div style="font-size:13px;color:#ef9a9a;margin-top:8px;">{eval_data['reason']}</div>
+</div>""", unsafe_allow_html=True)
+
+                if eval_data.get("temp_summary"):
+                    st.warning(f"🌡️ **Temperature:** {eval_data['temp_summary']}")
+
+                # ── Time metrics ───────────────────────────────────────────
+                m1, m2, m3, m4 = st.columns(4)
+                m1.metric("Time Since Cooking",  f"{timeline['elapsed_minutes']} min")
+                m2.metric("Delivery Time",       f"{timeline['transit_minutes']} min")
+                m3.metric("Total Time Out",      f"{timeline['total_exposure_minutes']} min")
+                m4.metric("Safe Until",          f"{safe_until}")
+
+                # ── WhatsApp alert in expander ─────────────────────────────
+                with st.expander("📱 WhatsApp Advance Notice - tap to copy", expanded=True):
+                    st.caption(
+                        "Copy this message and send via WhatsApp to give the shelter advance notice "
+                        "as required by FSSAI Surplus Food Regulations 2019."
+                    )
+                    st.code(res["broadcast_message"], language="markdown")
+
+                # ── Rules ──────────────────────────────────────────────────
+                with st.expander("📜 Food Safety Rules That Apply", expanded=False):
+                    for rule in eval_data.get("retrieved_rules", []):
+                        st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}**")
+                        st.info(f"\"{rule.get('text')}\"")
+
+                # ── Manifest ───────────────────────────────────────────────
+                with st.expander("📑 Handover Record (FSSAI Schedule II fields)", expanded=False):
+                    st.markdown(
+                        "_Decision-support tool only. Mess manager remains accountable as FBO. "
+                        "Add batch number, best-before date and recipient FSSAI registration before filing._"
+                    )
+                    st.code(res["audit_manifest"], language="text")
         else:
             st.markdown("""
-<div class="section-card" style="padding:26px 24px;border:1.5px solid #cce5d2;border-radius:20px;box-shadow:0 6px 24px rgba(13,74,34,.06);background:#ffffff;">
-  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
-    <div style="width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#1a7a3c,#2a9d50);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:22px;box-shadow:0 3px 8px rgba(26,122,60,.3);">⚡</div>
+<div class="section-card" style="padding:22px 24px;border:1.5px solid #cce5d2;border-radius:20px;background:#ffffff;">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+    <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#1a7a3c,#2a9d50);display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:20px;">🛡️</div>
     <div>
-      <h4 style="margin:0;font-size:16px;font-weight:800;color:#0d4a22;">Rule-Based Safety Engine + Keyword Retriever</h4>
+      <h4 style="margin:0;font-size:15px;font-weight:800;color:#0d4a22;">Rule-Based Safety Engine</h4>
       <p style="margin:0;font-size:12px;color:#4a6b51;">FSSAI Surplus Food Regulations 2019 - deterministic rules, keyword-matched clause retrieval</p>
     </div>
   </div>
-  
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
-      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">🛡️ Safety Verdict</div>
-      <div style="font-size:12px;color:#333;line-height:1.5;">Calculates microbial safety window and maximum transit exposure.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:12px;padding:12px 14px;">
+      <div style="font-size:12px;font-weight:700;color:#1a7a3c;margin-bottom:3px;">🟢🟡🔴 Verdict Banner</div>
+      <div style="font-size:11px;color:#333;line-height:1.5;">Large coloured banner with "Safe until HH:MM" shown first.</div>
     </div>
-    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
-      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">📍 Proximity Routing</div>
-      <div style="font-size:12px;color:#333;line-height:1.5;">Matches the nearest verified NGO shelter within a 45-minute drive window.</div>
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:12px;padding:12px 14px;">
+      <div style="font-size:12px;font-weight:700;color:#1a7a3c;margin-bottom:3px;">📍 Sample Shelter Match</div>
+      <div style="font-size:11px;color:#333;line-height:1.5;">Nearest sample shelter matched by zone. Confirm availability before dispatch.</div>
     </div>
-    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
-      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">📱 WhatsApp Alert</div>
-      <div style="font-size:12px;color:#333;line-height:1.5;">Auto-compiles verified donor message with gate pickup directions.</div>
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:12px;padding:12px 14px;">
+      <div style="font-size:12px;font-weight:700;color:#1a7a3c;margin-bottom:3px;">📱 WhatsApp Advance Notice</div>
+      <div style="font-size:11px;color:#333;line-height:1.5;">Ready-to-copy advance notice message per FSSAI requirements.</div>
     </div>
-    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:14px;padding:14px 16px;">
-      <div style="font-size:13px;font-weight:700;color:#1a7a3c;margin-bottom:4px;">📑 Form B Manifest</div>
-      <div style="font-size:12px;color:#333;line-height:1.5;">Generates official FSSAI Surplus Food donation regulatory register.</div>
+    <div style="background:#f4f9f5;border:1px solid #d8ebd9;border-radius:12px;padding:12px 14px;">
+      <div style="font-size:12px;font-weight:700;color:#1a7a3c;margin-bottom:3px;">📑 Schedule II Record</div>
+      <div style="font-size:11px;color:#333;line-height:1.5;">Draft FSSAI Schedule II handover record - add batch/best-before before filing.</div>
     </div>
   </div>
-
-  <div style="background:linear-gradient(135deg, #eaf6ec 0%, #f1f9f2 100%);border:1.5px dashed #a8cfb0;border-radius:14px;padding:16px;text-align:center;">
-    <div style="font-size:24px;margin-bottom:6px;">👈</div>
-    <div style="font-weight:700;color:#0d4a22;font-size:13.5px;margin-bottom:2px;">Complete Step 1 &amp; Step 2 on the left</div>
-    <div style="font-size:12px;color:#55785c;">Click <strong>"Check if This Food Can Be Donated"</strong> to run the safety check.</div>
+  <div style="background:#eaf6ec;border:1.5px dashed #a8cfb0;border-radius:12px;padding:14px;text-align:center;">
+    <div style="font-size:22px;margin-bottom:4px;">👈</div>
+    <div style="font-weight:700;color:#0d4a22;font-size:13px;margin-bottom:2px;">Fill the form or tap a demo scenario above</div>
+    <div style="font-size:11px;color:#55785c;">Then click <strong>"Check if This Food Can Be Donated"</strong></div>
+  </div>
+  <div style="margin-top:12px;padding:10px 14px;background:#fff8e1;border-radius:10px;border-left:3px solid #f9a825;">
+    <div style="font-size:11px;color:#5d4037;line-height:1.6;">
+      <strong>About shelter data:</strong> Shelters shown are sample/illustrative data.
+      Confirm FSSAI registration, live capacity and acceptance before dispatching food.
+    </div>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -1296,6 +1312,7 @@ with tab2:
             dm1.metric("Meals of Waste Prevented", f"{d_res['portions_prevented_from_waste']}")
             dm2.metric("Money Saved",               f"Rs.{d_res['cost_savings_inr']:,.2f}")
             dm3.metric("Water Saved",               f"{d_res['portions_prevented_from_waste'] * 266:,.0f} L")
+            st.caption("Water factor: 266 L per meal (Mekonnen & Hoekstra 2011, avg Indian staple). Modelled estimate.")
             st.write("---")
             st.markdown("#### Ingredients to Buy / Prepare (kg)")
             ing = d_res["ingredient_breakdown_kg"]
@@ -1308,6 +1325,11 @@ with tab2:
                 {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*1.25,1),            "With App (kg)": ing['spices_kg'],            "Saved (kg)": round(ing['spices_kg']*0.20,1)},
             ])
             st.dataframe(df_ing, use_container_width=True, hide_index=True)
+            st.caption(
+                "Modelled estimates only. 'Without App' column assumes a fixed 25% overproduction buffer; "
+                "'Saved' column is exactly 20% of the optimised target. "
+                "Actual savings depend on your kitchen's real baseline."
+            )
             st.info(f"**Kitchen Instruction:** {d_res['recommendation_summary']}")
         else:
             st.markdown("""
