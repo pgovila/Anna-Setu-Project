@@ -84,14 +84,57 @@ div.hero-banner span { color: #ffffff !important; }
     box-shadow: 0 0 0 3px rgba(26,122,60,.18) !important;
 }
 
-/* ── Selectbox, number input ── */
+/* ── Selectbox — all parts: trigger, value, dropdown menu, items ── */
+/* Trigger container + value text */
 .stSelectbox div[data-baseweb="select"] > div,
+.stSelectbox div[data-baseweb="select"] div,
+.stSelectbox [data-baseweb="select"] {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+    border-color: #a8cfb0 !important;
+    border-radius: 12px !important;
+}
+/* Selected value text */
+.stSelectbox [data-baseweb="select"] [data-testid="stMarkdownContainer"],
+.stSelectbox div[class*="ValueContainer"] *,
+.stSelectbox div[class*="singleValue"],
+.stSelectbox div[class*="placeholder"] {
+    color: #1a1a1a !important;
+    background: transparent !important;
+}
+/* Dropdown popup list */
+ul[data-baseweb="menu"],
+[data-baseweb="popover"] ul,
+[data-baseweb="menu"] {
+    background-color: #ffffff !important;
+    border: 1px solid #a8cfb0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(26,122,60,.15) !important;
+}
+/* Dropdown items */
+[data-baseweb="menu"] li,
+[data-baseweb="menu"] [role="option"],
+ul[data-baseweb="menu"] li {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+/* Dropdown item hover → orange highlight with black text */
+[data-baseweb="menu"] li:hover,
+[data-baseweb="menu"] [role="option"]:hover,
+[data-baseweb="menu"] li[aria-selected="true"] {
+    background-color: #f5a623 !important;
+    color: #1a1a1a !important;
+    font-weight: 600 !important;
+}
+/* Number input */
 .stNumberInput input {
     background-color: #ffffff !important;
     color: #1a1a1a !important;
     border-color: #a8cfb0 !important;
-    border-radius: 16px !important;
+    border-radius: 12px !important;
 }
+/* Dropdown arrow icon */
+.stSelectbox svg { color: #1a7a3c !important; fill: #1a7a3c !important; }
 
 /* ── Hero banner ── */
 .hero-banner {
@@ -345,28 +388,28 @@ SLIDE_CONTENT = [
     {
         "icon": f'<img src="{LOGO_B64}" style="width:72px;height:72px;border-radius:18px;object-fit:cover;" alt="Anna-Setu"/>' if LOGO_B64 else "🍽️",
         "title": "Welcome to Anna-Setu!",
-        "subtitle": "Your AI-powered campus food rescue and bio-recycling assistant",
+        "subtitle": "Your campus food rescue and waste-recycling helper",
         "body": """
 <p style="font-size:15px;line-height:1.75;color:#333;margin:0;">
   <strong>Anna-Setu</strong> means <em>"Food Bridge"</em> in Hindi.<br><br>
-  Every day, campus dining halls cook more food than is eaten.
-  Anna-Setu makes sure that surplus food reaches the people who need it —
-  <strong>safely, legally, and in minutes.</strong><br><br>
-  It also captures unavoidable plate waste and converts it into
-  <strong>clean organic fertilizer</strong> within 24 hours — zero to landfill.
+  Every day, campus dining halls cook more food than students can eat.
+  Anna-Setu helps your team donate that leftover food to nearby shelters —
+  <strong>safely and quickly.</strong><br><br>
+  Food that cannot be donated is turned into
+  <strong>clean compost fertilizer</strong> in 24 hours — nothing goes to landfill.
 </p>
 <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap;">
   <div style="background:#e8f5e9;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
     <div style="font-size:22px;font-weight:800;color:#2e7d32;">6+</div>
-    <div style="font-size:12px;color:#555;">Verified Shelters</div>
+    <div style="font-size:12px;color:#555;">Shelters Nearby</div>
   </div>
   <div style="background:#fff8e1;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
     <div style="font-size:22px;font-weight:800;color:#f9a825;">10</div>
-    <div style="font-size:12px;color:#555;">Food Safety Rules Embedded</div>
+    <div style="font-size:12px;color:#555;">Safety Rules Built-In</div>
   </div>
   <div style="background:#f3e5f5;border-radius:10px;padding:12px 18px;flex:1;min-width:140px;">
     <div style="font-size:22px;font-weight:800;color:#6a1b9a;">24h</div>
-    <div style="font-size:12px;color:#555;">Waste → Fertilizer</div>
+    <div style="font-size:12px;color:#555;">Waste Becomes Fertilizer</div>
   </div>
 </div>
 """,
@@ -375,46 +418,56 @@ SLIDE_CONTENT = [
     {
         "icon": "🗂️",
         "title": "What's Inside the App?",
-        "subtitle": "4 tabs — each does one clear job",
+        "subtitle": "5 tabs - each one does a simple, clear job",
         "body": """
 <table style="width:100%;border-collapse:collapse;font-size:14px;">
   <tr style="border-bottom:1px solid #eee;">
     <td style="padding:10px 8px;width:38px;font-size:20px;">🍛</td>
     <td style="padding:10px 8px;">
-      <strong style="color:#1a1a1a;font-size:14px;">Tab 1 - Surplus Food Rescue</strong><br>
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 1 - Donate Surplus Food</strong><br>
       <span style="color:#333;font-size:13px;">
-        Check if leftover food is safe to donate, get the nearest shelter matched,
-        generate a WhatsApp alert. Also predicts how much to cook so waste never starts.
+        Fill in what food is left over. The app tells you if it is safe to donate,
+        finds the nearest shelter, and writes a WhatsApp message you can send in one tap.
+      </span>
+    </td>
+  </tr>
+  <tr style="border-bottom:1px solid #eee;">
+    <td style="padding:10px 8px;font-size:20px;">🔮</td>
+    <td style="padding:10px 8px;">
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 2 - Plan How Much to Cook</strong><br>
+      <span style="color:#333;font-size:13px;">
+        Tell the app today's day, weather, and exam schedule.
+        It tells you exactly how many portions to make so you don't over-cook.
       </span>
     </td>
   </tr>
   <tr style="border-bottom:1px solid #eee;">
     <td style="padding:10px 8px;font-size:20px;">♻️</td>
     <td style="padding:10px 8px;">
-      <strong style="color:#1a1a1a;font-size:14px;">Tab 2 - Plate-Waste Recycler</strong><br>
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 3 - Plate-Waste Recycler</strong><br>
       <span style="color:#333;font-size:13px;">
-        Simulate the smart kiosk at the tray-return counter. See water and carbon impact
-        of plate waste and watch it turn into fertilizer.
+        See how much water and carbon is wasted when students leave food on their plates.
+        Watch how the kiosk turns those scraps into fertilizer.
       </span>
     </td>
   </tr>
   <tr style="border-bottom:1px solid #eee;">
     <td style="padding:10px 8px;font-size:20px;">💬</td>
     <td style="padding:10px 8px;">
-      <strong style="color:#1a1a1a;font-size:14px;">Tab 3 - Ask a Food Safety Question</strong><br>
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 4 - Ask a Food Safety Question</strong><br>
       <span style="color:#333;font-size:13px;">
-        Type a plain-English question and get a rule-backed answer from
-        official FSSAI 2019 and Lucknow city guidelines.
+        Type any question in plain English.
+        Get a simple answer backed by official food safety rules.
       </span>
     </td>
   </tr>
   <tr>
     <td style="padding:10px 8px;font-size:20px;">📖</td>
     <td style="padding:10px 8px;">
-      <strong style="color:#1a1a1a;font-size:14px;">Tab 4 - Food Safety Rules Guide</strong><br>
+      <strong style="color:#1a1a1a;font-size:14px;">Tab 5 - Food Safety Rules</strong><br>
       <span style="color:#333;font-size:13px;">
-        Plain-language reference - the 2h/4h rule, danger zone temperatures,
-        donation restrictions and legal protections explained clearly.
+        A simple guide: the 2-hour rule, what food cannot be donated,
+        and how donors are protected by law.
       </span>
     </td>
   </tr>
@@ -433,10 +486,10 @@ SLIDE_CONTENT = [
                 display:flex;align-items:center;justify-content:center;
                 font-weight:800;font-size:15px;flex-shrink:0;">1</div>
     <div>
-      <strong style="font-size:14px;color:#1a1a1a;">Open Tab 1 - Check if Surplus Food Can Be Donated</strong><br>
+      <strong style="font-size:14px;color:#1a1a1a;">Go to Tab 1 - Donate Surplus Food</strong><br>
       <span style="color:#333;font-size:13px;">
-        Select your dining facility and choose <strong style="color:#1a1a1a;">Lunch</strong> as the meal type.
-        The form automatically pre-fills with a sample batch - no typing needed.
+        Pick your dining facility and choose <strong style="color:#1a1a1a;">Lunch</strong> as the meal.
+        All fields fill in automatically - no typing needed.
       </span>
     </div>
   </div>
@@ -445,12 +498,13 @@ SLIDE_CONTENT = [
                 display:flex;align-items:center;justify-content:center;
                 font-weight:800;font-size:15px;flex-shrink:0;">2</div>
     <div>
-      <strong style="font-size:14px;color:#1a1a1a;">Click "Run Safety Check and Generate Shelter Alert"</strong><br>
+      <strong style="font-size:14px;color:#1a1a1a;">Click "Check if This Food Can Be Donated"</strong><br>
       <span style="color:#333;font-size:13px;">
-        Anna-Setu shows a <span style="color:#2e7d32;font-weight:600;">🟢 Safe</span> /
-        <span style="color:#e65100;font-weight:600;">🟡 Urgent</span> /
-        <span style="color:#c62828;font-weight:600;">🔴 Rejected</span> verdict,
-        the nearest shelter with distance, and a WhatsApp message ready to copy and send.
+        You get a clear verdict:
+        <span style="color:#2e7d32;font-weight:600;">🟢 Safe to donate</span>,
+        <span style="color:#e65100;font-weight:600;">🟡 Donate urgently</span>, or
+        <span style="color:#c62828;font-weight:600;">🔴 Cannot donate</span>.
+        Plus the nearest shelter and a WhatsApp message, ready to copy and send.
       </span>
     </div>
   </div>
@@ -459,10 +513,10 @@ SLIDE_CONTENT = [
                 display:flex;align-items:center;justify-content:center;
                 font-weight:800;font-size:15px;flex-shrink:0;">3</div>
     <div>
-      <strong style="font-size:14px;color:#1a1a1a;">Switch to Tab 2 - Plate-Waste Recycler</strong><br>
+      <strong style="font-size:14px;color:#1a1a1a;">Switch to Tab 3 - Plate-Waste Recycler</strong><br>
       <span style="color:#333;font-size:13px;">
-        Drag the <em>Food Left on Plate</em> slider and watch the daily bio-fertilizer
-        yield and methane emissions avoided update in real time.
+        Move the <em>Food Left on Plate</em> slider and see the fertilizer output
+        and water savings update instantly.
       </span>
     </div>
   </div>
@@ -476,19 +530,18 @@ SLIDE_CONTENT = [
         "subtitle": "Anna-Setu is ready to help rescue food and reduce waste",
         "body": """
 <p style="font-size:15px;line-height:1.75;color:#1a1a1a;margin:0 0 20px;">
-  You now know everything you need to use Anna-Setu effectively.<br><br>
-  Click <strong style="color:#1a1a1a;">"Let's Go!"</strong> below to open the app.
-  The <strong style="color:#1a1a1a;">Food Safety Rules Guide</strong> (Tab 4) is always there
-  if you need a quick reference on what food can and cannot be donated.
+  You know everything you need. Click <strong style="color:#1a1a1a;">"Let's Go!"</strong> below to open the app.<br><br>
+  The <strong style="color:#1a1a1a;">Food Safety Rules tab</strong> (Tab 5) is always available
+  if you need a quick reference on what food can or cannot be donated.
 </p>
 <div style="background:#e8f5e9;border-radius:12px;padding:16px 20px;">
   <p style="margin:0;font-size:13px;color:#1a7a3c;font-weight:700;">
-    Quick Tips
+    Helpful Tips
   </p>
   <ul style="margin:8px 0 0;padding-left:18px;font-size:13px;color:#1a1a1a;line-height:1.8;">
-    <li>The <strong style="color:#1a1a1a;">meal type dropdown</strong> pre-fills all fields automatically - just pick Breakfast / Lunch / Dinner.</li>
-    <li>The <strong style="color:#1a1a1a;">AI Safety Check section</strong> updates live as you type - no button needed.</li>
-    <li>All verdicts cite the exact FSSAI regulation - click <em>Food Safety Rules That Apply</em> to read them.</li>
+    <li>Choosing a <strong style="color:#1a1a1a;">meal type</strong> (Breakfast / Lunch / Dinner) fills all fields in automatically.</li>
+    <li>The safety preview below the form updates as you type - you don't need to click anything.</li>
+    <li>Every result shows the exact rule that applies - tap "Food Safety Rules That Apply" to read it.</li>
   </ul>
 </div>
 """,
@@ -620,300 +673,296 @@ st.markdown("<br>", unsafe_allow_html=True)
 # =============================================================================
 # FOUR TABS
 # =============================================================================
-tab1, tab2, tab3, tab5 = st.tabs([
-    "🍛 Surplus Food Rescue",
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "🍛 Donate Surplus Food",
+    "🔮 Plan How Much to Cook",
     "♻️ Plate-Waste Recycler",
-    "💬 Ask a Food Safety Question",
-    "📖 Food Safety Rules Guide"
+    "💬 Ask a Question",
+    "📖 Food Safety Rules"
 ])
 
 # =============================================================================
-# TAB 1 — SURPLUS RESCUE + DEMAND ADVISOR
+# TAB 1 — DONATE SURPLUS FOOD
 # =============================================================================
 with tab1:
-    t1_sub1, t1_sub2 = st.tabs([
-        "📋 Check if Surplus Food Can Be Donated",
-        "🔮 Predict How Much Food to Cook Today"
-    ])
-
-    # ── Subtab 1: Surplus rescue ─────────────────────────────────────────────
-    with t1_sub1:
-        st.markdown("""
+    st.markdown("""
 <div class="section-card" style="background:#f1f8f1;border-left:4px solid #2e7d32;">
-  <strong>What this does:</strong> Fill in the details of your leftover food below.
-  Anna-Setu checks whether it is still safe to donate, finds the nearest shelter,
-  and drafts a ready-to-send WhatsApp alert for the shelter team.
+  <strong>How to use:</strong> Fill in the details of what food is left over below.
+  The app tells you if it is safe to donate, finds the nearest shelter,
+  and writes a WhatsApp message you can send in one tap.
 </div>
 """, unsafe_allow_html=True)
 
-        col_input, col_output = st.columns([1, 1], gap="large")
+    col_input, col_output = st.columns([1, 1], gap="large")
 
-        with col_input:
-            st.markdown('<div class="step-pill">📍 Step 1 — Where is the food coming from?</div>', unsafe_allow_html=True)
-            with st.container(border=True):
-                c_p1, c_p2 = st.columns(2)
-                with c_p1:
-                    facility_input = st.selectbox("Dining Facility", DINING_FACILITIES, index=0)
-                with c_p2:
-                    origin_zone_choice = st.selectbox("City Zone (Lucknow)", [o[0] for o in ZONE_OPTIONS], index=0)
-                pickup_loc_input = st.text_input(
-                    "Pickup Gate / Collection Point",
-                    value="Gate 2 Service Loading Bay (Rear Kitchen Entrance)"
+    with col_input:
+        st.markdown('<div class="step-pill">📍 Step 1 - Where is the food coming from?</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            c_p1, c_p2 = st.columns(2)
+            with c_p1:
+                facility_input = st.selectbox("Dining Facility", DINING_FACILITIES, index=0)
+            with c_p2:
+                origin_zone_choice = st.selectbox("City Zone (Lucknow)", [o[0] for o in ZONE_OPTIONS], index=0)
+            pickup_loc_input = st.text_input(
+                "Pickup Point (gate or entrance)",
+                value="Gate 2 - Rear Kitchen Entrance"
+            )
+
+        st.markdown('<div class="step-pill">🍽️ Step 2 - What food is left over?</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            c_m1, c_m2 = st.columns(2)
+            with c_m1:
+                meal_type_choice = st.selectbox(
+                    "Meal Type",
+                    ["Lunch", "Dinner", "Breakfast", "Snacks / High Tea", "Other"],
+                    index=0
+                )
+            preset = MEAL_PRESETS.get(meal_type_choice, MEAL_PRESETS["Lunch"])
+            with c_m2:
+                servings_input = st.number_input(
+                    "Number of Servings Left",
+                    min_value=1, max_value=2000, value=preset["servings"], step=5
+                )
+            item_input = st.text_input("Food Items (describe briefly)", value=preset["item"])
+            category_choice = st.selectbox(
+                "Food Type",
+                [o[0] for o in CATEGORY_OPTIONS], index=preset["category_idx"]
+            )
+            c_t1, c_t2 = st.columns(2)
+            with c_t1:
+                time_prep_input = st.text_input(
+                    "Time Food Was Cooked (HH:MM)", value=preset["time_prep"],
+                    help="24-hour format, e.g. 13:30 means 1:30 PM"
+                )
+            with c_t2:
+                time_assess_input = st.text_input(
+                    "Current Time (HH:MM)", value=preset["time_assess"],
+                    help="What time is it right now?"
+                )
+            c_s1, c_s2 = st.columns(2)
+            with c_s1:
+                storage_choice = st.selectbox(
+                    "How is the food stored right now?",
+                    [o[0] for o in STORAGE_OPTIONS], index=preset["storage_idx"]
+                )
+            with c_s2:
+                temp_input = st.number_input(
+                    "Food Temperature (°C) - Optional",
+                    min_value=0.0, max_value=100.0, value=0.0, step=0.5,
+                    help="Measure with a thermometer. Leave as 0 if you haven't measured."
                 )
 
-            st.markdown('<div class="step-pill">🍽️ Step 2 — What food is left over?</div>', unsafe_allow_html=True)
-            with st.container(border=True):
-                c_m1, c_m2 = st.columns(2)
-                with c_m1:
-                    meal_type_choice = st.selectbox(
-                        "Meal Type",
-                        ["Lunch", "Dinner", "Breakfast", "Snacks / High Tea", "Other"],
-                        index=0
-                    )
-                preset = MEAL_PRESETS.get(meal_type_choice, MEAL_PRESETS["Lunch"])
-                with c_m2:
-                    servings_input = st.number_input(
-                        "Number of Servings Left",
-                        min_value=1, max_value=2000, value=preset["servings"], step=5
-                    )
-                item_input = st.text_input("Food Items (describe briefly)", value=preset["item"])
-                category_choice = st.selectbox(
-                    "Food Type / Category",
-                    [o[0] for o in CATEGORY_OPTIONS], index=preset["category_idx"]
-                )
-                c_t1, c_t2 = st.columns(2)
-                with c_t1:
-                    time_prep_input = st.text_input(
-                        "Time Food Was Cooked (HH:MM)", value=preset["time_prep"],
-                        help="24-hour format, e.g. 13:30 for 1:30 PM"
-                    )
-                with c_t2:
-                    time_assess_input = st.text_input(
-                        "Current Time (HH:MM)", value=preset["time_assess"],
-                        help="The time right now when you are checking"
-                    )
-                c_s1, c_s2 = st.columns(2)
-                with c_s1:
-                    storage_choice = st.selectbox(
-                        "How is the food stored right now?",
-                        [o[0] for o in STORAGE_OPTIONS], index=preset["storage_idx"]
-                    )
-                with c_s2:
-                    temp_input = st.number_input(
-                        "Food Temperature (°C) — Optional",
-                        min_value=0.0, max_value=100.0, value=0.0, step=0.5,
-                        help="Use a food thermometer or IR sensor. Leave as 0 if not measured."
-                    )
+        # Live safety preview
+        st.markdown('<div class="step-pill">🔍 Step 3 - Live Safety Preview</div>', unsafe_allow_html=True)
+        category_key   = CATEGORY_DICT[category_choice]
+        storage_key    = STORAGE_DICT[storage_choice]
+        origin_zone_id = ZONE_DICT[origin_zone_choice]
+        temp_c_val     = float(temp_input) if temp_input > 0.0 else None
 
-            # AI sync
-            st.markdown('<div class="step-pill">🤖 Step 3 — AI Safety Check (Auto-Updated)</div>', unsafe_allow_html=True)
-            category_key   = CATEGORY_DICT[category_choice]
-            storage_key    = STORAGE_DICT[storage_choice]
-            origin_zone_id = ZONE_DICT[origin_zone_choice]
-            temp_c_val     = float(temp_input) if temp_input > 0.0 else None
+        sync_data = pipeline.sync_ai_pipeline_configurations(
+            origin_zone=origin_zone_id, item=item_input,
+            servings=int(servings_input), category_key=category_key,
+            time_prepared=time_prep_input, assessment_time=time_assess_input,
+            storage_condition=storage_key, measured_temp_celsius=temp_c_val
+        )
+        with st.container(border=True):
+            st.text_area("Food Safety Rule That Applies",
+                         value=sync_data["retrieved_safety_rule"], height=65, key="rag_rule_box")
+            st.text_area("Nearest Shelter Match",
+                         value=sync_data["ai_matched_shelter"], height=65, key="shelter_dest_box")
 
-            sync_data = pipeline.sync_ai_pipeline_configurations(
-                origin_zone=origin_zone_id, item=item_input,
-                servings=int(servings_input), category_key=category_key,
+        run_button = st.button(
+            "✅ Check if This Food Can Be Donated",
+            type="primary", use_container_width=True
+        )
+
+    with col_output:
+        st.markdown("### Results")
+        if run_button:
+            res = pipeline.evaluate_surplus(
+                item=item_input, servings=int(servings_input), category_key=category_key,
                 time_prepared=time_prep_input, assessment_time=time_assess_input,
-                storage_condition=storage_key, measured_temp_celsius=temp_c_val
+                storage_condition=storage_key, origin_zone=origin_zone_id,
+                shelter_display_name=sync_data["ai_matched_shelter"],
+                pickup_location=pickup_loc_input, facility_place=facility_input,
+                meal_type=meal_type_choice, measured_temp_celsius=temp_c_val
             )
-            with st.container(border=True):
-                st.text_area("✅ Applicable Food Safety Rule",
-                             value=sync_data["retrieved_safety_rule"], height=65, key="rag_rule_box")
-                st.text_area("🏠 Best Matching Shelter Nearby",
-                             value=sync_data["ai_matched_shelter"], height=65, key="shelter_dest_box")
+            eval_data = res["evaluation"]
+            timeline  = eval_data["timeline"]
+            status    = eval_data["status"]
 
-            run_button = st.button(
-                "🚀 Run Safety Check & Generate Shelter Alert",
-                type="primary", use_container_width=True
-            )
-
-        with col_output:
-            st.markdown("### ✅ Results")
-            if run_button:
-                res = pipeline.evaluate_surplus(
-                    item=item_input, servings=int(servings_input), category_key=category_key,
-                    time_prepared=time_prep_input, assessment_time=time_assess_input,
-                    storage_condition=storage_key, origin_zone=origin_zone_id,
-                    shelter_display_name=sync_data["ai_matched_shelter"],
-                    pickup_location=pickup_loc_input, facility_place=facility_input,
-                    meal_type=meal_type_choice, measured_temp_celsius=temp_c_val
-                )
-                eval_data = res["evaluation"]
-                timeline  = eval_data["timeline"]
-                status    = eval_data["status"]
-
-                if status == "COMPLIANT_SAFE":
-                    st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-                elif status == "COMPLIANT_URGENT":
-                    st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-                else:
-                    st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
-
-                if eval_data.get("temp_summary"):
-                    st.warning(f"🌡️ **Temperature Reading:** {eval_data['temp_summary']}")
-
-                m1, m2, m3, m4 = st.columns(4)
-                m1.metric("Time Since Cooking",   f"{timeline['elapsed_minutes']} min")
-                m2.metric("Delivery Time Est.",   f"{timeline['transit_minutes']} min")
-                m3.metric("Total Time Out",        f"{timeline['total_exposure_minutes']} min")
-                m4.metric("Safe Until",            f"{timeline['safe_pickup_by']}")
-
-                st.write("---")
-                st.markdown("#### 📱 Ready-to-Send Shelter Alert (WhatsApp / SMS)")
-                st.code(res["broadcast_message"], language="markdown")
-
-                with st.expander("📜 Food Safety Rules That Apply", expanded=True):
-                    for rule in eval_data.get("retrieved_rules", []):
-                        st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}**")
-                        st.info(f"\"{rule.get('text')}\"")
-
-                with st.expander("📑 Official Handover Record (FSSAI Form B)", expanded=False):
-                    st.code(res["audit_manifest"], language="text")
+            if status == "COMPLIANT_SAFE":
+                st.success(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+            elif status == "COMPLIANT_URGENT":
+                st.warning(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
             else:
-                st.markdown("""
+                st.error(f"**{eval_data['badge']}**\n\n{eval_data['reason']}")
+
+            if eval_data.get("temp_summary"):
+                st.warning(f"🌡️ **Temperature:** {eval_data['temp_summary']}")
+
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Time Since Cooking",  f"{timeline['elapsed_minutes']} min")
+            m2.metric("Delivery Time",       f"{timeline['transit_minutes']} min")
+            m3.metric("Total Time Out",      f"{timeline['total_exposure_minutes']} min")
+            m4.metric("Safe Until",          f"{timeline['safe_pickup_by']}")
+
+            st.write("---")
+            st.markdown("#### 📱 WhatsApp Alert - Ready to Copy and Send")
+            st.code(res["broadcast_message"], language="markdown")
+
+            with st.expander("📜 Food Safety Rules That Apply", expanded=True):
+                for rule in eval_data.get("retrieved_rules", []):
+                    st.markdown(f"**[{rule.get('id')}] {rule.get('clause')}**")
+                    st.info(f"\"{rule.get('text')}\"")
+
+            with st.expander("📑 Handover Record (FSSAI Form B)", expanded=False):
+                st.code(res["audit_manifest"], language="text")
+        else:
+            st.markdown("""
 <div class="section-card" style="text-align:center;padding:40px 24px;color:#777;">
   <div style="font-size:40px;margin-bottom:12px;">👈</div>
   <strong>Fill in the form on the left</strong><br>
   <span style="font-size:13px;">
-    Then click <strong>Run Safety Check</strong> to get the donation verdict,
-    shelter match, and a ready-to-send alert message.
+    Then click <strong>Check if This Food Can Be Donated</strong>
+    to get the verdict, shelter match, and alert message.
   </span>
 </div>
 """, unsafe_allow_html=True)
 
-    # ── Subtab 2: Demand advisor ─────────────────────────────────────────────
-    with t1_sub2:
-        st.markdown("""
-<div class="section-card" style="background:#fffde7;border-left:4px solid #f9a825;">
-  <strong>What this does:</strong> Instead of guessing and cooking too much, Anna-Setu predicts
-  how many students will actually show up for a meal — based on the day, weather, and exam schedule.
-  This prevents food waste before it even happens.
-</div>
-""", unsafe_allow_html=True)
-
-        col_d1, col_d2 = st.columns([1, 1], gap="large")
-
-        with col_d1:
-            st.markdown('<div class="step-pill">📝 Tell Us About Today</div>', unsafe_allow_html=True)
-            with st.container(border=True):
-                enrolled_input = st.number_input(
-                    "Total Students Registered for Dining",
-                    min_value=100, max_value=5000, value=1200, step=50
-                )
-                c_m1, c_m2 = st.columns(2)
-                with c_m1:
-                    meal_input = st.selectbox("Which Meal?", ["Lunch", "Dinner", "Breakfast"])
-                with c_m2:
-                    day_input = st.selectbox(
-                        "Day of the Week",
-                        ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], index=2
-                    )
-                c_c1, c_c2 = st.columns(2)
-                with c_c1:
-                    cal_input = st.selectbox(
-                        "Academic Schedule",
-                        ["Regular Academic Day","Exam Week (High Attendance)","Weekend / Pre-Holiday","Post-Exam / Festival Eve"]
-                    )
-                with c_c2:
-                    weather_input = st.selectbox(
-                        "Today's Weather",
-                        ["Clear & Mild (~24°C)","Very Hot Summer (>38°C)","Monsoon / Heavy Rain","Cold Winter (~12°C)"]
-                    )
-                base_rate_input = st.slider(
-                    "Usual Attendance Rate (%)", min_value=50, max_value=100, value=85, step=1,
-                    help="On a normal day, what % of registered students eat here?"
-                )
-            btn_demand = st.button("🔮 Calculate How Much to Cook", type="primary", use_container_width=True)
-
-        with col_d2:
-            st.markdown("### 🎯 Today's Cooking Plan")
-            if btn_demand:
-                d_res = pipeline.predict_meal_demand(
-                    enrolled_students=int(enrolled_input), meal_type=meal_input,
-                    day_of_week=day_input, academic_calendar=cal_input,
-                    weather=weather_input, base_turnout_rate=float(base_rate_input) / 100.0
-                )
-                st.success(
-                    f"**Expected Students Today:** {d_res['predicted_turnout_students']} "
-                    f"({d_res['turnout_rate_pct']:.1f}% attendance)\n\n"
-                    f"**Cook This Many Portions:** **{d_res['recommended_cooking_target']}** "
-                    f"(instead of {d_res['traditional_unoptimized_target']} — saves waste!)"
-                )
-                dm1, dm2, dm3 = st.columns(3)
-                dm1.metric("Meals Waste Prevented", f"{d_res['portions_prevented_from_waste']}")
-                dm2.metric("Cost Saved",             f"₹{d_res['cost_savings_inr']:,.2f}")
-                dm3.metric("Water Saved",             f"{d_res['portions_prevented_from_waste'] * 266:,.0f} L")
-                st.write("---")
-                st.markdown("#### 🛒 Ingredients to Buy / Prepare (kg)")
-                ing = d_res["ingredient_breakdown_kg"]
-                df_ing = pd.DataFrame([
-                    {"Ingredient": "Rice & Grains",  "Old (kg)": round(ing['rice_or_grains_kg']*1.25,1),   "Smart (kg)": ing['rice_or_grains_kg'],   "Saved (kg)": round(ing['rice_or_grains_kg']*0.20,1)},
-                    {"Ingredient": "Lentils / Dal",  "Old (kg)": round(ing['dal_or_lentils_kg']*1.25,1),   "Smart (kg)": ing['dal_or_lentils_kg'],   "Saved (kg)": round(ing['dal_or_lentils_kg']*0.20,1)},
-                    {"Ingredient": "Vegetables",      "Old (kg)": round(ing['vegetables_kg']*1.25,1),        "Smart (kg)": ing['vegetables_kg'],        "Saved (kg)": round(ing['vegetables_kg']*0.20,1)},
-                    {"Ingredient": "Cooking Oil",     "Old (kg)": round(ing['cooking_oil_kg']*1.25,1),       "Smart (kg)": ing['cooking_oil_kg'],       "Saved (kg)": round(ing['cooking_oil_kg']*0.20,1)},
-                    {"Ingredient": "Dairy / Paneer",  "Old (kg)": round(ing['dairy_or_paneer_kg']*1.25,1),   "Smart (kg)": ing['dairy_or_paneer_kg'],   "Saved (kg)": round(ing['dairy_or_paneer_kg']*0.20,1)},
-                    {"Ingredient": "Spices & Salt",   "Old (kg)": round(ing['spices_kg']*1.25,1),            "Smart (kg)": ing['spices_kg'],            "Saved (kg)": round(ing['spices_kg']*0.20,1)},
-                ])
-                st.dataframe(df_ing, use_container_width=True, hide_index=True)
-                st.info(f"**Chef's Instruction:** {d_res['recommendation_summary']}")
-            else:
-                st.markdown("""
-<div class="section-card" style="text-align:center;padding:40px 24px;color:#777;">
-  <div style="font-size:40px;margin-bottom:12px;">👈</div>
-  <strong>Enter today's details on the left</strong><br>
-  <span style="font-size:13px;">Then click <strong>Calculate How Much to Cook</strong>.</span>
-</div>
-""", unsafe_allow_html=True)
-
 # =============================================================================
-# TAB 2 — PLATE-WASTE RECYCLER
+# TAB 2 — PLAN HOW MUCH TO COOK
 # =============================================================================
 with tab2:
     st.markdown("""
+<div class="section-card" style="background:#fffde7;border-left:4px solid #f9a825;">
+  <strong>How to use:</strong> Tell the app about today - the day of the week, weather, and exam schedule.
+  It predicts how many students will actually eat, so you cook the right amount
+  and avoid waste before it starts.
+</div>
+""", unsafe_allow_html=True)
+
+    col_d1, col_d2 = st.columns([1, 1], gap="large")
+
+    with col_d1:
+        st.markdown('<div class="step-pill">📝 Tell Us About Today</div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            enrolled_input = st.number_input(
+                "Total Students Signed Up for Dining",
+                min_value=100, max_value=5000, value=1200, step=50
+            )
+            c_m1, c_m2 = st.columns(2)
+            with c_m1:
+                meal_input = st.selectbox("Which Meal?", ["Lunch", "Dinner", "Breakfast"])
+            with c_m2:
+                day_input = st.selectbox(
+                    "Day of the Week",
+                    ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], index=2
+                )
+            c_c1, c_c2 = st.columns(2)
+            with c_c1:
+                cal_input = st.selectbox(
+                    "What's Happening on Campus?",
+                    ["Regular Academic Day","Exam Week (High Attendance)","Weekend / Pre-Holiday","Post-Exam / Festival Eve"]
+                )
+            with c_c2:
+                weather_input = st.selectbox(
+                    "Today's Weather",
+                    ["Clear & Mild (~24°C)","Very Hot Summer (>38°C)","Monsoon / Heavy Rain","Cold Winter (~12°C)"]
+                )
+            base_rate_input = st.slider(
+                "Usual Attendance Rate (%)", min_value=50, max_value=100, value=85, step=1,
+                help="On a normal day, what % of registered students come to eat?"
+            )
+        btn_demand = st.button("🔮 Show Me How Much to Cook", type="primary", use_container_width=True)
+
+    with col_d2:
+        st.markdown("### Today's Cooking Plan")
+        if btn_demand:
+            d_res = pipeline.predict_meal_demand(
+                enrolled_students=int(enrolled_input), meal_type=meal_input,
+                day_of_week=day_input, academic_calendar=cal_input,
+                weather=weather_input, base_turnout_rate=float(base_rate_input) / 100.0
+            )
+            st.success(
+                f"**Expected Students Today:** {d_res['predicted_turnout_students']} "
+                f"({d_res['turnout_rate_pct']:.1f}% attendance)\n\n"
+                f"**Cook This Many Portions:** **{d_res['recommended_cooking_target']}** "
+                f"(instead of {d_res['traditional_unoptimized_target']} - saves waste!)"
+            )
+            dm1, dm2, dm3 = st.columns(3)
+            dm1.metric("Meals of Waste Prevented", f"{d_res['portions_prevented_from_waste']}")
+            dm2.metric("Money Saved",               f"Rs.{d_res['cost_savings_inr']:,.2f}")
+            dm3.metric("Water Saved",               f"{d_res['portions_prevented_from_waste'] * 266:,.0f} L")
+            st.write("---")
+            st.markdown("#### Ingredients to Buy / Prepare (kg)")
+            ing = d_res["ingredient_breakdown_kg"]
+            df_ing = pd.DataFrame([
+                {"Ingredient": "Rice & Grains",  "Without App (kg)": round(ing['rice_or_grains_kg']*1.25,1),   "With App (kg)": ing['rice_or_grains_kg'],   "Saved (kg)": round(ing['rice_or_grains_kg']*0.20,1)},
+                {"Ingredient": "Lentils / Dal",  "Without App (kg)": round(ing['dal_or_lentils_kg']*1.25,1),   "With App (kg)": ing['dal_or_lentils_kg'],   "Saved (kg)": round(ing['dal_or_lentils_kg']*0.20,1)},
+                {"Ingredient": "Vegetables",      "Without App (kg)": round(ing['vegetables_kg']*1.25,1),        "With App (kg)": ing['vegetables_kg'],        "Saved (kg)": round(ing['vegetables_kg']*0.20,1)},
+                {"Ingredient": "Cooking Oil",     "Without App (kg)": round(ing['cooking_oil_kg']*1.25,1),       "With App (kg)": ing['cooking_oil_kg'],       "Saved (kg)": round(ing['cooking_oil_kg']*0.20,1)},
+                {"Ingredient": "Dairy / Paneer",  "Without App (kg)": round(ing['dairy_or_paneer_kg']*1.25,1),   "With App (kg)": ing['dairy_or_paneer_kg'],   "Saved (kg)": round(ing['dairy_or_paneer_kg']*0.20,1)},
+                {"Ingredient": "Spices & Salt",   "Without App (kg)": round(ing['spices_kg']*1.25,1),            "With App (kg)": ing['spices_kg'],            "Saved (kg)": round(ing['spices_kg']*0.20,1)},
+            ])
+            st.dataframe(df_ing, use_container_width=True, hide_index=True)
+            st.info(f"**Kitchen Instruction:** {d_res['recommendation_summary']}")
+        else:
+            st.markdown("""
+<div class="section-card" style="text-align:center;padding:40px 24px;color:#777;">
+  <div style="font-size:40px;margin-bottom:12px;">👈</div>
+  <strong>Enter today's details on the left</strong><br>
+  <span style="font-size:13px;">Then click <strong>Show Me How Much to Cook</strong>.</span>
+</div>
+""", unsafe_allow_html=True)
+
+# =============================================================================
+# TAB 3 — PLATE-WASTE RECYCLER
+# =============================================================================
+with tab3:
+    st.markdown("""
 <div class="section-card" style="background:#f1f8f1;border-left:4px solid #388e3c;">
-  <strong>Track B — Smart Plate-Waste Recycler:</strong> When students leave food on their plates,
-  a smart kiosk at the tray-return counter weighs it, shows the diner their environmental impact,
-  and converts all the scraps into clean organic fertilizer within 24 hours — zero to landfill.
+  <strong>How to use:</strong> Enter how much food a student left on their plate.
+  See the environmental impact and how the kiosk converts those scraps into fertilizer -
+  nothing goes to landfill.
 </div>
 """, unsafe_allow_html=True)
 
     col_b1, col_b2 = st.columns([1, 1], gap="large")
 
     with col_b1:
-        st.markdown('<div class="step-pill">🍽️ Simulate a Diner Returning Their Tray</div>', unsafe_allow_html=True)
+        st.markdown('<div class="step-pill">🍽️ Simulate a Student Returning Their Tray</div>', unsafe_allow_html=True)
         with st.container(border=True):
-            sim_diner_name   = st.text_input("Student / Diner ID (Optional)", value="STUDENT-2026-88")
+            sim_diner_name   = st.text_input("Student ID (Optional)", value="STUDENT-2026-88")
             sim_hostel_block = st.selectbox(
                 "Hostel Block",
                 ["Block A (Boys)", "Block B (Girls)", "Block C (International)", "Day Scholar Dining"]
             )
             sim_waste_grams  = st.slider("Food Left on Plate (grams)", min_value=0, max_value=450, value=175, step=5)
             sim_daily_diners = st.number_input(
-                "Total Diners Using This Dining Hall per Day",
+                "Total Diners in This Dining Hall Per Day",
                 min_value=100, max_value=5000, value=850, step=50
             )
 
         sim_water_liters = (sim_waste_grams / 1000.0) * 760.0
         sim_co2e_grams   = (sim_waste_grams / 1000.0) * 2300.0
 
-        st.markdown('<div class="step-pill" style="margin-top:14px;">📺 Kiosk Screen — What the Diner Sees</div>', unsafe_allow_html=True)
+        st.markdown('<div class="step-pill" style="margin-top:14px;">📺 What the Student Sees on the Kiosk Screen</div>', unsafe_allow_html=True)
         st.markdown(f"""
 <div style="background:#0d4a22;border-radius:14px;padding:20px 24px;color:white;font-size:14px;line-height:1.75;">
   <div style="font-size:18px;font-weight:700;color:#ffd54f;margin-bottom:10px;">
-    ⚠️ Hey! You left <strong>{sim_waste_grams}g</strong> of food on your plate.
+    Hey! You left <strong>{sim_waste_grams}g</strong> of food on your plate.
   </div>
-  💧 <strong>Water wasted:</strong> ~{sim_water_liters:.1f} Litres
-  <span style="color:#90caf9;font-size:12px;">(used to grow this food)</span><br>
-  🌍 <strong>Carbon footprint:</strong> {sim_co2e_grams:.0f}g CO₂ equivalent<br>
-  🏆 <strong>Your block's score:</strong> {sim_hostel_block} is at 91% Clean Plates this week — keep it up!<br><br>
-  <span style="color:#a5d6a7;font-size:13px;">💡 Tip: Take only what you can finish. Second helpings are always available!</span>
+  💧 <strong>Water wasted:</strong> ~{sim_water_liters:.1f} litres
+  <span style="color:#90caf9;font-size:12px;">(water used to grow this food)</span><br>
+  🌍 <strong>Carbon footprint:</strong> {sim_co2e_grams:.0f}g CO2 equivalent<br>
+  🏆 <strong>Your block ({sim_hostel_block}):</strong> 91% clean plates this week - great job!<br><br>
+  <span style="color:#a5d6a7;font-size:13px;">Tip: Take only what you can finish. Second helpings are always available!</span>
 </div>
 """, unsafe_allow_html=True)
 
     with col_b2:
-        st.markdown('<div class="step-pill">🧪 What Happens to the Plate Waste?</div>', unsafe_allow_html=True)
+        st.markdown('<div class="step-pill">What Happens to the Plate Waste?</div>', unsafe_allow_html=True)
 
         cum_daily_waste_kg = (sim_daily_diners * sim_waste_grams) / 1000.0
         compost_yield_kg   = cum_daily_waste_kg * 0.15
@@ -921,44 +970,44 @@ with tab2:
         methane_avoided_kg = cum_daily_waste_kg * 1.9
 
         k1, k2 = st.columns(2)
-        k1.metric("Total Plate Waste / Day",     f"{cum_daily_waste_kg:.1f} kg")
-        k2.metric("Bio-Fertilizer Made / Day",   f"{compost_yield_kg:.1f} kg",        delta="From this waste")
+        k1.metric("Plate Waste Per Day",     f"{cum_daily_waste_kg:.1f} kg")
+        k2.metric("Fertilizer Made Per Day", f"{compost_yield_kg:.1f} kg",        delta="From this waste")
         k3, k4 = st.columns(2)
-        k3.metric("Fertilizer Made / Year",      f"{annual_compost_kg:,.0f} kg",      delta="For campus gardens")
-        k4.metric("Methane Emissions Avoided",   f"{methane_avoided_kg:.1f} kg CO₂e", delta="Zero landfill")
+        k3.metric("Fertilizer Per Year",     f"{annual_compost_kg:,.0f} kg",      delta="For campus gardens")
+        k4.metric("Emissions Avoided",       f"{methane_avoided_kg:.1f} kg CO2e", delta="Zero landfill")
 
         st.write("---")
-        st.markdown("#### 🔄 How Plate Waste Becomes Fertilizer — 5 Steps")
+        st.markdown("#### How Plate Waste Becomes Fertilizer - 5 Steps")
         steps_html = "".join([
             f'<div style="display:flex;gap:12px;margin-bottom:10px;">'
             f'<div style="background:#2e7d32;color:white;border-radius:50%;width:26px;height:26px;'
             f'display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;">{n}</div>'
             f'<div style="font-size:13px;color:#333;">{txt}</div></div>'
             for n, txt in [
-                (1, "<strong>Shred:</strong> Food scraps are broken into 3–5 mm pieces for rapid decomposition."),
-                (2, "<strong>Heat:</strong> PTC element raises temperature to 55–65°C, killing all pathogens."),
-                (3, "<strong>Air Flow:</strong> Brushless fan + carbon filter supplies oxygen, removes odours."),
-                (4, "<strong>Harvest:</strong> In 12–24h, scraps become dry, nutrient-rich organic fertilizer."),
-                (5, "<strong>Zero Landfill:</strong> 100% processed on-site. Zero to city garbage system."),
+                (1, "<strong>Shred:</strong> Scraps are broken into small pieces for fast decomposition."),
+                (2, "<strong>Heat:</strong> Temperature rises to 55-65°C, killing all harmful bacteria."),
+                (3, "<strong>Airflow:</strong> A fan and carbon filter keep oxygen flowing and remove odours."),
+                (4, "<strong>Harvest:</strong> In 12-24 hours, scraps become dry, nutrient-rich fertilizer."),
+                (5, "<strong>Zero Landfill:</strong> 100% processed on-site. Nothing sent to city garbage."),
             ]
         ])
         st.markdown(f'<div style="background:white;border-radius:12px;padding:16px 18px;border:1px solid #e0e8e0;">{steps_html}</div>', unsafe_allow_html=True)
 
 # =============================================================================
-# TAB 3 — ASK A FOOD SAFETY QUESTION
+# TAB 4 — ASK A FOOD SAFETY QUESTION
 # =============================================================================
-with tab3:
+with tab4:
     st.markdown("""
 <div class="section-card" style="background:#e8eaf6;border-left:4px solid #3949ab;">
-  <strong>Ask anything about food safety:</strong> Type a plain-English question and get a clear,
-  rule-backed answer drawn from official FSSAI 2019 regulations and Lucknow Nagar Nigam guidelines.
+  <strong>How to use:</strong> Type any question about food safety in plain English.
+  You get a clear answer backed by official FSSAI 2019 regulations and Lucknow city guidelines.
 </div>
 """, unsafe_allow_html=True)
 
     c_q1, c_q2 = st.columns([3, 1])
     with c_q1:
         qa_query = st.text_input(
-            "Your Question:",
+            "Your Question",
             value="Can I donate cooked paneer curry after 3 hours at room temperature?",
             placeholder="e.g. How long can rice stay out before it becomes unsafe?"
         )
@@ -978,7 +1027,7 @@ with tab3:
         qa_result = pipeline.ask_regulations(query=qa_query, top_k=3, filter_source=filter_source)
         st.markdown(qa_result.get("synthesized_answer", ""))
         st.write("---")
-        with st.expander("📚 Source Rules Used to Answer This Question", expanded=True):
+        with st.expander("📚 Rules Used to Answer This Question", expanded=True):
             for idx, clause in enumerate(qa_result.get("retrieved_clauses", []), 1):
                 st.markdown(f"### {idx}. [{clause.get('id')}] {clause.get('title')}")
                 st.caption(
@@ -990,75 +1039,75 @@ with tab3:
                 st.caption(f"Keywords: `{'`, `'.join(clause.get('keywords', []))}`")
 
 # =============================================================================
-# TAB 4 — FOOD SAFETY RULES GUIDE
+# TAB 5 — FOOD SAFETY RULES GUIDE
 # =============================================================================
 with tab5:
     st.markdown("""
 <div class="section-card" style="background:#f1f8f1;border-left:4px solid #2e7d32;">
-  Anna-Setu follows two official sets of rules. Here's what they mean in plain language.
+  Anna-Setu follows two official sets of rules. Here is what they mean in plain language.
 </div>
 """, unsafe_allow_html=True)
 
     col_r1, col_r2 = st.columns(2, gap="large")
 
     with col_r1:
-        st.markdown("### 🇮🇳 FSSAI Surplus Food Regulations (2019)")
+        st.markdown("### 🇮🇳 National Food Safety Rules (FSSAI 2019)")
         with st.container(border=True):
             st.markdown("**🌡️ The Danger Zone**")
             st.markdown(
                 "Food left between **5°C and 65°C** allows bacteria to grow very quickly. "
-                "Always keep food colder than 5°C (fridge) or hotter than 65°C (hot-holding)."
+                "Always keep food colder than 5°C (fridge) or hotter than 65°C (hot-holding equipment)."
             )
         with st.container(border=True):
-            st.markdown("**⏱️ The 2-Hour / 4-Hour Rule (Regulation 4(2))**")
+            st.markdown("**⏱️ The 2-Hour / 4-Hour Rule**")
             st.markdown("""
 | Time Since Cooking | What You Can Do |
 |---|---|
 | Less than 2 hours | ✅ Safe to donate, chill, or reheat |
-| 2–4 hours | ⚠️ Safe only if shelter eats it immediately |
-| More than 4 hours | 🚫 Not safe — must go to compost |
+| 2 to 4 hours | ⚠️ Safe only if the shelter eats it right away |
+| More than 4 hours | 🚫 Not safe for people - must go to compost |
 """)
         with st.container(border=True):
-            st.markdown("**❌ What CANNOT Be Donated (Regulation 4(4))**")
+            st.markdown("**❌ What CANNOT Be Donated**")
             st.error("Food left on a diner's plate (plate waste / customer leftovers)", icon="🚫")
-            st.error("Cut salads, sliced fruits, or open chutneys held at room temperature > 2 hours", icon="🚫")
+            st.error("Cut salads, sliced fruits, or open chutneys held at room temperature for more than 2 hours", icon="🚫")
         with st.container(border=True):
-            st.markdown("**⚖️ Are Donors Protected by Law? (Regulation 4(5) & Section 7)**")
+            st.markdown("**⚖️ Are Donors Protected by Law?**")
             st.success(
                 "Yes. Donors who follow the rules above and donate in good faith are **legally protected** "
-                "from being sued if something goes wrong later in the delivery chain.", icon="✅"
+                "from being blamed if something goes wrong after the food leaves their hands.", icon="✅"
             )
         with st.container(border=True):
-            st.markdown("**📋 Record Keeping (Regulation 7)**")
+            st.markdown("**📋 Record Keeping**")
             st.info(
-                "Every donation must be logged in an **official Form B register** — food type, quantity, "
+                "Every donation must be logged in an official register - food type, quantity, "
                 "cooking time, temperature, and signatures. Records kept for 1 year.", icon="📋"
             )
 
     with col_r2:
-        st.markdown("### 🏙️ Lucknow Nagar Nigam (City Council) Rules")
+        st.markdown("### 🏙️ Lucknow City Council Rules (LNN)")
         with st.container(border=True):
-            st.markdown("**🚗 Maximum Delivery Time (Section 14)**")
+            st.markdown("**🚗 Maximum Delivery Time**")
             st.markdown(
-                "Food in transit must reach the shelter within **45 minutes** due to Lucknow traffic "
-                "and summer heat (>38°C). Insulated thermal containers required for longer routes."
+                "Food in transit must reach the shelter within **45 minutes** because of Lucknow traffic "
+                "and summer temperatures. Insulated containers are required for longer routes."
             )
         with st.container(border=True):
-            st.markdown("**🚮 No Dumping in Garbage Bins (Section 10)**")
+            st.markdown("**🚮 No Dumping in Garbage Bins**")
             st.error(
                 "It is **illegal** to throw commercial food waste into city dustbins or roadside dumps. "
-                "Spot fines: **₹5,000 to ₹25,000**.", icon="⚠️"
+                "On-the-spot fines: **Rs.5,000 to Rs.25,000**.", icon="⚠️"
             )
         with st.container(border=True):
-            st.markdown("**♻️ Expired Food Must Be Composted (Section 18)**")
+            st.markdown("**♻️ Expired Food Must Be Composted**")
             st.warning(
-                "Food past its safe window must **never** go into mixed garbage. "
-                "It must be sorted as green wet waste and sent to campus composting or the "
-                "city's Kanha Upvan biomethanation facility.", icon="🌿"
+                "Food that is past its safe window must **never** go into mixed garbage. "
+                "It must be separated as green wet waste and sent to campus composting or the "
+                "city biomethanation facility.", icon="🌿"
             )
         with st.container(border=True):
-            st.markdown("**🏫 Gate Clearance for Food Vehicles (Section 21)**")
+            st.markdown("**🏫 Gate Clearance for Food Vehicles**")
             st.info(
-                "Campus security must verify and timestamp all food rescue vehicles leaving the premises "
+                "Campus security must check and log all food rescue vehicles leaving the campus "
                 "with an Anna-Setu digital gate pass.", icon="🔖"
             )
