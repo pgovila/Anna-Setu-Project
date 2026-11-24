@@ -1,6 +1,6 @@
 # 🍛 Anna-Setu: Campus Food Rescue & Bio-Recycling Network
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pgovila-anna-setu-demo.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://pgovila-anna-setu-demo.streamlit.app/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -15,7 +15,7 @@
 
 | Resource | Link |
 |---|---|
-| Live Streamlit App | [https://pgovila-anna-setu-demo.streamlit.app](https://pgovila-anna-setu-demo.streamlit.app) |
+| Live Streamlit App | [https://pgovila-anna-setu-demo.streamlit.app/](https://pgovila-anna-setu-demo.streamlit.app/) |
 | Landing Page | `index.html` (open locally or via GitHub Pages) |
 
 ---
